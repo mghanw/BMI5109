@@ -1,0 +1,4 @@
+* text=auto eol=lf
+icpdag/_vendor/cscn/* -text -whitespace
+*.png binary
+*.svg text eol=lf -whitespace

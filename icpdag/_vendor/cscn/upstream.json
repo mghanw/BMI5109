@@ -1,0 +1,26 @@
+{
+  "repository": "https://github.com/mghanw/CSCN",
+  "commit": "d579c03d77a6435c570957188de356b72e369f00",
+  "source_url": "https://github.com/mghanw/CSCN/blob/d579c03d77a6435c570957188de356b72e369f00/cscn/core.py",
+  "license": "MIT",
+  "files": {
+    "core.py": {
+      "upstream_path": "cscn/core.py",
+      "git_blob_sha": "c87ae04283ccc8f2e0e21da31922b00e5f4698cd"
+    },
+    "LICENSE": {
+      "upstream_path": "LICENSE",
+      "git_blob_sha": "8d99be80c7858d135227a9448dc3481105f68df7"
+    },
+    "ckm.py": {
+      "upstream_path": "cscn/ckm.py",
+      "git_blob_sha": "3a084c0e151cc197a8adb584f39196a7cdef967c"
+    },
+    "results.py": {
+      "upstream_path": "cscn/results.py",
+      "git_blob_sha": "ac22e3eeadadd2e4eb1160b5e35bba64a165dafd"
+    }
+  },
+  "modifications": [],
+  "integration": "Earlier pipelines use the official skeleton/PDAG stages. The shared-program workflow additionally calls official DAG completion and solve_dag_katz; all source files remain unmodified. Shared NMF fitting, audits and biological comparisons are local adapters."
+}

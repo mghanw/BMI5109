@@ -1,0 +1,30 @@
+{
+  "analysis_date": "2026-10-11",
+  "dataset": "PerturbFate A375 day-6 RNA",
+  "source": "https://doi.org/10.1038/s41586-026-10367-0",
+  "n_cells": 7125,
+  "n_valid_ckm": 7049,
+  "effect_units": "frozen DMSO NTC SD",
+  "bootstrap_repeats": 5000,
+  "interval_scope": "stratified cell bootstrap within the observed pool",
+  "cscn_commit": "d579c03d77a6435c570957188de356b72e369f00",
+  "nmf_components": 20,
+  "nmf_input_genes": 1998,
+  "anchor_genes": 7,
+  "cscn_window": 0.35,
+  "max_conditioning": 4,
+  "ci_alpha": 0.05,
+  "katz_alpha": 0.05,
+  "orientation_order": [
+    "skeleton",
+    "colliders",
+    "intervention seeds",
+    "Meek",
+    "DAG",
+    "CKM",
+    "gene projection"
+  ],
+  "network_count_unit": "cell-edge instances in valid condition-specific NTC graphs",
+  "factor_annotation": "top-50 loadings; hypergeometric; BH over 20 factors x 2 external programs",
+  "outputs": "aggregate statistics only; no cell identifiers or expression matrices"
+}
