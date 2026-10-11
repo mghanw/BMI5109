@@ -1,0 +1,300 @@
+{
+  "description": "Held-out target split over eligible target identities, frozen before any response-based step. No response information was used.",
+  "source_table": "results/summary/phase1_target_qc.csv",
+  "source_sha256": "e0be0c4bd9747815d414af0ab8ccd3aea7ea71eb34b1300984c3f6a705944b96",
+  "assignment_rule": "paper_gt5_max0.5_sec0.3",
+  "eligibility": "> 50 singlets and adequate knockdown (remaining ratio <= 0.5, BH q < 0.05) in both conditions",
+  "n_folds": 5,
+  "seed": 20261011,
+  "stratification": "kd_strength = mean of DMSO and Vem knockdown remaining ratios; tertiles by rank (0 = strongest knockdown); within each tertile targets are permuted with numpy default_rng(seed) and dealt round-robin to folds with a running counter",
+  "n_targets": 56,
+  "fold_sizes": {
+    "0": 12,
+    "1": 11,
+    "2": 11,
+    "3": 11,
+    "4": 11
+  },
+  "targets": {
+    "ACTN4": {
+      "fold": 4,
+      "kd_tertile": 2,
+      "kd_strength": 0.292849
+    },
+    "AHNAK": {
+      "fold": 0,
+      "kd_tertile": 2,
+      "kd_strength": 0.456807
+    },
+    "ANP32B": {
+      "fold": 2,
+      "kd_tertile": 0,
+      "kd_strength": 0.102123
+    },
+    "ARIH2": {
+      "fold": 0,
+      "kd_tertile": 1,
+      "kd_strength": 0.163896
+    },
+    "ARRDC3": {
+      "fold": 0,
+      "kd_tertile": 1,
+      "kd_strength": 0.149032
+    },
+    "ASAH1": {
+      "fold": 3,
+      "kd_tertile": 0,
+      "kd_strength": 0.084785
+    },
+    "ATP5G3": {
+      "fold": 4,
+      "kd_tertile": 1,
+      "kd_strength": 0.145463
+    },
+    "CAND1": {
+      "fold": 1,
+      "kd_tertile": 0,
+      "kd_strength": 0.118611
+    },
+    "CCDC117": {
+      "fold": 3,
+      "kd_tertile": 2,
+      "kd_strength": 0.486719
+    },
+    "CDH13": {
+      "fold": 4,
+      "kd_tertile": 1,
+      "kd_strength": 0.221601
+    },
+    "CLTA": {
+      "fold": 1,
+      "kd_tertile": 0,
+      "kd_strength": 0.094101
+    },
+    "CSK": {
+      "fold": 3,
+      "kd_tertile": 2,
+      "kd_strength": 0.300091
+    },
+    "CST3": {
+      "fold": 0,
+      "kd_tertile": 0,
+      "kd_strength": 0.070199
+    },
+    "CUL5": {
+      "fold": 4,
+      "kd_tertile": 2,
+      "kd_strength": 0.22212
+    },
+    "DGKD": {
+      "fold": 2,
+      "kd_tertile": 1,
+      "kd_strength": 0.20212
+    },
+    "DPH2": {
+      "fold": 0,
+      "kd_tertile": 0,
+      "kd_strength": 0.044861
+    },
+    "DUSP6": {
+      "fold": 4,
+      "kd_tertile": 2,
+      "kd_strength": 0.382542
+    },
+    "FHOD1": {
+      "fold": 1,
+      "kd_tertile": 1,
+      "kd_strength": 0.136935
+    },
+    "FRYL": {
+      "fold": 2,
+      "kd_tertile": 2,
+      "kd_strength": 0.369324
+    },
+    "GFM1": {
+      "fold": 2,
+      "kd_tertile": 0,
+      "kd_strength": 0.038545
+    },
+    "HPRT1": {
+      "fold": 0,
+      "kd_tertile": 1,
+      "kd_strength": 0.136135
+    },
+    "KCTD10": {
+      "fold": 3,
+      "kd_tertile": 0,
+      "kd_strength": 0.099759
+    },
+    "KCTD5": {
+      "fold": 4,
+      "kd_tertile": 0,
+      "kd_strength": 0.049475
+    },
+    "KEAP1": {
+      "fold": 4,
+      "kd_tertile": 0,
+      "kd_strength": 0.128622
+    },
+    "KIRREL": {
+      "fold": 0,
+      "kd_tertile": 1,
+      "kd_strength": 0.207852
+    },
+    "LATS2": {
+      "fold": 2,
+      "kd_tertile": 1,
+      "kd_strength": 0.135661
+    },
+    "MAU2": {
+      "fold": 0,
+      "kd_tertile": 0,
+      "kd_strength": 0.094551
+    },
+    "MED10": {
+      "fold": 3,
+      "kd_tertile": 1,
+      "kd_strength": 0.175308
+    },
+    "MED12": {
+      "fold": 1,
+      "kd_tertile": 0,
+      "kd_strength": 0.071499
+    },
+    "MED13": {
+      "fold": 2,
+      "kd_tertile": 2,
+      "kd_strength": 0.29033
+    },
+    "MED15": {
+      "fold": 0,
+      "kd_tertile": 2,
+      "kd_strength": 0.230038
+    },
+    "NF1": {
+      "fold": 1,
+      "kd_tertile": 1,
+      "kd_strength": 0.163482
+    },
+    "NF2": {
+      "fold": 0,
+      "kd_tertile": 0,
+      "kd_strength": 0.079148
+    },
+    "NRP1": {
+      "fold": 1,
+      "kd_tertile": 2,
+      "kd_strength": 0.463012
+    },
+    "PBRM1": {
+      "fold": 3,
+      "kd_tertile": 2,
+      "kd_strength": 0.232399
+    },
+    "PDCD10": {
+      "fold": 2,
+      "kd_tertile": 1,
+      "kd_strength": 0.200907
+    },
+    "PGRMC2": {
+      "fold": 0,
+      "kd_tertile": 2,
+      "kd_strength": 0.357415
+    },
+    "PICALM": {
+      "fold": 0,
+      "kd_tertile": 2,
+      "kd_strength": 0.289806
+    },
+    "PLXND1": {
+      "fold": 3,
+      "kd_tertile": 0,
+      "kd_strength": 0.057905
+    },
+    "PPT1": {
+      "fold": 2,
+      "kd_tertile": 0,
+      "kd_strength": 0.095559
+    },
+    "PTEN": {
+      "fold": 4,
+      "kd_tertile": 2,
+      "kd_strength": 0.389017
+    },
+    "PTPN14": {
+      "fold": 1,
+      "kd_tertile": 2,
+      "kd_strength": 0.246881
+    },
+    "RALGAPB": {
+      "fold": 3,
+      "kd_tertile": 1,
+      "kd_strength": 0.177928
+    },
+    "RB1": {
+      "fold": 2,
+      "kd_tertile": 2,
+      "kd_strength": 0.315796
+    },
+    "RNF7": {
+      "fold": 2,
+      "kd_tertile": 0,
+      "kd_strength": 0.052626
+    },
+    "SBF1": {
+      "fold": 1,
+      "kd_tertile": 0,
+      "kd_strength": 0.130046
+    },
+    "SUPT20H": {
+      "fold": 4,
+      "kd_tertile": 1,
+      "kd_strength": 0.141685
+    },
+    "SUPT7L": {
+      "fold": 3,
+      "kd_tertile": 0,
+      "kd_strength": 0.073163
+    },
+    "TADA2B": {
+      "fold": 4,
+      "kd_tertile": 1,
+      "kd_strength": 0.1947
+    },
+    "TADA3": {
+      "fold": 3,
+      "kd_tertile": 1,
+      "kd_strength": 0.174729
+    },
+    "TAOK1": {
+      "fold": 2,
+      "kd_tertile": 1,
+      "kd_strength": 0.153043
+    },
+    "TP53": {
+      "fold": 4,
+      "kd_tertile": 0,
+      "kd_strength": 0.115991
+    },
+    "UBE2R2": {
+      "fold": 3,
+      "kd_tertile": 2,
+      "kd_strength": 0.248242
+    },
+    "VBP1": {
+      "fold": 1,
+      "kd_tertile": 1,
+      "kd_strength": 0.196893
+    },
+    "ZC3H15": {
+      "fold": 1,
+      "kd_tertile": 2,
+      "kd_strength": 0.304951
+    },
+    "ZNF592": {
+      "fold": 1,
+      "kd_tertile": 1,
+      "kd_strength": 0.13724
+    }
+  }
+}
