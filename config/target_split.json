@@ -1,7 +1,7 @@
 {
   "description": "Held-out target split over eligible target identities, frozen before any response-based step. No response information was used.",
   "source_table": "results/summary/phase1_target_qc.csv",
-  "source_sha256": "e0be0c4bd9747815d414af0ab8ccd3aea7ea71eb34b1300984c3f6a705944b96",
+  "source_sha256": "8f534c77e1759bda8ed64b8cbba7d9ffe4cf273368efb21a1083c3af831916d9",
   "assignment_rule": "paper_gt5_max0.5_sec0.3",
   "eligibility": "> 50 singlets and adequate knockdown (remaining ratio <= 0.5, BH q < 0.05) in both conditions",
   "n_folds": 5,

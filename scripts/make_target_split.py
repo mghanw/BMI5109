@@ -24,7 +24,8 @@ QC_COLUMNS = ["condition", "target", "eligible", "knockdown_remaining_ratio"]
 def build_spec(qc_path, n_folds, seed):
     qc = pd.read_csv(qc_path, usecols=QC_COLUMNS)
     split = make_split(qc, n_folds, seed)
-    digest = hashlib.sha256(Path(qc_path).read_bytes()).hexdigest()
+    # Hash LF-normalised text so the digest does not depend on the checkout's line endings
+    digest = hashlib.sha256(Path(qc_path).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
     return {
         "description": "Held-out target split over eligible target identities, frozen before any "
                        "response-based step. No response information was used.",
