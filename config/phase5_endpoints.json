@@ -1,0 +1,115 @@
+{
+  "description": "Pre-registered Phase 5 evaluation endpoints. Frozen before any modelling code exists; do not change after model fitting starts. This file is authoritative.",
+  "frozen": true,
+  "date": "2026-10-11",
+  "conditions": ["DMSO", "Vem"],
+  "target_split": "config/target_split.json",
+  "response": {
+    "observed": "per held-out target and condition: target - NTC pseudobulk mean of log1p CP10k on the evaluation cells",
+    "predicted": "the model's predicted mean change for the same target, condition and genes",
+    "units": "log1p CP10k"
+  },
+  "evaluation_cells": {
+    "scheme": "cross_fit_calib_fold",
+    "rule": "Calibrate the held-out target's delta on calib_fold k (its own expression only) and evaluate on calib_fold 1-k, for k = 0 and 1. NTC cells use the same whole-well split. Calibration and evaluation cells never overlap.",
+    "combine_directions": "per-target metrics are averaged over the 2 directions (Pearson r on the Fisher z scale)"
+  },
+  "gene_set": {
+    "genes": "network panel genes, fixed from training data only (training-fold targets plus NTC) before evaluation",
+    "exclude": ["the perturbed gene"],
+    "other_filtering": "none"
+  },
+  "primary": {
+    "endpoint": "held-out prediction of perturbation-induced downstream expression changes",
+    "metrics": ["pearson_r_across_genes", "rmse"],
+    "comparison": {"model": "cell_specific_cscn_sem", "reference": "shared_cscn_sem"},
+    "averaging": {
+      "method": "fisher_z",
+      "transform": "atanh",
+      "clip_abs_r": 0.999999999999,
+      "rule": "per held-out target z = mean(atanh(r_DMSO), atanh(r_Vem)); NaN if either condition is undefined",
+      "back_transform": "tanh"
+    },
+    "decision_test": {
+      "statistic": "paired_z_difference",
+      "difference": "z_cell_specific - z_shared",
+      "test": "wilcoxon_signed_rank",
+      "alternative": "two-sided",
+      "unit": "held-out target",
+      "alpha": 0.05,
+      "n_tests": 1,
+      "multiplicity": "none (single decision test)"
+    },
+    "effect_size": {
+      "method": "hodges_lehmann",
+      "definition": "median of Walsh averages of the paired differences",
+      "ci": {"method": "percentile_bootstrap_over_targets", "level": 0.95, "draws": 5000, "seed": 20261011},
+      "scale": "Fisher z for Pearson r, reported back-transformed with tanh; native units for RMSE",
+      "applies_to": "every Wilcoxon test: primary, per-condition, RMSE and secondary comparisons"
+    },
+    "nan_rule": {
+      "undefined": "a constant prediction has undefined Pearson r, recorded as NaN; RMSE is always defined",
+      "paired_tests": "complete_pairs",
+      "report_nan_counts": true,
+      "flag_threshold": 0.1,
+      "flag_rule": "flag the result in the summary if any model has NaN for more than 10% of targets"
+    },
+    "noise_ceiling": {
+      "decision_test": false,
+      "role": "supporting context reported next to each target's model r",
+      "splits": 100,
+      "seed": 20261011,
+      "halves": "target evaluation cells and NTC evaluation cells are split separately into random halves",
+      "statistic": "Pearson r between the two half-sample target - NTC change vectors over the panel genes (perturbed gene excluded)",
+      "correction": "spearman_brown",
+      "summary": "median over splits per target, condition and cross-fit direction; directions averaged on the Fisher z scale"
+    },
+    "supporting": [
+      "median over held-out targets (back-transformed r; RMSE)",
+      "per-condition Wilcoxon signed-rank on z (DMSO, Vem)",
+      "RMSE: same paired Wilcoxon",
+      "per-fold medians (folds from config/target_split.json)"
+    ]
+  },
+  "secondary_comparisons": {
+    "reference": "cell_specific_cscn_sem",
+    "comparators": [
+      {"model": "zero_downstream_baseline", "metrics": ["rmse"], "note": "Pearson r is undefined for a constant zero prediction"},
+      {"model": "cluster_level_sem", "metrics": ["pearson_r_across_genes", "rmse"]},
+      {"model": "local_association_network_sem", "metrics": ["pearson_r_across_genes", "rmse"]},
+      {"model": "unweighted_propagation_ablation", "metrics": ["pearson_r_across_genes", "rmse"]}
+    ],
+    "test": "same paired Wilcoxon signed-rank with Hodges-Lehmann effect size",
+    "multiplicity": "holm across the 4 comparators",
+    "claim": "descriptive; no decision claim"
+  },
+  "secondary_endpoint": {
+    "endpoint": "Fufa score mean-effect error",
+    "readout": "Fufa2019_AZD_up_SOX10_bound_pigmentation",
+    "contrasts": ["KD - NTC per condition", "gene x drug interaction (Vem - DMSO)"],
+    "metric": "absolute error |predicted - observed|",
+    "prediction": "apply the frozen Phase 2 scoring (same program genes, background controls, DMSO NTC center and scale) to the predicted expression changes; the score is linear in log expression, so the predicted mean effect is that linear combination of predicted gene changes. Genes a model does not predict get a predicted change of 0 for every model alike.",
+    "summary": "median absolute error over held-out targets; paired Wilcoxon signed-rank vs shared CSCN-SEM with Hodges-Lehmann effect size"
+  },
+  "tertiary_endpoints": {
+    "distribution_agreement": {
+      "statistics": ["log_var_ratio", "iqr_diff", "centered_wasserstein"],
+      "metric": "absolute error |predicted - observed|",
+      "observed": "evaluation cells, Phase 2 estimators (icpdag/dispersion.py)"
+    },
+    "heterogeneity_calibration": {
+      "rule": "the predicted between-cell dispersion (log variance ratio) must not exceed the upper bound of the observed 95% interval",
+      "metrics": ["over_dispersion_rate (share of target x condition rows above the upper bound; nominal <= 0.025)", "coverage of the observed 95% interval"],
+      "reference": "Phase 2 all-cell intervals (results/summary/phase2_dispersion_contrasts.csv) reported alongside"
+    },
+    "models_without_cell_level_output": "observed evaluation-fold control cells plus the model's predicted mean shift",
+    "power_note": "Phase 2 found 0 pre-specified primary dispersion calls (Fufa log variance ratio BH q < 0.05 with mean CI including 0) across 56 targets x 2 conditions; tertiary endpoints are expected to have low power (see results/summary/phase2b_power_summary.md)."
+  },
+  "leakage": [
+    "Targets are split into train / held-out before any response-based step (config/target_split.json).",
+    "Structure, SEM coefficients, NMF, scaling, gene selection and hyperparameters use training data only.",
+    "Target calibration (delta) uses the held-out target's own expression only, from the calibration fold.",
+    "Only perturbation-induced changes are evaluated; the perturbed gene is excluded.",
+    "All models share features, calibration information and splits."
+  ]
+}

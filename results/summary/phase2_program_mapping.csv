@@ -1,0 +1,8 @@
+program,readout_role,n_source,n_exact,n_hgnc_previous,n_hgnc_alias,n_missing,n_duplicate,missing_genes,n_mapped,coverage
+Tsoi_undifferentiated,secondary,118,115,3,0,0,0,,118,1.0
+Tsoi_neural_crest_like,secondary,66,65,1,0,0,0,,66,1.0
+Tsoi_transitory,secondary,29,29,0,0,0,0,,29,1.0
+Tsoi_melanocytic,secondary,62,60,2,0,0,0,,62,1.0
+Kanai2024_YAP_TAZ_up,secondary,80,80,0,0,0,0,,80,1.0
+Kanai2024_YAP_TAZ_down,exploratory,52,52,0,0,0,0,,52,1.0
+Fufa2019_AZD_up_SOX10_bound_pigmentation,primary,45,44,1,0,0,0,,45,1.0

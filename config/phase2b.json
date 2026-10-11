@@ -1,0 +1,22 @@
+{
+  "aim1_config": "config/aim1.json",
+  "phase2_scores": "outputs/phase2_aim1/scores.csv.gz",
+  "phase2_dispersion": "results/summary/phase2_dispersion_contrasts.csv",
+  "seed": 20261011,
+  "regression_tolerance": 1e-6,
+  "reliability": {"splits": 200},
+  "power": {
+    "_note": "NTC cells only. B = 5000 matches Phase 2 and is needed to reach the Bonferroni level (minimum bootstrap p = 2/(B+1)). scale_true_lvr_extension is a documented extension of the requested grid so that 80% power is bracketed for the smallest n.",
+    "readout": "Fufa2019_AZD_up_SOX10_bound_pigmentation",
+    "reps": 200,
+    "bootstrap": 5000,
+    "n_quantiles": [0.1, 0.5, 0.9],
+    "n_targets_tested": 56,
+    "alpha": 0.05,
+    "mixture_pi": [0.1, 0.2, 0.3, 0.5],
+    "mixture_d_sd": [0.25, 0.5, 1.0, 1.5],
+    "scale_true_lvr": [0.1, 0.2, 0.3, 0.5, 0.75],
+    "scale_true_lvr_extension": [1.0, 1.5],
+    "target_power": 0.8
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "paths": {
+    "rna": "data/processed/rna.h5ad",
+    "sgrna": "data/processed/sgrna.h5ad",
+    "metadata": "data/raw/GSE291147_Dual_omics_RNA_cell_metadata.csv.gz",
+    "gtf": "data/ref/gencode/gencode.v38.primary_assembly.annotation.gtf.gz",
+    "library": "data/ref/perturbfate_repo_bafdfff28a6fc36854a5defe32440abc98eaabc0/bulk_screen_processing_perturbfate_dual_KD_library_with_NTC.csv",
+    "lig1_whitelist": "data/ref/perturbfate_repo_bafdfff28a6fc36854a5defe32440abc98eaabc0/Dual_omics_processing_scripts_barcode_files_full_1st_lig_barcodes_96.txt",
+    "processed_dir": "data/processed",
+    "summary_dir": "results/summary",
+    "outputs_dir": "outputs"
+  },
+  "annotation": {"source": "GENCODE", "release": 38, "assembly": "primary_assembly"},
+  "conditions": {"DMSO_treated_cells": "DMSO", "PLX_treated_cells": "Vem"},
+  "assignment": {
+    "rule": "paper",
+    "_note_paper_rule": "Primary rule: total sgRNA UMI > 5, max/total >= 0.5, second/max <= 0.3. The authors' code (perturbfate_repo_bafdfff/Dual_omics_cell_calling_dual_omics_combine_multi_modal_cells_functions.R, line 160) filters total_sgRNA_UMI >= 5. GEO's sgRNA matrix has no cells below 5 UMI; 2,962 cells have exactly 5 UMI and are unassigned_low under > 5, while 97 of them would be singlets under >= 5. We keep > 5 because it reproduces the earlier report's singlet counts exactly; >= 5 is a sensitivity rule.",
+    "threshold": null,
+    "threshold_bounds": [3, 10],
+    "sensitivity_thresholds": [3, 5, 10],
+    "paper_min_total_umi": 5,
+    "paper_min_total_inclusive": false,
+    "paper_max_to_total": 0.5,
+    "paper_sec_to_max": 0.3
+  },
+  "knockdown": {
+    "min_cells": 50,
+    "max_ratio": 0.5,
+    "sensitivity_max_ratio": 0.7,
+    "paper_max_ratio": 0.6,
+    "q": 0.05,
+    "min_ntc_detection": 0.05
+  },
+  "batch_check": {"n_hvg": 2000, "min_cp10k": 1.0, "n_pcs": 5, "n_permutations": 2000},
+  "validation": {
+    "report": "reports/mechanism-report.zh.md",
+    "report_singlets": {"NTC": [1989, 1864], "NF2": [387, 171], "MED12": [162, 203], "MED13": [273, 170]}
+  },
+  "calibration_folds": 2,
+  "seed": 20261011
+}

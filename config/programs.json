@@ -1,0 +1,3249 @@
+{
+ "description": "External expression programs (public supplementary tables), mapped to GENCODE v38 symbols of data/processed/rna_singlets.h5ad. Scoring order fixes background draws.",
+ "order": [
+  "Tsoi_undifferentiated",
+  "Tsoi_neural_crest_like",
+  "Tsoi_transitory",
+  "Tsoi_melanocytic",
+  "Kanai2024_YAP_TAZ_up",
+  "Kanai2024_YAP_TAZ_down",
+  "Fufa2019_AZD_up_SOX10_bound_pigmentation"
+ ],
+ "hgnc_sha256": "64fcdfcdf9bc0853ec502e0e4c7d6eb12647b2ca8b0e635ea04bdb584856baf7",
+ "programs": {
+  "Tsoi_undifferentiated": {
+   "readout_role": "secondary",
+   "paper": "Tsoi et al. 2018, Cancer Cell 33:890 (PMC5953834)",
+   "sheet": "Table S3",
+   "rule": "Signature label is exactly 'Undifferentiated' (labels shared by two adjacent subtypes are not used; this reproduces the earlier report)",
+   "source_file": "data/ref/tsoi2018/1-s2.0-S1535610818301223-mmc4.xlsx",
+   "source_sha256": "bb1e5003b3bc422f88803e2cc0801a39b5a7ced6a66ed3440d61761f9ed91c6f",
+   "genes": [
+    {
+     "source_symbol": "AJUBA",
+     "symbol": "AJUBA",
+     "gene_id": "ENSG00000129474.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TOR4A",
+     "symbol": "TOR4A",
+     "gene_id": "ENSG00000198113.3",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MARCH4",
+     "symbol": "MARCHF4",
+     "gene_id": "ENSG00000144583.5",
+     "match_type": "hgnc_previous",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZDHHC2",
+     "symbol": "ZDHHC2",
+     "gene_id": "ENSG00000104219.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZNF467",
+     "symbol": "ZNF467",
+     "gene_id": "ENSG00000181444.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZNF185",
+     "symbol": "ZNF185",
+     "gene_id": "ENSG00000147394.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZIC2",
+     "symbol": "ZIC2",
+     "gene_id": "ENSG00000043355.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "VASN",
+     "symbol": "VASN",
+     "gene_id": "ENSG00000168140.5",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "UCP2",
+     "symbol": "UCP2",
+     "gene_id": "ENSG00000175567.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GALNT6",
+     "symbol": "GALNT6",
+     "gene_id": "ENSG00000139629.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TNFAIP2",
+     "symbol": "TNFAIP2",
+     "gene_id": "ENSG00000185215.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TNFSF18",
+     "symbol": "TNFSF18",
+     "gene_id": "ENSG00000120337.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TMEM40",
+     "symbol": "TMEM40",
+     "gene_id": "ENSG00000088726.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TMEM200A",
+     "symbol": "TMEM200A",
+     "gene_id": "ENSG00000164484.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TMEM184A",
+     "symbol": "TMEM184A",
+     "gene_id": "ENSG00000164855.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TBL1X",
+     "symbol": "TBL1X",
+     "gene_id": "ENSG00000101849.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TRERF1",
+     "symbol": "TRERF1",
+     "gene_id": "ENSG00000124496.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TOX",
+     "symbol": "TOX",
+     "gene_id": "ENSG00000198846.6",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TBC1D2",
+     "symbol": "TBC1D2",
+     "gene_id": "ENSG00000095383.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SFN",
+     "symbol": "SFN",
+     "gene_id": "ENSG00000175793.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SAMD12",
+     "symbol": "SAMD12",
+     "gene_id": "ENSG00000177570.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SAMD11",
+     "symbol": "SAMD11",
+     "gene_id": "ENSG00000187634.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SOX9",
+     "symbol": "SOX9",
+     "gene_id": "ENSG00000125398.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC8A1",
+     "symbol": "SLC8A1",
+     "gene_id": "ENSG00000183023.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC38A4",
+     "symbol": "SLC38A4",
+     "gene_id": "ENSG00000139209.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC16A14",
+     "symbol": "SLC16A14",
+     "gene_id": "ENSG00000163053.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SCN5A",
+     "symbol": "SCN5A",
+     "gene_id": "ENSG00000183873.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SCNN1A",
+     "symbol": "SCNN1A",
+     "gene_id": "ENSG00000111319.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SH3RF2",
+     "symbol": "SH3RF2",
+     "gene_id": "ENSG00000156463.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SERPINB7",
+     "symbol": "SERPINB7",
+     "gene_id": "ENSG00000166396.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLPI",
+     "symbol": "SLPI",
+     "gene_id": "ENSG00000124107.5",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SECTM1",
+     "symbol": "SECTM1",
+     "gene_id": "ENSG00000141574.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RUNX2",
+     "symbol": "RUNX2",
+     "gene_id": "ENSG00000124813.23",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ARHGAP29",
+     "symbol": "ARHGAP29",
+     "gene_id": "ENSG00000137962.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "REN",
+     "symbol": "REN",
+     "gene_id": "ENSG00000143839.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PAWR",
+     "symbol": "PAWR",
+     "gene_id": "ENSG00000177425.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PSG9",
+     "symbol": "PSG9",
+     "gene_id": "ENSG00000183668.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PSG5",
+     "symbol": "PSG5",
+     "gene_id": "ENSG00000204941.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PSG4",
+     "symbol": "PSG4",
+     "gene_id": "ENSG00000243137.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PBX1",
+     "symbol": "PBX1",
+     "gene_id": "ENSG00000185630.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PLAGL1",
+     "symbol": "PLAGL1",
+     "gene_id": "ENSG00000118495.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PHLDB2",
+     "symbol": "PHLDB2",
+     "gene_id": "ENSG00000144824.21",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PLEKHA6",
+     "symbol": "PLEKHA6",
+     "gene_id": "ENSG00000143850.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PDGFC",
+     "symbol": "PDGFC",
+     "gene_id": "ENSG00000145431.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PLAU",
+     "symbol": "PLAU",
+     "gene_id": "ENSG00000122861.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PKP2",
+     "symbol": "PKP2",
+     "gene_id": "ENSG00000057294.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PLAC8",
+     "symbol": "PLAC8",
+     "gene_id": "ENSG00000145287.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PADI3",
+     "symbol": "PADI3",
+     "gene_id": "ENSG00000142619.4",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PITX1",
+     "symbol": "PITX1",
+     "gene_id": "ENSG00000069011.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NUAK1",
+     "symbol": "NUAK1",
+     "gene_id": "ENSG00000074590.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NTNG1",
+     "symbol": "NTNG1",
+     "gene_id": "ENSG00000162631.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NMT2",
+     "symbol": "NMT2",
+     "gene_id": "ENSG00000152465.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MYEOV",
+     "symbol": "MYEOV",
+     "gene_id": "ENSG00000172927.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MICAL2",
+     "symbol": "MICAL2",
+     "gene_id": "ENSG00000133816.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MGST1",
+     "symbol": "MGST1",
+     "gene_id": "ENSG00000008394.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MECOM",
+     "symbol": "MECOM",
+     "gene_id": "ENSG00000085276.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LYPD6B",
+     "symbol": "LYPD6B",
+     "gene_id": "ENSG00000150556.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LAMA5",
+     "symbol": "LAMA5",
+     "gene_id": "ENSG00000130702.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KISS1",
+     "symbol": "KISS1",
+     "gene_id": "ENSG00000170498.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KRT86",
+     "symbol": "KRT86",
+     "gene_id": "ENSG00000170442.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KRT81",
+     "symbol": "KRT81",
+     "gene_id": "ENSG00000205426.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KRT80",
+     "symbol": "KRT80",
+     "gene_id": "ENSG00000167767.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KRT8",
+     "symbol": "KRT8",
+     "gene_id": "ENSG00000170421.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KRT7",
+     "symbol": "KRT7",
+     "gene_id": "ENSG00000135480.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KRT18",
+     "symbol": "KRT18",
+     "gene_id": "ENSG00000111057.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "JUP",
+     "symbol": "JUP",
+     "gene_id": "ENSG00000173801.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IL7R",
+     "symbol": "IL7R",
+     "gene_id": "ENSG00000168685.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IL4R",
+     "symbol": "IL4R",
+     "gene_id": "ENSG00000077238.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IRS1",
+     "symbol": "IRS1",
+     "gene_id": "ENSG00000169047.6",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IGFN1",
+     "symbol": "IGFN1",
+     "gene_id": "ENSG00000163395.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HES7",
+     "symbol": "HES7",
+     "gene_id": "ENSG00000179111.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GDA",
+     "symbol": "GDA",
+     "gene_id": "ENSG00000119125.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GLIS2",
+     "symbol": "GLIS2",
+     "gene_id": "ENSG00000126603.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GATA2",
+     "symbol": "GATA2",
+     "gene_id": "ENSG00000179348.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GPRC5C",
+     "symbol": "GPRC5C",
+     "gene_id": "ENSG00000170412.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GPRC5A",
+     "symbol": "GPRC5A",
+     "gene_id": "ENSG00000013588.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FMNL1",
+     "symbol": "FMNL1",
+     "gene_id": "ENSG00000184922.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FOXA1",
+     "symbol": "FOXA1",
+     "gene_id": "ENSG00000129514.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FLNC",
+     "symbol": "FLNC",
+     "gene_id": "ENSG00000128591.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FERMT1",
+     "symbol": "FERMT1",
+     "gene_id": "ENSG00000101311.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FAT4",
+     "symbol": "FAT4",
+     "gene_id": "ENSG00000196159.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FAM196B",
+     "symbol": "INSYN2B",
+     "gene_id": "ENSG00000204767.4",
+     "match_type": "hgnc_previous",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ELFN2",
+     "symbol": "ELFN2",
+     "gene_id": "ENSG00000166897.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EGFR",
+     "symbol": "EGFR",
+     "gene_id": "ENSG00000146648.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DSE",
+     "symbol": "DSE",
+     "gene_id": "ENSG00000111817.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DMBT1",
+     "symbol": "DMBT1",
+     "gene_id": "ENSG00000187908.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DIO2",
+     "symbol": "DIO2",
+     "gene_id": "ENSG00000211448.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DOCK2",
+     "symbol": "DOCK2",
+     "gene_id": "ENSG00000134516.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CYP2S1",
+     "symbol": "CYP2S1",
+     "gene_id": "ENSG00000167600.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CRIM1",
+     "symbol": "CRIM1",
+     "gene_id": "ENSG00000150938.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CDK15",
+     "symbol": "CDK15",
+     "gene_id": "ENSG00000138395.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CORO6",
+     "symbol": "CORO6",
+     "gene_id": "ENSG00000167549.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "COLEC10",
+     "symbol": "COLEC10",
+     "gene_id": "ENSG00000184374.3",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CCDC88C",
+     "symbol": "CCDC88C",
+     "gene_id": "ENSG00000015133.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CCDC69",
+     "symbol": "CCDC69",
+     "gene_id": "ENSG00000198624.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "F3",
+     "symbol": "F3",
+     "gene_id": "ENSG00000117525.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "F2RL1",
+     "symbol": "F2RL1",
+     "gene_id": "ENSG00000164251.5",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CLU",
+     "symbol": "CLU",
+     "gene_id": "ENSG00000120885.22",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CDYL2",
+     "symbol": "CDYL2",
+     "gene_id": "ENSG00000166446.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CITED2",
+     "symbol": "CITED2",
+     "gene_id": "ENSG00000164442.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CARD11",
+     "symbol": "CARD11",
+     "gene_id": "ENSG00000198286.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CPA4",
+     "symbol": "CPA4",
+     "gene_id": "ENSG00000128510.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CREB3L1",
+     "symbol": "CREB3L1",
+     "gene_id": "ENSG00000157613.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CNN1",
+     "symbol": "CNN1",
+     "gene_id": "ENSG00000130176.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CALB2",
+     "symbol": "CALB2",
+     "gene_id": "ENSG00000172137.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CDH4",
+     "symbol": "CDH4",
+     "gene_id": "ENSG00000179242.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BTBD11",
+     "symbol": "BTBD11",
+     "gene_id": "ENSG00000151136.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BDNF",
+     "symbol": "BDNF",
+     "gene_id": "ENSG00000176697.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BASP1",
+     "symbol": "BASP1",
+     "gene_id": "ENSG00000176788.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BNC1",
+     "symbol": "BNC1",
+     "gene_id": "ENSG00000169594.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ATP8B1",
+     "symbol": "ATP8B1",
+     "gene_id": "ENSG00000081923.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ABCG2",
+     "symbol": "ABCG2",
+     "gene_id": "ENSG00000118777.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ARMC4",
+     "symbol": "ODAD2",
+     "gene_id": "ENSG00000169126.16",
+     "match_type": "hgnc_previous",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ANKRD1",
+     "symbol": "ANKRD1",
+     "gene_id": "ENSG00000148677.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "AR",
+     "symbol": "AR",
+     "gene_id": "ENSG00000169083.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "AMIGO2",
+     "symbol": "AMIGO2",
+     "gene_id": "ENSG00000139211.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ADAMTSL1",
+     "symbol": "ADAMTSL1",
+     "gene_id": "ENSG00000178031.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ACSL5",
+     "symbol": "ACSL5",
+     "gene_id": "ENSG00000197142.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    }
+   ]
+  },
+  "Tsoi_neural_crest_like": {
+   "readout_role": "secondary",
+   "paper": "Tsoi et al. 2018, Cancer Cell 33:890 (PMC5953834)",
+   "sheet": "Table S3",
+   "rule": "Signature label is exactly 'Neural crest-like' (labels shared by two adjacent subtypes are not used; this reproduces the earlier report)",
+   "source_file": "data/ref/tsoi2018/1-s2.0-S1535610818301223-mmc4.xlsx",
+   "source_sha256": "bb1e5003b3bc422f88803e2cc0801a39b5a7ced6a66ed3440d61761f9ed91c6f",
+   "genes": [
+    {
+     "source_symbol": "PXYLP1",
+     "symbol": "PXYLP1",
+     "gene_id": "ENSG00000155893.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CXCL8",
+     "symbol": "CXCL8",
+     "gene_id": "ENSG00000169429.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CEMIP",
+     "symbol": "CEMIP",
+     "gene_id": "ENSG00000103888.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TCAF2",
+     "symbol": "TCAF2",
+     "gene_id": "ENSG00000170379.21",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZNF469",
+     "symbol": "ZNF469",
+     "gene_id": "ENSG00000225614.4",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "WNT5A",
+     "symbol": "WNT5A",
+     "gene_id": "ENSG00000114251.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TMEM47",
+     "symbol": "TMEM47",
+     "gene_id": "ENSG00000147027.4",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TMEM171",
+     "symbol": "TMEM171",
+     "gene_id": "ENSG00000157111.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TGFBI",
+     "symbol": "TGFBI",
+     "gene_id": "ENSG00000120708.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TGFA",
+     "symbol": "TGFA",
+     "gene_id": "ENSG00000163235.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TFAP2C",
+     "symbol": "TFAP2C",
+     "gene_id": "ENSG00000087510.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TSPAN13",
+     "symbol": "TSPAN13",
+     "gene_id": "ENSG00000106537.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SQRDL",
+     "symbol": "SQOR",
+     "gene_id": "ENSG00000137767.14",
+     "match_type": "hgnc_previous",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SULF1",
+     "symbol": "SULF1",
+     "gene_id": "ENSG00000137573.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ST8SIA5",
+     "symbol": "ST8SIA5",
+     "gene_id": "ENSG00000101638.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SOX2",
+     "symbol": "SOX2",
+     "gene_id": "ENSG00000181449.4",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC24A3",
+     "symbol": "SLC24A3",
+     "gene_id": "ENSG00000185052.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLITRK6",
+     "symbol": "SLITRK6",
+     "gene_id": "ENSG00000184564.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SHISA2",
+     "symbol": "SHISA2",
+     "gene_id": "ENSG00000180730.5",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SH3PXD2A",
+     "symbol": "SH3PXD2A",
+     "gene_id": "ENSG00000107957.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SERTAD4",
+     "symbol": "SERTAD4",
+     "gene_id": "ENSG00000082497.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "STK32B",
+     "symbol": "STK32B",
+     "gene_id": "ENSG00000152953.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SEMA3B",
+     "symbol": "SEMA3B",
+     "gene_id": "ENSG00000012171.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SFRP1",
+     "symbol": "SFRP1",
+     "gene_id": "ENSG00000104332.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "S100A6",
+     "symbol": "S100A6",
+     "gene_id": "ENSG00000197956.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RAMP1",
+     "symbol": "RAMP1",
+     "gene_id": "ENSG00000132329.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PMEPA1",
+     "symbol": "PMEPA1",
+     "gene_id": "ENSG00000124225.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PCSK5",
+     "symbol": "PCSK5",
+     "gene_id": "ENSG00000099139.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PHLDA2",
+     "symbol": "PHLDA2",
+     "gene_id": "ENSG00000181649.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PLA2G7",
+     "symbol": "PLA2G7",
+     "gene_id": "ENSG00000146070.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "OPRD1",
+     "symbol": "OPRD1",
+     "gene_id": "ENSG00000116329.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NTM",
+     "symbol": "NTM",
+     "gene_id": "ENSG00000182667.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NRXN3",
+     "symbol": "NRXN3",
+     "gene_id": "ENSG00000021645.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NES",
+     "symbol": "NES",
+     "gene_id": "ENSG00000132688.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MUC5B",
+     "symbol": "MUC5B",
+     "gene_id": "ENSG00000117983.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MAP1LC3A",
+     "symbol": "MAP1LC3A",
+     "gene_id": "ENSG00000101460.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LRRC15",
+     "symbol": "LRRC15",
+     "gene_id": "ENSG00000172061.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KIAA1755",
+     "symbol": "KIAA1755",
+     "gene_id": "ENSG00000149633.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ITGB8",
+     "symbol": "ITGB8",
+     "gene_id": "ENSG00000105855.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IER3",
+     "symbol": "IER3",
+     "gene_id": "ENSG00000137331.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HHEX",
+     "symbol": "HHEX",
+     "gene_id": "ENSG00000152804.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GDNF",
+     "symbol": "GDNF",
+     "gene_id": "ENSG00000168621.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GLI2",
+     "symbol": "GLI2",
+     "gene_id": "ENSG00000074047.22",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FOXC2",
+     "symbol": "FOXC2",
+     "gene_id": "ENSG00000176692.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FLT1",
+     "symbol": "FLT1",
+     "gene_id": "ENSG00000102755.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FAT3",
+     "symbol": "FAT3",
+     "gene_id": "ENSG00000165323.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FEZ1",
+     "symbol": "FEZ1",
+     "gene_id": "ENSG00000149557.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FAM135B",
+     "symbol": "FAM135B",
+     "gene_id": "ENSG00000147724.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EHF",
+     "symbol": "EHF",
+     "gene_id": "ENSG00000135373.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EML1",
+     "symbol": "EML1",
+     "gene_id": "ENSG00000066629.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DRD2",
+     "symbol": "DRD2",
+     "gene_id": "ENSG00000149295.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DEPDC7",
+     "symbol": "DEPDC7",
+     "gene_id": "ENSG00000121690.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CYB5R2",
+     "symbol": "CYB5R2",
+     "gene_id": "ENSG00000166394.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CSRP2",
+     "symbol": "CSRP2",
+     "gene_id": "ENSG00000175183.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CCL2",
+     "symbol": "CCL2",
+     "gene_id": "ENSG00000108691.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CADM3",
+     "symbol": "CADM3",
+     "gene_id": "ENSG00000162706.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CADM1",
+     "symbol": "CADM1",
+     "gene_id": "ENSG00000182985.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CD96",
+     "symbol": "CD96",
+     "gene_id": "ENSG00000153283.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CTSS",
+     "symbol": "CTSS",
+     "gene_id": "ENSG00000163131.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CHST2",
+     "symbol": "CHST2",
+     "gene_id": "ENSG00000175040.6",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CHST1",
+     "symbol": "CHST1",
+     "gene_id": "ENSG00000175264.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CACNA2D3",
+     "symbol": "CACNA2D3",
+     "gene_id": "ENSG00000157445.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BST1",
+     "symbol": "BST1",
+     "gene_id": "ENSG00000109743.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ABCA6",
+     "symbol": "ABCA6",
+     "gene_id": "ENSG00000154262.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ANGPTL4",
+     "symbol": "ANGPTL4",
+     "gene_id": "ENSG00000167772.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "AIM2",
+     "symbol": "AIM2",
+     "gene_id": "ENSG00000163568.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    }
+   ]
+  },
+  "Tsoi_transitory": {
+   "readout_role": "secondary",
+   "paper": "Tsoi et al. 2018, Cancer Cell 33:890 (PMC5953834)",
+   "sheet": "Table S3",
+   "rule": "Signature label is exactly 'Transitory' (labels shared by two adjacent subtypes are not used; this reproduces the earlier report)",
+   "source_file": "data/ref/tsoi2018/1-s2.0-S1535610818301223-mmc4.xlsx",
+   "source_sha256": "bb1e5003b3bc422f88803e2cc0801a39b5a7ced6a66ed3440d61761f9ed91c6f",
+   "genes": [
+    {
+     "source_symbol": "XYLT1",
+     "symbol": "XYLT1",
+     "gene_id": "ENSG00000103489.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TSPAN7",
+     "symbol": "TSPAN7",
+     "gene_id": "ENSG00000156298.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SOD3",
+     "symbol": "SOD3",
+     "gene_id": "ENSG00000109610.6",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SCRG1",
+     "symbol": "SCRG1",
+     "gene_id": "ENSG00000164106.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SORL1",
+     "symbol": "SORL1",
+     "gene_id": "ENSG00000137642.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SEMA3E",
+     "symbol": "SEMA3E",
+     "gene_id": "ENSG00000170381.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SELENBP1",
+     "symbol": "SELENBP1",
+     "gene_id": "ENSG00000143416.21",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RNASE1",
+     "symbol": "RNASE1",
+     "gene_id": "ENSG00000129538.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RAPGEF4",
+     "symbol": "RAPGEF4",
+     "gene_id": "ENSG00000091428.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PCDH7",
+     "symbol": "PCDH7",
+     "gene_id": "ENSG00000169851.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PRSS33",
+     "symbol": "PRSS33",
+     "gene_id": "ENSG00000103355.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PCSK6",
+     "symbol": "PCSK6",
+     "gene_id": "ENSG00000140479.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PLBD1",
+     "symbol": "PLBD1",
+     "gene_id": "ENSG00000121316.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NELL1",
+     "symbol": "NELL1",
+     "gene_id": "ENSG00000165973.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NPR1",
+     "symbol": "NPR1",
+     "gene_id": "ENSG00000169418.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MCAM",
+     "symbol": "MCAM",
+     "gene_id": "ENSG00000076706.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MMP15",
+     "symbol": "MMP15",
+     "gene_id": "ENSG00000102996.5",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MAMDC2",
+     "symbol": "MAMDC2",
+     "gene_id": "ENSG00000165072.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LSAMP",
+     "symbol": "LSAMP",
+     "gene_id": "ENSG00000185565.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LRRTM4",
+     "symbol": "LRRTM4",
+     "gene_id": "ENSG00000176204.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GDF11",
+     "symbol": "GDF11",
+     "gene_id": "ENSG00000135414.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FXYD3",
+     "symbol": "FXYD3",
+     "gene_id": "ENSG00000089356.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EBF3",
+     "symbol": "EBF3",
+     "gene_id": "ENSG00000108001.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "COL11A2",
+     "symbol": "COL11A2",
+     "gene_id": "ENSG00000204248.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "COL9A1",
+     "symbol": "COL9A1",
+     "gene_id": "ENSG00000112280.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CX3CL1",
+     "symbol": "CX3CL1",
+     "gene_id": "ENSG00000006210.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BCHE",
+     "symbol": "BCHE",
+     "gene_id": "ENSG00000114200.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ANO4",
+     "symbol": "ANO4",
+     "gene_id": "ENSG00000151572.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ALDH1A1",
+     "symbol": "ALDH1A1",
+     "gene_id": "ENSG00000165092.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    }
+   ]
+  },
+  "Tsoi_melanocytic": {
+   "readout_role": "secondary",
+   "paper": "Tsoi et al. 2018, Cancer Cell 33:890 (PMC5953834)",
+   "sheet": "Table S3",
+   "rule": "Signature label is exactly 'Melanocytic' (labels shared by two adjacent subtypes are not used; this reproduces the earlier report)",
+   "source_file": "data/ref/tsoi2018/1-s2.0-S1535610818301223-mmc4.xlsx",
+   "source_sha256": "bb1e5003b3bc422f88803e2cc0801a39b5a7ced6a66ed3440d61761f9ed91c6f",
+   "genes": [
+    {
+     "source_symbol": "CCDC171",
+     "symbol": "CCDC171",
+     "gene_id": "ENSG00000164989.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CFAP61",
+     "symbol": "CFAP61",
+     "gene_id": "ENSG00000089101.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZDHHC11B",
+     "symbol": "ZDHHC11B",
+     "gene_id": "ENSG00000206077.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "VEPH1",
+     "symbol": "VEPH1",
+     "gene_id": "ENSG00000197415.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TNFRSF14",
+     "symbol": "TNFRSF14",
+     "gene_id": "ENSG00000157873.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TDRD3",
+     "symbol": "TDRD3",
+     "gene_id": "ENSG00000083544.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TPPP",
+     "symbol": "TPPP",
+     "gene_id": "ENSG00000171368.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TRIM63",
+     "symbol": "TRIM63",
+     "gene_id": "ENSG00000158022.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TRPM1",
+     "symbol": "TRPM1",
+     "gene_id": "ENSG00000134160.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TTC39A",
+     "symbol": "TTC39A",
+     "gene_id": "ENSG00000085831.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TSPAN10",
+     "symbol": "TSPAN10",
+     "gene_id": "ENSG00000182612.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC7A8",
+     "symbol": "SLC7A8",
+     "gene_id": "ENSG00000092068.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC16A6",
+     "symbol": "SLC16A6",
+     "gene_id": "ENSG00000108932.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLAMF7",
+     "symbol": "SLAMF7",
+     "gene_id": "ENSG00000026751.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SEMA6A",
+     "symbol": "SEMA6A",
+     "gene_id": "ENSG00000092421.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RUNX3",
+     "symbol": "RUNX3",
+     "gene_id": "ENSG00000020633.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RNF144B",
+     "symbol": "RNF144B",
+     "gene_id": "ENSG00000137393.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RNLS",
+     "symbol": "RNLS",
+     "gene_id": "ENSG00000184719.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RGS12",
+     "symbol": "RGS12",
+     "gene_id": "ENSG00000159788.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PYCARD",
+     "symbol": "PYCARD",
+     "gene_id": "ENSG00000103490.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PRUNE2",
+     "symbol": "PRUNE2",
+     "gene_id": "ENSG00000106772.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PRKCB",
+     "symbol": "PRKCB",
+     "gene_id": "ENSG00000166501.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PRDM7",
+     "symbol": "PRDM7",
+     "gene_id": "ENSG00000126856.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KCNAB2",
+     "symbol": "KCNAB2",
+     "gene_id": "ENSG00000069424.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "OCA2",
+     "symbol": "OCA2",
+     "gene_id": "ENSG00000104044.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NR4A3",
+     "symbol": "NR4A3",
+     "gene_id": "ENSG00000119508.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NAV2",
+     "symbol": "NAV2",
+     "gene_id": "ENSG00000166833.22",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MYO1D",
+     "symbol": "MYO1D",
+     "gene_id": "ENSG00000176658.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MAPK4",
+     "symbol": "MAPK4",
+     "gene_id": "ENSG00000141639.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MAT1A",
+     "symbol": "MAT1A",
+     "gene_id": "ENSG00000151224.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MLANA",
+     "symbol": "MLANA",
+     "gene_id": "ENSG00000120215.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LXN",
+     "symbol": "LXN",
+     "gene_id": "ENSG00000079257.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KCP",
+     "symbol": "KCP",
+     "gene_id": "ENSG00000135253.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IL16",
+     "symbol": "IL16",
+     "gene_id": "ENSG00000172349.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IL12RB2",
+     "symbol": "IL12RB2",
+     "gene_id": "ENSG00000081985.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HSD17B14",
+     "symbol": "HSD17B14",
+     "gene_id": "ENSG00000087076.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HMOX1",
+     "symbol": "HMOX1",
+     "gene_id": "ENSG00000100292.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "H2AFJ",
+     "symbol": "H2AJ",
+     "gene_id": "ENSG00000246705.4",
+     "match_type": "hgnc_previous",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GOLGA7B",
+     "symbol": "GOLGA7B",
+     "gene_id": "ENSG00000155265.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "QPCT",
+     "symbol": "QPCT",
+     "gene_id": "ENSG00000115828.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GFOD1",
+     "symbol": "GFOD1",
+     "gene_id": "ENSG00000145990.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GPR143",
+     "symbol": "GPR143",
+     "gene_id": "ENSG00000101850.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FYB",
+     "symbol": "FYB1",
+     "gene_id": "ENSG00000082074.19",
+     "match_type": "hgnc_previous",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FAM83H",
+     "symbol": "FAM83H",
+     "gene_id": "ENSG00000180921.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FAM174B",
+     "symbol": "FAM174B",
+     "gene_id": "ENSG00000185442.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EPHA5",
+     "symbol": "EPHA5",
+     "gene_id": "ENSG00000145242.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ENTHD1",
+     "symbol": "ENTHD1",
+     "gene_id": "ENSG00000176177.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DNAJA4",
+     "symbol": "DNAJA4",
+     "gene_id": "ENSG00000140403.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DENND2D",
+     "symbol": "DENND2D",
+     "gene_id": "ENSG00000162777.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "C2orf88",
+     "symbol": "C2orf88",
+     "gene_id": "ENSG00000187699.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CCL18",
+     "symbol": "CCL18",
+     "gene_id": "ENSG00000275385.2",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CEACAM1",
+     "symbol": "CEACAM1",
+     "gene_id": "ENSG00000079385.23",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CAPG",
+     "symbol": "CAPG",
+     "gene_id": "ENSG00000042493.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CDH3",
+     "symbol": "CDH3",
+     "gene_id": "ENSG00000062038.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CDH1",
+     "symbol": "CDH1",
+     "gene_id": "ENSG00000039068.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ATP6V0D2",
+     "symbol": "ATP6V0D2",
+     "gene_id": "ENSG00000147614.4",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ABCD1",
+     "symbol": "ABCD1",
+     "gene_id": "ENSG00000101986.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ABCB5",
+     "symbol": "ABCB5",
+     "gene_id": "ENSG00000004846.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "APOLD1",
+     "symbol": "APOLD1",
+     "gene_id": "ENSG00000178878.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ANKRD30B",
+     "symbol": "ANKRD30B",
+     "gene_id": "ENSG00000180777.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ADCY2",
+     "symbol": "ADCY2",
+     "gene_id": "ENSG00000078295.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ADAM23",
+     "symbol": "ADAM23",
+     "gene_id": "ENSG00000114948.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    }
+   ]
+  },
+  "Kanai2024_YAP_TAZ_up": {
+   "readout_role": "secondary",
+   "paper": "Kanai et al. 2024, Cancers 16:852 (PMC10930532)",
+   "sheet": "Tab 6-YAPTAZ Signature",
+   "rule": "Total Up > 0",
+   "source_file": "data/ref/kanai2024/cancers-16-00852-s001_Table_S3.xlsx",
+   "source_sha256": "67924b6bc2408b31717bd56543b08b4c9e283528812299694f969345d2502d32",
+   "genes": [
+    {
+     "source_symbol": "ABL2",
+     "symbol": "ABL2",
+     "gene_id": "ENSG00000143322.21",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ADRB2",
+     "symbol": "ADRB2",
+     "gene_id": "ENSG00000169252.6",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ANKRD1",
+     "symbol": "ANKRD1",
+     "gene_id": "ENSG00000148677.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "AOX1",
+     "symbol": "AOX1",
+     "gene_id": "ENSG00000138356.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CCN1",
+     "symbol": "CCN1",
+     "gene_id": "ENSG00000142871.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CCN2",
+     "symbol": "CCN2",
+     "gene_id": "ENSG00000118523.6",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CRIM1",
+     "symbol": "CRIM1",
+     "gene_id": "ENSG00000150938.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DDAH1",
+     "symbol": "DDAH1",
+     "gene_id": "ENSG00000153904.21",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DKK1",
+     "symbol": "DKK1",
+     "gene_id": "ENSG00000107984.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DLC1",
+     "symbol": "DLC1",
+     "gene_id": "ENSG00000164741.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ELL2",
+     "symbol": "ELL2",
+     "gene_id": "ENSG00000118985.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EPHA2",
+     "symbol": "EPHA2",
+     "gene_id": "ENSG00000142627.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FOSL1",
+     "symbol": "FOSL1",
+     "gene_id": "ENSG00000175592.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GADD45A",
+     "symbol": "GADD45A",
+     "gene_id": "ENSG00000116717.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NAV3",
+     "symbol": "NAV3",
+     "gene_id": "ENSG00000067798.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PAWR",
+     "symbol": "PAWR",
+     "gene_id": "ENSG00000177425.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SH2D5",
+     "symbol": "SH2D5",
+     "gene_id": "ENSG00000189410.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SMURF2",
+     "symbol": "SMURF2",
+     "gene_id": "ENSG00000108854.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TEAD4",
+     "symbol": "TEAD4",
+     "gene_id": "ENSG00000197905.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "WWC1",
+     "symbol": "WWC1",
+     "gene_id": "ENSG00000113645.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ACAT2",
+     "symbol": "ACAT2",
+     "gene_id": "ENSG00000120437.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ADAMTS6",
+     "symbol": "ADAMTS6",
+     "gene_id": "ENSG00000049192.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ANLN",
+     "symbol": "ANLN",
+     "gene_id": "ENSG00000011426.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ANXA2",
+     "symbol": "ANXA2",
+     "gene_id": "ENSG00000182718.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "AXL",
+     "symbol": "AXL",
+     "gene_id": "ENSG00000167601.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "C12orf75",
+     "symbol": "C12orf75",
+     "gene_id": "ENSG00000235162.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CEP55",
+     "symbol": "CEP55",
+     "gene_id": "ENSG00000138180.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CLDN1",
+     "symbol": "CLDN1",
+     "gene_id": "ENSG00000163347.6",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CNN3",
+     "symbol": "CNN3",
+     "gene_id": "ENSG00000117519.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "COL12A1",
+     "symbol": "COL12A1",
+     "gene_id": "ENSG00000111799.22",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CPA4",
+     "symbol": "CPA4",
+     "gene_id": "ENSG00000128510.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CYTH3",
+     "symbol": "CYTH3",
+     "gene_id": "ENSG00000008256.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DIAPH3",
+     "symbol": "DIAPH3",
+     "gene_id": "ENSG00000139734.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EPAS1",
+     "symbol": "EPAS1",
+     "gene_id": "ENSG00000116016.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EPB41L4B",
+     "symbol": "EPB41L4B",
+     "gene_id": "ENSG00000095203.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EPG5",
+     "symbol": "EPG5",
+     "gene_id": "ENSG00000152223.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ESM1",
+     "symbol": "ESM1",
+     "gene_id": "ENSG00000164283.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ETS1",
+     "symbol": "ETS1",
+     "gene_id": "ENSG00000134954.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "F3",
+     "symbol": "F3",
+     "gene_id": "ENSG00000117525.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FJX1",
+     "symbol": "FJX1",
+     "gene_id": "ENSG00000179431.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FSTL3",
+     "symbol": "FSTL3",
+     "gene_id": "ENSG00000070404.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GADD45B",
+     "symbol": "GADD45B",
+     "gene_id": "ENSG00000099860.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GFRA1",
+     "symbol": "GFRA1",
+     "gene_id": "ENSG00000151892.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GNGT2",
+     "symbol": "GNGT2",
+     "gene_id": "ENSG00000167083.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HBEGF",
+     "symbol": "HBEGF",
+     "gene_id": "ENSG00000113070.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IL11",
+     "symbol": "IL11",
+     "gene_id": "ENSG00000095752.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IL12A",
+     "symbol": "IL12A",
+     "gene_id": "ENSG00000168811.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IL7R",
+     "symbol": "IL7R",
+     "gene_id": "ENSG00000168685.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ITGB2",
+     "symbol": "ITGB2",
+     "gene_id": "ENSG00000160255.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KRT80",
+     "symbol": "KRT80",
+     "gene_id": "ENSG00000167767.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KRT81",
+     "symbol": "KRT81",
+     "gene_id": "ENSG00000205426.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LAMC2",
+     "symbol": "LAMC2",
+     "gene_id": "ENSG00000058085.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LETM2",
+     "symbol": "LETM2",
+     "gene_id": "ENSG00000165046.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MB21D2",
+     "symbol": "MB21D2",
+     "gene_id": "ENSG00000180611.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MFAP5",
+     "symbol": "MFAP5",
+     "gene_id": "ENSG00000197614.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MPP4",
+     "symbol": "MPP4",
+     "gene_id": "ENSG00000082126.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MPP7",
+     "symbol": "MPP7",
+     "gene_id": "ENSG00000150054.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NLRP3",
+     "symbol": "NLRP3",
+     "gene_id": "ENSG00000162711.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NPPB",
+     "symbol": "NPPB",
+     "gene_id": "ENSG00000120937.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NUAK2",
+     "symbol": "NUAK2",
+     "gene_id": "ENSG00000163545.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "OXTR",
+     "symbol": "OXTR",
+     "gene_id": "ENSG00000180914.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PCLO",
+     "symbol": "PCLO",
+     "gene_id": "ENSG00000186472.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PKD1L2",
+     "symbol": "PKD1L2",
+     "gene_id": "ENSG00000166473.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PKP2",
+     "symbol": "PKP2",
+     "gene_id": "ENSG00000057294.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PRKAG2",
+     "symbol": "PRKAG2",
+     "gene_id": "ENSG00000106617.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RAB3B",
+     "symbol": "RAB3B",
+     "gene_id": "ENSG00000169213.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RAPH1",
+     "symbol": "RAPH1",
+     "gene_id": "ENSG00000173166.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RFTN1",
+     "symbol": "RFTN1",
+     "gene_id": "ENSG00000131378.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RGS7",
+     "symbol": "RGS7",
+     "gene_id": "ENSG00000182901.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RNF144B",
+     "symbol": "RNF144B",
+     "gene_id": "ENSG00000137393.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SFTA1P",
+     "symbol": "SFTA1P",
+     "gene_id": "ENSG00000225383.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SGMS2",
+     "symbol": "SGMS2",
+     "gene_id": "ENSG00000164023.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC8A1",
+     "symbol": "SLC8A1",
+     "gene_id": "ENSG00000183023.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TGM2",
+     "symbol": "TGM2",
+     "gene_id": "ENSG00000198959.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TK1",
+     "symbol": "TK1",
+     "gene_id": "ENSG00000167900.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TNFAIP3",
+     "symbol": "TNFAIP3",
+     "gene_id": "ENSG00000118503.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TUBB6",
+     "symbol": "TUBB6",
+     "gene_id": "ENSG00000176014.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "VGLL3",
+     "symbol": "VGLL3",
+     "gene_id": "ENSG00000206538.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "WWC2",
+     "symbol": "WWC2",
+     "gene_id": "ENSG00000151718.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZNF367",
+     "symbol": "ZNF367",
+     "gene_id": "ENSG00000165244.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    }
+   ]
+  },
+  "Kanai2024_YAP_TAZ_down": {
+   "readout_role": "exploratory",
+   "paper": "Kanai et al. 2024, Cancers 16:852 (PMC10930532)",
+   "sheet": "Tab 6-YAPTAZ Signature",
+   "rule": "Total Down > 0",
+   "source_file": "data/ref/kanai2024/cancers-16-00852-s001_Table_S3.xlsx",
+   "source_sha256": "67924b6bc2408b31717bd56543b08b4c9e283528812299694f969345d2502d32",
+   "genes": [
+    {
+     "source_symbol": "C10orf90",
+     "symbol": "C10orf90",
+     "gene_id": "ENSG00000154493.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PELI2",
+     "symbol": "PELI2",
+     "gene_id": "ENSG00000139946.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NFE2",
+     "symbol": "NFE2",
+     "gene_id": "ENSG00000123405.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MGP",
+     "symbol": "MGP",
+     "gene_id": "ENSG00000111341.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BMF",
+     "symbol": "BMF",
+     "gene_id": "ENSG00000104081.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "NCALD",
+     "symbol": "NCALD",
+     "gene_id": "ENSG00000104490.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GAS7",
+     "symbol": "GAS7",
+     "gene_id": "ENSG00000007237.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TRIB2",
+     "symbol": "TRIB2",
+     "gene_id": "ENSG00000071575.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HTR7",
+     "symbol": "HTR7",
+     "gene_id": "ENSG00000148680.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GLT8D2",
+     "symbol": "GLT8D2",
+     "gene_id": "ENSG00000120820.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MAN1C1",
+     "symbol": "MAN1C1",
+     "gene_id": "ENSG00000117643.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DDIT4",
+     "symbol": "DDIT4",
+     "gene_id": "ENSG00000168209.6",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FBXO32",
+     "symbol": "FBXO32",
+     "gene_id": "ENSG00000156804.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MSC",
+     "symbol": "MSC",
+     "gene_id": "ENSG00000178860.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HTRA1",
+     "symbol": "HTRA1",
+     "gene_id": "ENSG00000166033.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "COLEC12",
+     "symbol": "COLEC12",
+     "gene_id": "ENSG00000158270.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EYA1",
+     "symbol": "EYA1",
+     "gene_id": "ENSG00000104313.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KCNS3",
+     "symbol": "KCNS3",
+     "gene_id": "ENSG00000170745.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CA11",
+     "symbol": "CA11",
+     "gene_id": "ENSG00000063180.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HLA-DMB",
+     "symbol": "HLA-DMB",
+     "gene_id": "ENSG00000242574.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SH3PXD2A",
+     "symbol": "SH3PXD2A",
+     "gene_id": "ENSG00000107957.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CFI",
+     "symbol": "CFI",
+     "gene_id": "ENSG00000205403.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GRIK2",
+     "symbol": "GRIK2",
+     "gene_id": "ENSG00000164418.22",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ARHGEF3",
+     "symbol": "ARHGEF3",
+     "gene_id": "ENSG00000163947.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KLF9",
+     "symbol": "KLF9",
+     "gene_id": "ENSG00000119138.5",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PCSK1",
+     "symbol": "PCSK1",
+     "gene_id": "ENSG00000175426.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SULF2",
+     "symbol": "SULF2",
+     "gene_id": "ENSG00000196562.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DEPTOR",
+     "symbol": "DEPTOR",
+     "gene_id": "ENSG00000155792.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FRAT2",
+     "symbol": "FRAT2",
+     "gene_id": "ENSG00000181274.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "FOXO4",
+     "symbol": "FOXO4",
+     "gene_id": "ENSG00000184481.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CHI3L2",
+     "symbol": "CHI3L2",
+     "gene_id": "ENSG00000064886.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GNG7",
+     "symbol": "GNG7",
+     "gene_id": "ENSG00000176533.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TRIM2",
+     "symbol": "TRIM2",
+     "gene_id": "ENSG00000109654.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "UST",
+     "symbol": "UST",
+     "gene_id": "ENSG00000111962.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DDR1",
+     "symbol": "DDR1",
+     "gene_id": "ENSG00000204580.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BFSP1",
+     "symbol": "BFSP1",
+     "gene_id": "ENSG00000125864.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "BCHE",
+     "symbol": "BCHE",
+     "gene_id": "ENSG00000114200.10",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "COL6A1",
+     "symbol": "COL6A1",
+     "gene_id": "ENSG00000142156.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PCDH7",
+     "symbol": "PCDH7",
+     "gene_id": "ENSG00000169851.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TGFB3",
+     "symbol": "TGFB3",
+     "gene_id": "ENSG00000119699.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "AKR1C2",
+     "symbol": "AKR1C2",
+     "gene_id": "ENSG00000151632.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "LAMA4",
+     "symbol": "LAMA4",
+     "gene_id": "ENSG00000112769.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC6A10P",
+     "symbol": "SLC6A10P",
+     "gene_id": "ENSG00000214617.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HBP1",
+     "symbol": "HBP1",
+     "gene_id": "ENSG00000105856.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CTSF",
+     "symbol": "CTSF",
+     "gene_id": "ENSG00000174080.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PCDH18",
+     "symbol": "PCDH18",
+     "gene_id": "ENSG00000189184.12",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IGFBP5",
+     "symbol": "IGFBP5",
+     "gene_id": "ENSG00000115461.5",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZCCHC24",
+     "symbol": "ZCCHC24",
+     "gene_id": "ENSG00000165424.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "YPEL2",
+     "symbol": "YPEL2",
+     "gene_id": "ENSG00000175155.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MEF2C",
+     "symbol": "MEF2C",
+     "gene_id": "ENSG00000081189.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MAF",
+     "symbol": "MAF",
+     "gene_id": "ENSG00000178573.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CHST1",
+     "symbol": "CHST1",
+     "gene_id": "ENSG00000175264.8",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    }
+   ]
+  },
+  "Fufa2019_AZD_up_SOX10_bound_pigmentation": {
+   "readout_role": "primary",
+   "paper": "Fufa et al. 2019, Epigenetics Chromatin 12:50 (PMC6688322)",
+   "sheet": "Table S2",
+   "rule": "Log2 Fold Change > 0 AND 'SOX10 binding under AZD6244' marked X or X*",
+   "source_file": "data/ref/fufa2019/13072_2019_297_MOESM2_ESM.xlsx",
+   "source_sha256": "2a186d1ddd1d3f3a841396861cd1de14530f15157a0ca4289aa95a3e114e6d6d",
+   "genes": [
+    {
+     "source_symbol": "NR3C1",
+     "symbol": "NR3C1",
+     "gene_id": "ENSG00000113580.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RAB7A",
+     "symbol": "RAB7A",
+     "gene_id": "ENSG00000075785.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "EDNRB",
+     "symbol": "EDNRB",
+     "gene_id": "ENSG00000136160.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RIC8B",
+     "symbol": "RIC8B",
+     "gene_id": "ENSG00000111785.21",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SPAG9",
+     "symbol": "SPAG9",
+     "gene_id": "ENSG00000008294.21",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PTEN",
+     "symbol": "PTEN",
+     "gene_id": "ENSG00000171862.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IGSF11",
+     "symbol": "IGSF11",
+     "gene_id": "ENSG00000144847.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KIF13A",
+     "symbol": "KIF13A",
+     "gene_id": "ENSG00000137177.20",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MYCBP2",
+     "symbol": "MYCBP2",
+     "gene_id": "ENSG00000005810.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MITF",
+     "symbol": "MITF",
+     "gene_id": "ENSG00000187098.17",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ADRBK2",
+     "symbol": "GRK3",
+     "gene_id": "ENSG00000100077.15",
+     "match_type": "hgnc_previous",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SHROOM2",
+     "symbol": "SHROOM2",
+     "gene_id": "ENSG00000146950.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC45A2",
+     "symbol": "SLC45A2",
+     "gene_id": "ENSG00000164175.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TAF4",
+     "symbol": "TAF4",
+     "gene_id": "ENSG00000130699.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HPS5",
+     "symbol": "HPS5",
+     "gene_id": "ENSG00000110756.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "KIT",
+     "symbol": "KIT",
+     "gene_id": "ENSG00000157404.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MYO5A",
+     "symbol": "MYO5A",
+     "gene_id": "ENSG00000197535.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MYO10",
+     "symbol": "MYO10",
+     "gene_id": "ENSG00000145555.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC2A1",
+     "symbol": "SLC2A1",
+     "gene_id": "ENSG00000117394.24",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TRPM1",
+     "symbol": "TRPM1",
+     "gene_id": "ENSG00000134160.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "HIPK2",
+     "symbol": "HIPK2",
+     "gene_id": "ENSG00000064393.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ANXA2",
+     "symbol": "ANXA2",
+     "gene_id": "ENSG00000182718.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RAPGEF2",
+     "symbol": "RAPGEF2",
+     "gene_id": "ENSG00000109756.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TPCN2",
+     "symbol": "TPCN2",
+     "gene_id": "ENSG00000162341.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PMEL",
+     "symbol": "PMEL",
+     "gene_id": "ENSG00000185664.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "GPR161",
+     "symbol": "GPR161",
+     "gene_id": "ENSG00000143147.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SNAI2",
+     "symbol": "SNAI2",
+     "gene_id": "ENSG00000019549.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PSEN2",
+     "symbol": "PSEN2",
+     "gene_id": "ENSG00000143801.18",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TGFBR2",
+     "symbol": "TGFBR2",
+     "gene_id": "ENSG00000163513.19",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SH3PXD2A",
+     "symbol": "SH3PXD2A",
+     "gene_id": "ENSG00000107957.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ETS1",
+     "symbol": "ETS1",
+     "gene_id": "ENSG00000134954.14",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DCT",
+     "symbol": "DCT",
+     "gene_id": "ENSG00000080166.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "PPARGC1A",
+     "symbol": "PPARGC1A",
+     "gene_id": "ENSG00000109819.9",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "ZEB2",
+     "symbol": "ZEB2",
+     "gene_id": "ENSG00000169554.22",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SH3BP4",
+     "symbol": "SH3BP4",
+     "gene_id": "ENSG00000130147.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "RAB32",
+     "symbol": "RAB32",
+     "gene_id": "ENSG00000118508.5",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "CITED1",
+     "symbol": "CITED1",
+     "gene_id": "ENSG00000125931.11",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "SLC30A4",
+     "symbol": "SLC30A4",
+     "gene_id": "ENSG00000104154.7",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "STXBP1",
+     "symbol": "STXBP1",
+     "gene_id": "ENSG00000136854.24",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TYRP1",
+     "symbol": "TYRP1",
+     "gene_id": "ENSG00000107165.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "MEF2C",
+     "symbol": "MEF2C",
+     "gene_id": "ENSG00000081189.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "TFAP2A",
+     "symbol": "TFAP2A",
+     "gene_id": "ENSG00000137203.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "DIO2",
+     "symbol": "DIO2",
+     "gene_id": "ENSG00000211448.13",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "IRF4",
+     "symbol": "IRF4",
+     "gene_id": "ENSG00000137265.15",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    },
+    {
+     "source_symbol": "OCA2",
+     "symbol": "OCA2",
+     "gene_id": "ENSG00000104044.16",
+     "match_type": "exact",
+     "duplicate_in_program": false
+    }
+   ]
+  }
+ }
+}
