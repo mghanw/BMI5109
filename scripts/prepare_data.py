@@ -185,28 +185,40 @@ def classify_threshold(X, T):
     return np.select([n_present == 1, n_present >= 2], ["singlet", "multiplet"], "unassigned_low"), n_present
 
 
-def classify_paper(total, top, second, min_total, max_to_total, sec_to_max):
-    """Authors' rule: total UMI > min_total, top/total >= max_to_total, second/top <= sec_to_max."""
+def classify_paper(total, top, second, min_total, max_to_total, sec_to_max, inclusive=False):
+    """Authors' rule: total UMI > min_total (>= if inclusive), top/total >= max_to_total,
+    second/top <= sec_to_max. A tied maximum gives second/top = 1, i.e. a multiplet."""
     with np.errstate(divide="ignore", invalid="ignore"):
         frac = np.where(total > 0, top / total, 0)
         ratio = np.where(top > 0, second / top, np.inf)
-    ok = total > min_total
+    ok = total >= min_total if inclusive else total > min_total
     return np.select([ok & (frac >= max_to_total) & (ratio <= sec_to_max), ok],
                      ["singlet", "multiplet"], "unassigned_low")
 
 
+def paper_label(a, inclusive):
+    op = "ge" if inclusive else "gt"
+    return f"paper_{op}{a['paper_min_total_umi']}_max{a['paper_max_to_total']}_sec{a['paper_sec_to_max']}"
+
+
 def assign_cells(cells, sg_cells, sg_X, guides, cfg):
-    """Cell-level assignment table indexed like `cells` (cells without sgRNA -> no_sgrna)."""
+    """Cell-level assignment table indexed like `cells` (cells without sgRNA -> no_sgrna).
+
+    class_paper uses the configured total-UMI comparison (primary); class_paper_alt the other one.
+    """
     a = cfg["assignment"]
     total, top, arg, second = top_two(sg_X)
     T = a["threshold"] if a["threshold"] is not None else choose_threshold(top, a["threshold_bounds"])
     cls_t, n_present = classify_threshold(sg_X, T)
-    cls_p = classify_paper(total, top, second, a["paper_min_total_umi"], a["paper_max_to_total"], a["paper_sec_to_max"])
+    paper_args = (total, top, second, a["paper_min_total_umi"], a["paper_max_to_total"], a["paper_sec_to_max"])
+    inclusive = a["paper_min_total_inclusive"]
     sg = pd.DataFrame({"sg_total": total, "top_guide": np.asarray(guides)[arg], "top_umi": top,
-                       "second_umi": second, "n_present": n_present,
-                       "class_threshold": cls_t, "class_paper": cls_p}, index=pd.Index(sg_cells))
+                       "second_umi": second, "n_present": n_present, "class_threshold": cls_t,
+                       "class_paper": classify_paper(*paper_args, inclusive=inclusive),
+                       "class_paper_alt": classify_paper(*paper_args, inclusive=not inclusive)},
+                      index=pd.Index(sg_cells))
     out = sg.reindex(pd.Index(cells))
-    for col in ["class_threshold", "class_paper"]:
+    for col in ["class_threshold", "class_paper", "class_paper_alt"]:
         out[col] = out[col].fillna("no_sgrna")
     for col in ["sg_total", "top_umi", "second_umi", "n_present"]:
         out[col] = out[col].fillna(0).astype(int)
@@ -216,18 +228,53 @@ def assign_cells(cells, sg_cells, sg_X, guides, cfg):
     return out, T, sens
 
 
-def assignment_summary(assign, condition, T, sens, sg_cells):
+def rule_columns(cfg, T):
+    """Assignment class column -> rule label; the configured primary rule comes first."""
+    a = cfg["assignment"]
+    cols = {"class_paper": paper_label(a, a["paper_min_total_inclusive"]),
+            "class_paper_alt": paper_label(a, not a["paper_min_total_inclusive"]),
+            "class_threshold": f"threshold_T{T}_auto"}
+    primary = "class_" + a["rule"]
+    return {primary: cols.pop(primary), **cols}
+
+
+def assignment_summary(assign, condition, rules, sens, sg_cells):
+    """Class counts per condition for every rule; `rules` maps class column -> label, primary first."""
     rows = []
-    def add(rule, classes):
-        for (cond, cls), n in pd.crosstab(condition, classes).stack().items():
-            rows.append(dict(rule=rule, condition=cond, assignment_class=cls, n_cells=int(n)))
-    add(f"threshold_T{T}_auto", assign.class_threshold)
-    add("paper_max0.5_sec0.3", assign.class_paper)
+    def add(rule, classes, role):
+        for (cond, cls), n in pd.crosstab(condition, classes).reindex(columns=CLASSES, fill_value=0).stack().items():
+            rows.append(dict(rule=rule, role=role, condition=cond, assignment_class=cls, n_cells=int(n)))
+    for i, (col, label) in enumerate(rules.items()):
+        add(label, assign[col], "primary" if i == 0 else "sensitivity")
     for t, cls in sens.items():
-        add(f"threshold_T{t}", pd.Series(cls, index=pd.Index(sg_cells)).reindex(condition.index).fillna("no_sgrna"))
+        add(f"threshold_T{t}", pd.Series(cls, index=pd.Index(sg_cells)).reindex(condition.index).fillna("no_sgrna"),
+            "sensitivity")
     out = pd.DataFrame(rows)
     out["assignment_class"] = pd.Categorical(out.assignment_class, CLASSES)
-    return out.sort_values(["rule", "condition", "assignment_class"]).reset_index(drop=True)
+    out["primary_first"] = out.role.ne("primary")
+    out = out.sort_values(["primary_first", "rule", "condition", "assignment_class"])
+    return out.drop(columns="primary_first").reset_index(drop=True)
+
+
+def report_comparison(obs, guide_target, report, rules):
+    """Singlet counts per target x condition under each rule vs the earlier report.
+
+    obs: columns condition, top_guide and the class columns in `rules` (primary first).
+    report: target -> [n_DMSO, n_Vem].
+    """
+    top_target = obs.top_guide.map(guide_target)
+    rows = []
+    for target, (n_dmso, n_vem) in report.items():
+        for condition, n_report in [("DMSO", n_dmso), ("Vem", n_vem)]:
+            in_c = obs.condition.eq(condition) & top_target.eq(target)
+            row = dict(target=target, condition=condition, report_n=n_report)
+            row.update({f"{label}_n": int((in_c & obs[col].eq("singlet")).sum()) for col, label in rules.items()})
+            rows.append(row)
+    out = pd.DataFrame(rows)
+    primary = next(iter(rules.values())) + "_n"
+    out["primary_minus_report"] = out[primary] - out.report_n
+    out["matches_report"] = out.primary_minus_report.eq(0)
+    return out
 
 
 # ---------------------------------------------------------------- knockdown
@@ -306,10 +353,27 @@ def add_eligibility(qc, k):
     elig = pd.concat([per_target("kd_status", lambda s: s.eq("adequate")),
                       per_target("kd_status_ratio07", lambda s: s.eq("adequate")),
                       per_target("paper_kd_pass", lambda s: s.astype(bool))], axis=1)
-    elig.columns = ["eligible", "eligible_ratio07", "eligible_paper_rule"]
-    elig["eligibility_differs_from_paper"] = elig.eligible != elig.eligible_paper_rule
+    elig.columns = ["eligible", "eligible_ratio07", "eligible_paper_kd_rule"]
+    elig["eligibility_differs_from_paper_kd"] = elig.eligible != elig.eligible_paper_kd_rule
     out = qc.merge(elig, left_on="target", right_index=True, how="left")
     return out
+
+
+def eligibility_by_rule(cp10k, obs, rules, guide_target, target_genes, cfg):
+    """Knockdown QC and eligibility under each assignment rule (long format).
+
+    cp10k: cells x targets for the rows of obs (cells that are a singlet under any rule).
+    obs: columns condition, top_guide and the class columns in `rules`.
+    """
+    top_target = obs.top_guide.map(guide_target).to_numpy()
+    frames = []
+    for col, label in rules.items():
+        s = obs[col].eq("singlet").to_numpy()
+        qc = knockdown_table(cp10k[s], pd.DataFrame({"condition": obs.condition.to_numpy()[s],
+                                                     "target": top_target[s]}), target_genes, cfg)
+        frames.append(qc.assign(rule=label)[["rule", "condition", "target", "n_cells", "knockdown_remaining_ratio",
+                                             "welch_q", "kd_status", "eligible"]])
+    return pd.concat(frames, ignore_index=True)
 
 
 # ---------------------------------------------------------------- batch check
@@ -449,7 +513,9 @@ def main(argv=None):
     if unknown:
         raise ValueError(f"Guides absent from the library: {sorted(unknown)[:5]}")
     assign, T, sens = assign_cells(obs.index, sg.obs_names, sp.csr_matrix(sg.X), sg.var_names, cfg)
-    LOG.info("presence threshold T=%d; %s", T, assign.assignment.value_counts().to_dict())
+    rules = rule_columns(cfg, T)
+    LOG.info("presence threshold T=%d; primary rule %s: %s", T, next(iter(rules.values())),
+             assign.assignment.value_counts().to_dict())
     obs = obs.join(assign)
     guide_target = targets.set_index("guide").target
     obs["target"] = obs.guide.map(guide_target)
@@ -476,17 +542,23 @@ def main(argv=None):
     LOG.info("total counts == metadata UMI_counts: %.4f", np.mean(total == obs.UMI_counts.to_numpy()))
 
     singlet = obs.assignment.eq("singlet").to_numpy()
+    any_singlet = obs[list(rules)].eq("singlet").any(axis=1).to_numpy()
     tg = targets[targets.target.ne(NTC)].set_index("target").target_gene_id
     col = pd.Series(np.arange(len(var)), index=var.gene_id)
-    Xs = X[singlet][:, col[tg.values].values].toarray().astype(float)
-    cp10k = Xs / total[singlet, None] * 1e4
+    Xs = X[any_singlet][:, col[tg.values].values].toarray().astype(float)
+    cp10k_any = Xs / total[any_singlet, None] * 1e4
+    cp10k = cp10k_any[singlet[any_singlet]]
     qc = knockdown_table(cp10k, obs.loc[singlet, ["condition", "target"]], tg.to_dict(), cfg)
     qc = qc.merge(targets[["target", "target_symbol", "source"]].drop_duplicates("target")
                   .rename(columns={"source": "target_gene_source"}), on="target", how="left")
-    LOG.info("eligible targets: %d (ratio<=0.7: %d; paper rule: %d)",
+    LOG.info("eligible targets: %d (ratio<=0.7: %d; paper kd rule: %d)",
              qc.drop_duplicates("target").eligible.eq(True).sum(),
              qc.drop_duplicates("target").eligible_ratio07.eq(True).sum(),
-             qc.drop_duplicates("target").eligible_paper_rule.eq(True).sum())
+             qc.drop_duplicates("target").eligible_paper_kd_rule.eq(True).sum())
+    elig_rules = eligibility_by_rule(cp10k_any, obs.loc[any_singlet, ["condition", "top_guide", *rules]],
+                                     rules, guide_target, tg.to_dict(), cfg)
+    LOG.info("eligible targets by assignment rule: %s",
+             elig_rules.drop_duplicates(["rule", "target"]).groupby("rule").eligible.sum().to_dict())
 
     # Well-level batch check: NTC singlets and all singlets.
     rng = np.random.default_rng(cfg["seed"])
@@ -517,22 +589,15 @@ def main(argv=None):
         LOG.info("batch split tests:\n%s", tests.to_string())
 
     # Validation against the earlier report.
-    val = cfg["validation"]["report_singlets"]
-    comp = []
-    for target, (n_dmso, n_vem) in val.items():
-        for condition, n_report in [("DMSO", n_dmso), ("Vem", n_vem)]:
-            in_c = obs.condition.eq(condition) & obs.top_guide.map(guide_target).eq(target)
-            comp.append(dict(target=target, condition=condition, report_n=n_report,
-                             threshold_rule_n=int((in_c & obs.class_threshold.eq("singlet")).sum()),
-                             paper_rule_n=int((in_c & obs.class_paper.eq("singlet")).sum())))
-    comp = pd.DataFrame(comp)
-    comp["threshold_minus_report"] = comp.threshold_rule_n - comp.report_n
+    comp = report_comparison(obs, guide_target, cfg["validation"]["report_singlets"], rules)
     LOG.info("report comparison:\n%s", comp.to_string())
+    if not args.prefix and not comp.matches_report.all():
+        LOG.warning("primary-rule singlet counts differ from the report in %d rows", (~comp.matches_report).sum())
 
     # Outputs.
-    summ = assignment_summary(obs[["class_threshold", "class_paper"]], obs.condition, T, sens, sg.obs_names)
+    summ = assignment_summary(obs[list(rules)], obs.condition, rules, sens, sg.obs_names)
     aggregates = {"phase1_target_qc.csv": qc, "phase1_assignment_summary.csv": summ,
-                  "phase1_report_comparison.csv": comp}
+                  "phase1_report_comparison.csv": comp, "phase1_eligibility_by_rule.csv": elig_rules}
     if batch_wells:
         aggregates.update({"phase1_well_batch.csv": wells, "phase1_batch_tests.csv": tests})
     summary.mkdir(parents=True, exist_ok=True)
@@ -547,7 +612,8 @@ def main(argv=None):
                   library=Path(P["library"]).name, library_sha256=sha256(P["library"]),
                   library_repo="https://github.com/JunyueCaoLab/PerturbFate@bafdfff28a6fc36854a5defe32440abc98eaabc0",
                   target_resolution=targets[targets.target.ne(NTC)].source.value_counts().to_dict(),
-                  aliases={k: v[0] for k, v in TARGET_ALIASES.items()}, presence_threshold=T)
+                  aliases={k: v[0] for k, v in TARGET_ALIASES.items()}, presence_threshold=T,
+                  assignment_rule=next(iter(rules.values())))
     with open(summary / "annotation_source.json", "w", encoding="utf-8") as f:
         json.dump(source, f, indent=2)
 
@@ -564,7 +630,7 @@ def main(argv=None):
         if out.obs[c].dtype == object:
             out.obs[c] = out.obs[c].fillna("").astype(str)
     out.uns["presence_threshold"] = T
-    out.uns["assignment_rule"] = cfg["assignment"]["rule"]
+    out.uns["assignment_rule"] = next(iter(rules.values()))
     out.write_h5ad(processed / "rna_singlets.h5ad", compression="gzip")
     LOG.info("wrote %s singlets x %d genes; done in %.0fs", out.n_obs, out.n_vars, time.time() - t0)
 

@@ -28,5 +28,6 @@
     "CASC10": "MIR1915HG",
     "KIRREL": "KIRREL1"
   },
-  "presence_threshold": 5
+  "presence_threshold": 5,
+  "assignment_rule": "paper_gt5_max0.5_sec0.3"
 }

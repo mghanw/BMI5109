@@ -1,8 +1,13 @@
 # Phase 1: can the two screen replicates be recovered?
 
-**Conclusion:** no replicate label can be recovered *within* the Dual-omics RNA data. Pending a
-decision on Tri-omics, `calib_fold` (whole first-ligation wells, 2 folds per condition, seeded)
-is the leakage-safe calibration split.
+**Conclusion:** no replicate label can be recovered *within* the Dual-omics RNA data.
+
+**Decision (Phase 1 review):** `calib_fold` (whole first-ligation wells, 2 folds of 24 wells per
+condition, seeded) is the calibration / evaluation split. Tri-omics is reserved for later external
+validation and has not been downloaded.
+
+Numbers below use primary-rule singlets (authors' assignment rule, `total > 5`; see
+`phase1_assignment_note.md`). The well-to-fold map does not depend on the assignment rule.
 
 ## Evidence
 
@@ -37,11 +42,14 @@ Tri-omics: 218,678 cells) came from which replicate.
   - Four candidate 24/24 layouts were tested by permutation pseudo-F: contiguous halves, mod-12
     halves, parity and mod-8 halves.
   - No layout is significant consistently across conditions or populations.
-  - The isolated p < 0.05 results (Vem NTC parity p = 0.001; DMSO NTC mod-8 p = 0.011) do not
-    replicate in the all-singlet pseudobulk, and are expected by chance among 16 layout tests.
+  - Three of the 16 layout tests have p < 0.05: Vem NTC parity p = 0.001, DMSO NTC mod-8
+    p = 0.015 and DMSO all-singlet contiguous halves p = 0.041.
+  - None of them replicates in the other population of the same condition (p = 0.114, 0.102 and
+    0.216) or in the other condition.
+  - Only Vem NTC parity survives a Bonferroni correction over the 16 tests.
   - Unsupervised two-cluster splits isolate 1–5 outlier wells; the 5-well DMSO group is
-    lower-depth (PC1–depth Spearman −0.36), not a half-plate.
-- *Depth:* PC1 explains only 5–14% of variance; per-well median UMI and detected genes show no
+    lower-depth (PC1–depth Spearman −0.40), not a half-plate.
+- *Depth:* PC1 explains only 5–13% of variance; per-well median UMI and detected genes show no
   block structure.
 
 ## Interpretation

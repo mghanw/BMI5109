@@ -29,4 +29,6 @@ results/summary/*
 !results/summary/phase1_well_batch.csv
 !results/summary/phase1_batch_tests.csv
 !results/summary/phase1_replicate_evidence.md
+!results/summary/phase1_assignment_note.md
+!results/summary/phase1_eligibility_by_rule.csv
 !results/summary/annotation_source.json
