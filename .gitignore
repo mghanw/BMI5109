@@ -32,3 +32,17 @@ results/summary/*
 !results/summary/phase1_assignment_note.md
 !results/summary/phase1_eligibility_by_rule.csv
 !results/summary/annotation_source.json
+!results/summary/phase2_program_mapping.csv
+!results/summary/phase2_program_genes.csv
+!results/summary/phase2_program_audit.csv
+!results/summary/phase2_mean_contrasts.csv
+!results/summary/phase2_group_summaries.csv
+!results/summary/phase2_dispersion_contrasts.csv
+!results/summary/phase2_dispersion_depth_sensitivity.csv
+!results/summary/phase2_cluster_bootstrap_fufa.csv
+!results/summary/phase2_highlight_targets.csv
+!results/summary/phase2_report_reproduction.csv
+!results/summary/phase2_target_in_program_sensitivity.csv
+!results/summary/phase2_expression_summary.csv
+!results/summary/phase2_expression_top_genes.csv
+!results/summary/phase2_aim1_summary.md

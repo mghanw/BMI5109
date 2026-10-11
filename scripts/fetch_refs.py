@@ -5,13 +5,19 @@ Usage:
 
 Without --download only existing files are checksummed. --gtf-check reports, for every GTF in
 data/ref/gencode/, how many matrix gene IDs match (versioned and unversioned).
+
+Program gene sets (Phase 2): PMC serves supplementary files only behind a browser proof-of-work
+check, so the same files are fetched from the publisher or Europe PMC. A source with a member
+chain is an archive; only the last member is kept.
 """
 import argparse
 import datetime as dt
 import gzip
 import hashlib
 import re
+import io
 import urllib.request
+import zipfile
 from pathlib import Path
 
 REF = Path("data/ref")
@@ -41,6 +47,34 @@ SOURCES = [
 ] + [(f"PerturbFate code repository @ {REPO_COMMIT[:7]}",
       f"https://raw.githubusercontent.com/JunyueCaoLab/PerturbFate/{REPO_COMMIT}/{f}",
       REF / f"perturbfate_repo_{REPO_COMMIT}" / f.replace("/", "_")) for f in REPO_FILES]
+SOURCES += [
+    ("Fufa et al. 2019 Epigenetics Chromatin, Additional file 2 (Tables S1-S7; = PMC6688322 "
+     "13072_2019_297_MOESM2_ESM.xlsx), publisher copy",
+     "https://static-content.springer.com/esm/art%3A10.1186%2Fs13072-019-0297-2/MediaObjects/13072_2019_297_MOESM2_ESM.xlsx",
+     REF / "fufa2019" / "13072_2019_297_MOESM2_ESM.xlsx"),
+    ("Kanai et al. 2024 Cancers, Table S3 from cancers-16-00852-s001.zip (= PMC10930532 supplement), "
+     "via the Europe PMC supplementaryFiles bundle",
+     "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC10930532/supplementaryFiles",
+     REF / "kanai2024" / "cancers-16-00852-s001_Table_S3.xlsx",
+     ["cancers-16-00852-s001.zip", "Table S3.xlsx"]),
+    ("Tsoi et al. 2018 Cancer Cell, Table S3 (subtype signatures; = PMC5953834 NIHMS955175-supplement-4.xlsx), "
+     "publisher copy",
+     "https://ars.els-cdn.com/content/image/1-s2.0-S1535610818301223-mmc4.xlsx",
+     REF / "tsoi2018" / "1-s2.0-S1535610818301223-mmc4.xlsx"),
+    ("HGNC complete set (approved, previous and alias symbols)",
+     "https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt",
+     REF / "hgnc" / "hgnc_complete_set.txt"),
+]
+
+
+def download(url, path, members=None):
+    request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(request) as response:
+        data = response.read()
+    for member in members or []:
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            data = archive.read(member)
+    path.write_bytes(data)
 
 
 def sha256(path):
@@ -71,16 +105,16 @@ def main():
     parser.add_argument("--download", action="store_true")
     parser.add_argument("--gtf-check")
     args = parser.parse_args()
-    lines = ["# Reference sources", "", "Public, read-only files used by scripts/prepare_data.py. "
+    lines = ["# Reference sources", "", "Public, read-only files used by scripts/prepare_data.py and scripts/build_programs.py. "
              "Data only: never executed.", "",
              "| Description | URL | File | Accessed | Bytes | SHA256 |", "|---|---|---|---|---|---|"]
-    for desc, url, path in SOURCES:
+    for desc, url, path, *members in SOURCES:
         if not path.exists():
             if not args.download:
                 print(f"missing: {path}")
                 continue
             path.parent.mkdir(parents=True, exist_ok=True)
-            urllib.request.urlretrieve(url, path)
+            download(url, path, members[0] if members else None)
         accessed = dt.datetime.fromtimestamp(path.stat().st_mtime).date().isoformat()
         lines.append(f"| {desc} | {url} | {path.relative_to(REF).as_posix()} | {accessed} | "
                      f"{path.stat().st_size} | {sha256(path)} |")
