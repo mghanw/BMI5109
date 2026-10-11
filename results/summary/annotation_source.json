@@ -1,0 +1,32 @@
+{
+  "annotation": {
+    "source": "GENCODE",
+    "release": 38,
+    "assembly": "primary_assembly"
+  },
+  "gtf": "gencode.v38.primary_assembly.annotation.gtf.gz",
+  "gtf_sha256": "fc6f039158fb25a6d0770fe54394f84cb92a06d33e96c6641bd586a684f95507",
+  "gtf_url": "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.primary_assembly.annotation.gtf.gz",
+  "matrix_genes": 60706,
+  "matched_versioned": 60706,
+  "gtf_genes": 60708,
+  "par_y_rows": 44,
+  "par_y_nonzero_entries": 3,
+  "library": "bulk_screen_processing_perturbfate_dual_KD_library_with_NTC.csv",
+  "library_sha256": "3af9d3c3cadc5cc003b786b67aa71c64b3c497db26a5e969986192225ec1f586",
+  "library_repo": "https://github.com/JunyueCaoLab/PerturbFate@bafdfff28a6fc36854a5defe32440abc98eaabc0",
+  "target_resolution": {
+    "library_ensembl_id": 108,
+    "symbol": 29,
+    "alias": 6
+  },
+  "aliases": {
+    "ATP5G3": "ATP5MC3",
+    "CCDC101": "SGF29",
+    "SGK223": "PRAG1",
+    "DSCR3": "VPS26C",
+    "CASC10": "MIR1915HG",
+    "KIRREL": "KIRREL1"
+  },
+  "presence_threshold": 5
+}

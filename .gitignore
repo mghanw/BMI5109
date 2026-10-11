@@ -23,3 +23,10 @@ results/summary/*
 !results/summary/native_factor_annotations.csv
 !results/summary/cscn_direction_summary.csv
 !results/summary/metadata.json
+!results/summary/phase1_target_qc.csv
+!results/summary/phase1_assignment_summary.csv
+!results/summary/phase1_report_comparison.csv
+!results/summary/phase1_well_batch.csv
+!results/summary/phase1_batch_tests.csv
+!results/summary/phase1_replicate_evidence.md
+!results/summary/annotation_source.json

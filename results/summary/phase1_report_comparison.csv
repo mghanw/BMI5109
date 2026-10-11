@@ -1,0 +1,9 @@
+target,condition,report_n,threshold_rule_n,paper_rule_n,threshold_minus_report
+NTC,DMSO,1989,2022,1989,33
+NTC,Vem,1864,1898,1864,34
+NF2,DMSO,387,389,387,2
+NF2,Vem,171,174,171,3
+MED12,DMSO,162,163,162,1
+MED12,Vem,203,211,203,8
+MED13,DMSO,273,279,273,6
+MED13,Vem,170,174,170,4
