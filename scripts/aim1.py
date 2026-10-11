@@ -93,6 +93,18 @@ def load_programs(path):
     return spec, mapping
 
 
+def library_genes(cfg, var, eligible):
+    """Library target symbols (excluded from background controls) and each eligible target's gene."""
+    qc = pd.read_csv(ROOT / cfg["paths"]["target_qc"])
+    gene_symbol = pd.Series(var.symbol.to_numpy(), index=var.index.str.replace(r"\.\d+$", "", regex=True))
+    library_ids = qc.target_gene_id.dropna().map(gs.unversioned).unique()
+    library_symbols = set(gene_symbol.reindex(library_ids).dropna())
+    target_gene = (qc.dropna(subset=["target_gene_id"]).drop_duplicates("target")
+                   .set_index("target").target_gene_id.to_dict())
+    target_symbol = {t: gene_symbol.get(gs.unversioned(target_gene[t])) for t in eligible}
+    return library_symbols, target_gene, target_symbol
+
+
 def score_cells(X, var, meta, programs, library_symbols, seed):
     annotation = var[["symbol", "gene_type"]]
     cfg = {"network_genes": [], "gene_readouts": sorted(library_symbols), "seed": seed}
@@ -314,13 +326,7 @@ def main(argv=None):
     meta = obs[["condition", "target", "guide", "lig1_well", "total_counts", "target_gene_id"]].copy()
     progress(f"loaded {X.shape[0]} cells x {X.shape[1]} scoring genes")
 
-    qc = pd.read_csv(ROOT / P["target_qc"])
-    gene_symbol = pd.Series(var.symbol.to_numpy(), index=var.index.str.replace(r"\.\d+$", "", regex=True))
-    library_ids = qc.target_gene_id.dropna().map(gs.unversioned).unique()
-    library_symbols = set(gene_symbol.reindex(library_ids).dropna())
-    target_gene = (qc.dropna(subset=["target_gene_id"]).drop_duplicates("target")
-                   .set_index("target").target_gene_id.to_dict())
-    target_symbol = {t: gene_symbol.get(gs.unversioned(target_gene[t])) for t in eligible}
+    library_symbols, target_gene, target_symbol = library_genes(cfg, var, eligible)
     LOG.info("library target genes excluded from background controls: %d", len(library_symbols))
 
     spec, mapping = load_programs(ROOT / P["programs"])
