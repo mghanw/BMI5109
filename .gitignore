@@ -7,7 +7,18 @@ dist/
 .env
 .env.*
 .DS_Store
-data/
+# data/: only the two small GEO inputs, the data README and the reference provenance are tracked
+data/*
+!data/README.md
+!data/raw/
+data/raw/*
+!data/raw/GSE291147_Dual_omics_RNA_cell_metadata.csv.gz
+!data/raw/GSE291147_Dual_omics_sgRNA_count_matrix.RDS
+!data/ref/
+data/ref/*
+!data/ref/SOURCES.md
+# Embeds per-cell score values
+reports/figures/phase2_aim1_ecdf_fufa.svg
 docs/
 local/
 outputs/
