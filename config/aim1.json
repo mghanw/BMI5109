@@ -1,0 +1,31 @@
+{
+  "paths": {
+    "rna": "data/processed/rna_singlets.h5ad",
+    "target_qc": "results/summary/phase1_target_qc.csv",
+    "target_split": "config/target_split.json",
+    "programs": "config/programs.json",
+    "report_effects": "results/summary/average_effects.csv",
+    "summary_dir": "results/summary",
+    "outputs_dir": "outputs",
+    "figures_dir": "reports/figures"
+  },
+  "conditions": ["DMSO", "Vem"],
+  "seed": 20261011,
+  "bootstrap": 5000,
+  "permutations": 2000,
+  "primary_readout": "Fufa2019_AZD_up_SOX10_bound_pigmentation",
+  "highlight": {
+    "_note": "Pre-specified: primary call = Fufa mean-contrast 95% CI includes 0 AND Fufa log variance ratio BH q < 0.05 (BH across targets within condition). IQR, W1, centered W1 and KS are supporting evidence only; the OR rule is an exploratory column.",
+    "primary_statistic": "log_var_ratio",
+    "q": 0.05,
+    "exploratory_or_statistics": ["log_var_ratio", "iqr_diff", "centered_wasserstein"]
+  },
+  "cluster_bootstrap": {"readout": "Fufa2019_AZD_up_SOX10_bound_pigmentation", "repeats": 5000, "well_column": "lig1_well"},
+  "expression": {"min_ntc_detection": 0.05, "absdiff_cutoff": 0.1, "q": 0.05, "top_genes": 10},
+  "reproduction": {
+    "targets": ["DUSP6", "LATS2", "MED12", "MED13", "NF1", "NF2", "PTPN14"],
+    "readouts": ["Fufa2019_AZD_up_SOX10_bound_pigmentation", "Kanai2024_YAP_TAZ_up", "Tsoi_undifferentiated"],
+    "pairs": [["MED12", "NF2"], ["MED12", "MED13"]],
+    "n_background_seeds": 20
+  }
+}
