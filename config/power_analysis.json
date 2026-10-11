@@ -1,12 +1,12 @@
 {
   "aim1_config": "config/aim1.json",
-  "phase2_scores": "outputs/phase2_aim1/scores.csv.gz",
-  "phase2_dispersion": "results/summary/phase2_dispersion_contrasts.csv",
+  "aim1_scores": "outputs/aim1/scores.csv.gz",
+  "aim1_dispersion": "results/summary/aim1_dispersion_contrasts.csv",
   "seed": 20261011,
   "regression_tolerance": 1e-6,
   "reliability": {"splits": 200},
   "power": {
-    "_note": "NTC cells only. B = 5000 matches Phase 2 and is needed to reach the Bonferroni level (minimum bootstrap p = 2/(B+1)). scale_true_lvr_extension is a documented extension of the requested grid so that 80% power is bracketed for the smallest n.",
+    "_note": "NTC cells only. B = 5000 matches the Aim 1 analysis and is needed to reach the Bonferroni level (minimum bootstrap p = 2/(B+1)). scale_true_lvr_extension is a documented extension of the requested grid so that 80% power is bracketed for the smallest n.",
     "readout": "Fufa2019_AZD_up_SOX10_bound_pigmentation",
     "reps": 200,
     "bootstrap": 5000,

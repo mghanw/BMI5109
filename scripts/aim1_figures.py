@@ -1,7 +1,7 @@
-"""Figures for Phase 2 Aim 1 (reports/figures/phase2_aim1_*.{png,svg}).
+"""Figures for Aim 1 (reports/figures/aim1_*.{png,svg}).
 
 Usage:
-    python scripts/aim1_figures.py [--run-name phase2_aim1]
+    python scripts/aim1_figures.py [--run-name aim1]
 
 Reads the aggregate tables in results/summary/ and, for the ECDF panel only, the cell-level scores
 kept in outputs/<run_name>/scores.csv.gz (never committed). Colours: reference categorical slots
@@ -77,7 +77,7 @@ def forest(mean, disp):
                  ha="left", fontsize=9)
     fig.text(0.11, 0.012, "Lines: 95% stratified cell-bootstrap intervals (5,000 draws). Targets sorted by the "
              "DMSO mean shift.", fontsize=6.5, color="#52514e")
-    save(fig, "phase2_aim1_forest_fufa")
+    save(fig, "aim1_forest_fufa")
 
 
 def scatter(highlights, mean, disp):
@@ -118,7 +118,7 @@ def scatter(highlights, mean, disp):
     handles += [plt.Line2D([], [], linestyle="", marker=MARKERS[c], color=COLORS[c],
                            label=f"{c}: log variance ratio q < 0.05") for c in ("DMSO", "Vem")]
     fig.legend(handles=handles, loc="upper left", ncol=3, bbox_to_anchor=(0.075, 0.885), fontsize=6.5)
-    save(fig, "phase2_aim1_mean_vs_dispersion")
+    save(fig, "aim1_mean_vs_dispersion")
 
 
 def ecdf(highlights, scores_path):
@@ -158,17 +158,17 @@ def ecdf(highlights, scores_path):
     for ax in axes[:, 0]:
         ax.set_ylabel("Cumulative fraction")
     fig.suptitle(f"Fufa score distributions vs NTC. {title}", x=0.07, y=0.995, ha="left", fontsize=9)
-    save(fig, "phase2_aim1_ecdf_fufa")
+    save(fig, "aim1_ecdf_fufa")
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--run-name", default="phase2_aim1")
+    parser.add_argument("--run-name", default="aim1")
     args = parser.parse_args(argv)
     style()
-    mean = pd.read_csv(SUMMARY / "phase2_mean_contrasts.csv")
-    disp = pd.read_csv(SUMMARY / "phase2_dispersion_contrasts.csv")
-    highlights = pd.read_csv(SUMMARY / "phase2_highlight_targets.csv")
+    mean = pd.read_csv(SUMMARY / "aim1_mean_contrasts.csv")
+    disp = pd.read_csv(SUMMARY / "aim1_dispersion_contrasts.csv")
+    highlights = pd.read_csv(SUMMARY / "aim1_highlight_targets.csv")
     forest(mean, disp)
     scatter(highlights, mean, disp)
     ecdf(highlights, ROOT / "outputs" / args.run_name / "scores.csv.gz")

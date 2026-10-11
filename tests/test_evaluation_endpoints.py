@@ -1,14 +1,14 @@
-"""The pre-registered Phase 5 endpoints are complete and frozen as decided."""
+"""The pre-registered held-out evaluation endpoints are complete and frozen as decided."""
 
 import json
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PATH = ROOT / "config" / "phase5_endpoints.json"
+PATH = ROOT / "config" / "evaluation_endpoints.json"
 
 
-class Phase5Endpoints(unittest.TestCase):
+class EvaluationEndpoints(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         with open(PATH, encoding="utf-8") as f:

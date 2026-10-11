@@ -10,11 +10,11 @@ from icpdag.target_split import load_split
 
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY = ROOT / "results" / "summary"
-PER_TARGET = ["phase2_mean_contrasts.csv", "phase2_group_summaries.csv", "phase2_dispersion_contrasts.csv",
-              "phase2_dispersion_depth_sensitivity.csv", "phase2_cluster_bootstrap_fufa.csv",
-              "phase2_highlight_targets.csv", "phase2_report_reproduction.csv",
-              "phase2_target_in_program_sensitivity.csv", "phase2_expression_summary.csv",
-              "phase2_expression_top_genes.csv"]
+PER_TARGET = ["aim1_mean_contrasts.csv", "aim1_group_summaries.csv", "aim1_dispersion_contrasts.csv",
+              "aim1_dispersion_depth_sensitivity.csv", "aim1_cluster_bootstrap_fufa.csv",
+              "aim1_highlight_targets.csv", "aim1_report_reproduction.csv",
+              "aim1_target_in_program_sensitivity.csv", "aim1_expression_summary.csv",
+              "aim1_expression_top_genes.csv"]
 
 
 class Aim1Outputs(unittest.TestCase):
@@ -32,9 +32,9 @@ class Aim1Outputs(unittest.TestCase):
             self.assertTrue((eligible.fold.astype(int) == expected).all(), name)
             self.assertTrue(frame.loc[~frame.target.isin(split.index), "fold"].isna().all(), name)
 
-    def test_no_barcodes_in_phase2_tables(self):
+    def test_no_barcodes_in_aim1_tables(self):
         pattern = re.compile(r"[ACGT]{8,}")
-        for path in SUMMARY.glob("phase2_*.csv"):
+        for path in SUMMARY.glob("aim1_*.csv"):
             text = path.read_text(encoding="utf-8")
             self.assertIsNone(pattern.search(text), path.name)
 

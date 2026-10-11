@@ -1,4 +1,4 @@
-"""Phase 1 data preparation and QC for PerturbFate A375 Dual-omics RNA (GSE291147).
+"""Data preparation and QC for PerturbFate A375 Dual-omics RNA (GSE291147).
 
 Usage:
     python scripts/prepare_data.py [--config config/prepare_data.json] [--prefix <library prefix>]
@@ -471,7 +471,7 @@ def main(argv=None):
                                    "seed": args.seed}.items() if v is not None}
     cfg = load_config(args.config, overrides)
     P = cfg["paths"]
-    run = args.run_name or ("smoke_" + args.prefix.split("_")[-1] if args.prefix else "phase1_full")
+    run = args.run_name or ("smoke_" + args.prefix.split("_")[-1] if args.prefix else "data_prep")
     run_dir = Path(P["outputs_dir"]) / run
     run_dir.mkdir(parents=True, exist_ok=True)
     processed = run_dir if args.prefix else Path(P["processed_dir"])
@@ -596,10 +596,10 @@ def main(argv=None):
 
     # Outputs.
     summ = assignment_summary(obs[list(rules)], obs.condition, rules, sens, sg.obs_names)
-    aggregates = {"phase1_target_qc.csv": qc, "phase1_assignment_summary.csv": summ,
-                  "phase1_report_comparison.csv": comp, "phase1_eligibility_by_rule.csv": elig_rules}
+    aggregates = {"data_prep_target_qc.csv": qc, "data_prep_assignment_summary.csv": summ,
+                  "data_prep_report_comparison.csv": comp, "data_prep_eligibility_by_rule.csv": elig_rules}
     if batch_wells:
-        aggregates.update({"phase1_well_batch.csv": wells, "phase1_batch_tests.csv": tests})
+        aggregates.update({"data_prep_well_batch.csv": wells, "data_prep_batch_tests.csv": tests})
     summary.mkdir(parents=True, exist_ok=True)
     for name, frame in aggregates.items():
         assert_no_cell_ids(frame)

@@ -1,4 +1,4 @@
-"""Phase 1 preparation: construct parsing, assignment, knockdown QC and output safety."""
+"""Data preparation: construct parsing, assignment, knockdown QC and output safety."""
 
 import importlib.util
 import json

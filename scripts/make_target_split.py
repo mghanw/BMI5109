@@ -1,10 +1,10 @@
-"""Freeze the held-out target split for Phase 2 and later phases.
+"""Freeze the held-out target split for Aim 1 and later analyses.
 
 Usage:
-    python scripts/make_target_split.py [--qc results/summary/phase1_target_qc.csv]
+    python scripts/make_target_split.py [--qc results/summary/data_prep_target_qc.csv]
                                         [--out config/target_split.json] [--folds 5] [--seed 20261011]
 
-Inputs are Phase 1 eligibility and knockdown remaining ratios only (the perturbed gene's own
+Inputs are data-preparation eligibility and knockdown remaining ratios only (the perturbed gene's own
 expression). No response statistic is read.
 """
 import argparse
@@ -47,7 +47,7 @@ def build_spec(qc_path, n_folds, seed):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--qc", default="results/summary/phase1_target_qc.csv")
+    parser.add_argument("--qc", default="results/summary/data_prep_target_qc.csv")
     parser.add_argument("--out", default="config/target_split.json")
     parser.add_argument("--folds", type=int, default=5)
     parser.add_argument("--seed", type=int, default=20261011)

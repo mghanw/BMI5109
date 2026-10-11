@@ -1,7 +1,7 @@
 {
   "paths": {
     "rna": "data/processed/rna_singlets.h5ad",
-    "target_qc": "results/summary/phase1_target_qc.csv",
+    "target_qc": "results/summary/data_prep_target_qc.csv",
     "target_split": "config/target_split.json",
     "programs": "config/programs.json",
     "report_effects": "results/summary/average_effects.csv",

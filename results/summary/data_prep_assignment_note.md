@@ -1,9 +1,9 @@
-# Phase 1b: perturbation assignment rule
+# Perturbation assignment rule
 
-**Decision (Phase 1 review):** the authors' sgRNA rule is the primary assignment rule. The
+**Decision (data preparation review):** the authors' sgRNA rule is the primary assignment rule. The
 presence-threshold rule is kept only as a sensitivity analysis. The authors' rule reproduces the
-earlier report's singlet counts exactly. Source tables: `phase1_assignment_summary.csv`,
-`phase1_report_comparison.csv` and `phase1_eligibility_by_rule.csv`.
+earlier report's singlet counts exactly. Source tables: `data_prep_assignment_summary.csv`,
+`data_prep_report_comparison.csv` and `data_prep_eligibility_by_rule.csv`.
 
 ## Rules
 | Label | Role | Definition |
@@ -49,7 +49,7 @@ conditions.
 |---|---:|
 | paper `> 5` (primary) | 56 |
 | paper `>= 5` | 56 (same set as primary) |
-| threshold T = 5 | 55 (same set as Phase 1) |
+| threshold T = 5 | 55 (same set as the initial data preparation) |
 
 - **Gained under the primary rule: CCDC117.** Under the threshold rule, its DMSO remaining ratio
   was 0.508 (208 cells), just above the 0.5 cut, so its status was `inadequate`. Under the primary

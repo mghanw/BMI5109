@@ -1,9 +1,9 @@
-"""Figure for Phase 2b: power of the primary dispersion call (reports/figures/phase2b_power_curves.{png,svg}).
+"""Figure for the power analysis: power of the primary dispersion call (reports/figures/power_curves.{png,svg}).
 
 Usage:
-    python scripts/phase2b_figures.py
+    python scripts/power_figures.py
 
-Reads results/summary/phase2b_power.csv and phase2_dispersion_contrasts.csv (aggregate tables only).
+Reads results/summary/power_simulation.csv and aim1_dispersion_contrasts.csv (aggregate tables only).
 One panel per condition: power vs true log variance ratio. Scale-model lines by pseudo-target size
 (ordinal blue ramp, steps 250 / 450 / 650 of the reference palette), solid for alpha 0.05 and dashed
 for the Bonferroni level 0.05/56; mixture scenarios at the median size as open markers.
@@ -58,19 +58,19 @@ def power_curves(power, disp):
                Line2D([], [], color=RAMP[0.5], marker="o", ls="", mfc="white", label="Mixture, median n, 0.05"),
                Line2D([], [], color=RAMP[0.5], marker="s", ls="", mfc="white", label="Mixture, median n, 0.05/56")]
     handles += [Line2D([], [], color=c, lw=2, label=f"n = p{int(q * 100)} of target sizes") for q, c in RAMP.items()]
-    handles += [Line2D([], [], color=MUTED, lw=0.8, ls="-.", label="Largest observed |lvr| (Phase 2)"),
+    handles += [Line2D([], [], color=MUTED, lw=0.8, ls="-.", label="Largest observed |lvr| (Aim 1)"),
                 Line2D([], [], color=MUTED, lw=0.8, ls=":", label="80% power")]
     fig.legend(handles=handles, loc="lower center", ncol=3, fontsize=6, bbox_to_anchor=(0.5, -0.01))
-    fig.suptitle("Power of the Phase 2 primary dispersion test (Fufa score, NTC pseudo-targets)", x=0.01,
+    fig.suptitle("Power of the Aim 1 primary dispersion test (Fufa score, NTC pseudo-targets)", x=0.01,
                  ha="left", fontsize=8)
     fig.tight_layout(rect=(0, 0.17, 1, 0.95))
-    save(fig, "phase2b_power_curves")
+    save(fig, "power_curves")
 
 
 def main():
     style()
-    power = pd.read_csv(SUMMARY / "phase2b_power.csv")
-    disp = pd.read_csv(SUMMARY / "phase2_dispersion_contrasts.csv")
+    power = pd.read_csv(SUMMARY / "power_simulation.csv")
+    disp = pd.read_csv(SUMMARY / "aim1_dispersion_contrasts.csv")
     power_curves(power, disp)
 
 

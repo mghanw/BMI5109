@@ -11,7 +11,7 @@ import pandas as pd
 from icpdag.target_split import add_fold, eligible_targets, load_split, make_split
 
 ROOT = Path(__file__).resolve().parents[1]
-QC = ROOT / "results" / "summary" / "phase1_target_qc.csv"
+QC = ROOT / "results" / "summary" / "data_prep_target_qc.csv"
 SPLIT = ROOT / "config" / "target_split.json"
 spec = importlib.util.spec_from_file_location("make_target_split", ROOT / "scripts" / "make_target_split.py")
 mts = importlib.util.module_from_spec(spec)

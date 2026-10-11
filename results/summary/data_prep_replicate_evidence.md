@@ -1,13 +1,13 @@
-# Phase 1: can the two screen replicates be recovered?
+# Data preparation: can the two screen replicates be recovered?
 
 **Conclusion:** no replicate label can be recovered *within* the Dual-omics RNA data.
 
-**Decision (Phase 1 review):** `calib_fold` (whole first-ligation wells, 2 folds of 24 wells per
+**Decision (data preparation review):** `calib_fold` (whole first-ligation wells, 2 folds of 24 wells per
 condition, seeded) is the calibration / evaluation split. Tri-omics is reserved for later external
 validation and has not been downloaded.
 
 Numbers below use primary-rule singlets (authors' assignment rule, `total > 5`; see
-`phase1_assignment_note.md`). The well-to-fold map does not depend on the assignment rule.
+`data_prep_assignment_note.md`). The well-to-fold map does not depend on the assignment rule.
 
 ## Evidence
 
@@ -35,7 +35,7 @@ Tri-omics: 218,678 cells) came from which replicate.
   So a replicate split, if it exists in Dual-omics, must be a split of the 48 wells of each
   condition.
 
-**Data-driven checks within Dual-omics** (`phase1_batch_tests.csv`, `phase1_well_batch.csv`).
+**Data-driven checks within Dual-omics** (`data_prep_batch_tests.csv`, `data_prep_well_batch.csv`).
 - *Guide composition per well:* separates DMSO from Vem (drug fitness effect) but shows no
   two-group structure within a condition.
 - *Well pseudobulk expression* (NTC singlets and all singlets, top-2,000 variable genes, 5 PCs):

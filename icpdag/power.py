@@ -1,8 +1,8 @@
-"""Split-half reliability and power simulation for the Phase 2 primary dispersion call.
+"""Split-half reliability and power simulation for the Aim 1 primary dispersion call.
 
 The power simulation uses NTC cells only: a pseudo-target of n NTC cells is drawn without replacement,
 the remaining NTC cells are its control, and mean-preserving heterogeneity is injected into the
-pseudo-target. The test is the Phase 2 primary call (icpdag/dispersion.py): percentile-bootstrap p of
+pseudo-target. The test is the Aim 1 primary call (icpdag/dispersion.py): percentile-bootstrap p of
 the log variance ratio, together with a mean-difference bootstrap CI that includes 0. Within a
 replicate every scenario shares the split, the bootstrap draws and the mixture cell assignment
 (common random numbers).

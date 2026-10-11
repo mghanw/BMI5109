@@ -22,7 +22,7 @@ CSCN was developed by Wang Menghan and colleagues (Bioinformatics 2026;42(7):bta
 - Data preparation and Aim 1 (mean and dispersion contrasts of programme scores) are complete,
   together with a score reliability and power analysis.
 - The held-out evaluation endpoints are pre-registered in
-  [config/phase5_endpoints.json](config/phase5_endpoints.json) before any modelling code.
+  [config/evaluation_endpoints.json](config/evaluation_endpoints.json) before any modelling code.
 - Aims 2-3 (CSCN-SEM fitting and held-out prediction) are in progress.
 
 ## Repository layout
@@ -123,15 +123,15 @@ Run from the repository root (Windows paths shown).
    python scripts\aim1_figures.py
    ```
 
-9. Reliability and power analysis (NTC cells only, about 5 minutes; config `config/phase2b.json`;
-   needs `outputs/phase2_aim1/scores.csv.gz` from step 8), then its figure:
+9. Reliability and power analysis (NTC cells only, about 5 minutes; config `config/power_analysis.json`;
+   needs `outputs/aim1/scores.csv.gz` from step 8), then its figure:
 
    ```bash
-   python scripts\phase2b_power.py
+   python scripts\power_analysis.py
    ```
 
    ```bash
-   python scripts\phase2b_figures.py
+   python scripts\power_figures.py
    ```
 
 10. Tests:

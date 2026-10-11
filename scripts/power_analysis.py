@@ -1,15 +1,15 @@
-"""Phase 2b: split-half reliability of the program scores and power of the primary dispersion call.
+"""Split-half reliability of the program scores and power of the primary dispersion call.
 
 Usage:
-    python scripts/phase2b_power.py [--config config/phase2b.json] [--splits S] [--reps R]
-                                    [--bootstrap B] [--run-name NAME]
+    python scripts/power_analysis.py [--config config/power_analysis.json] [--splits S] [--reps R]
+                                     [--bootstrap B] [--run-name NAME]
 
 NTC cells only (no target data). Scores are recomputed with icpdag.program_scores exactly as in
-Phase 2 and checked against outputs/phase2_aim1/scores.csv.gz. Step 2: for each readout, 200 seeded
+the Aim 1 analysis and checked against outputs/aim1/scores.csv.gz. Step 2: for each readout, 200 seeded
 random gene halves are scored with the same background procedure; the half-score correlation across
 DMSO NTC and Vem NTC cells gives the Spearman-Brown reliability. Step 3: pseudo-targets of NTC cells
 (sizes = 10th / 50th / 90th percentile of the eligible-target sizes) receive mean-preserving
-heterogeneity and are tested with the Phase 2 primary call (icpdag/power.py).
+heterogeneity and are tested with the Aim 1 primary call (icpdag/power.py).
 Any reduced count (--splits / --reps / --bootstrap) is a smoke test: outputs go to outputs/<run>/ only.
 """
 import argparse
@@ -33,7 +33,7 @@ from icpdag import power as pw  # noqa: E402
 from icpdag.program_scores import program_scores  # noqa: E402
 from icpdag.target_split import load_split  # noqa: E402
 
-LOG = logging.getLogger("phase2b")
+LOG = logging.getLogger("power_analysis")
 NTC = "NTC"
 
 
@@ -55,8 +55,8 @@ def regression_check(scores, path, tolerance):
     old = old.loc[scores.index, scores.columns]
     gap = float(np.abs(old.to_numpy() - scores.to_numpy()).max())
     if not gap < tolerance:
-        raise ValueError(f"Recomputed NTC scores differ from Phase 2 (max abs diff {gap:.3g})")
-    LOG.info("regression check: NTC scores match Phase 2 (max abs diff %.2e)", gap)
+        raise ValueError(f"Recomputed NTC scores differ from the Aim 1 analysis (max abs diff {gap:.3g})")
+    LOG.info("regression check: NTC scores match the Aim 1 analysis (max abs diff %.2e)", gap)
     return gap
 
 
@@ -174,9 +174,9 @@ def fmt(x, digits=2):
 def write_summary(path, rel, power, mde, alphas, pc, gap, max_obs, run):
     adj = rel[rel.variant.eq("background_adjusted")]
     raw = rel[rel.variant.eq("raw_no_background")].set_index(["readout", "condition"])
-    lines = ["# Phase 2b: score reliability and power of the primary dispersion call", "",
-             f"Run `outputs/{run}` (scripts/phase2b_power.py, config/phase2b.json). NTC cells only; no target "
-             f"data were used. Recomputed NTC scores match Phase 2 (max abs diff {gap:.1e}).", "",
+    lines = ["# Score reliability and power of the primary dispersion call", "",
+             f"Run `outputs/{run}` (scripts/power_analysis.py, config/power_analysis.json). NTC cells only; no target "
+             f"data were used. Recomputed NTC scores match the Aim 1 analysis (max abs diff {gap:.1e}).", "",
              "## Split-half reliability (NTC cells)",
              f"Program genes split at random into halves ({int(adj.n_splits.iloc[0])} seeded splits); each half "
              "is scored with the same expression-matched background procedure. Reliability = Spearman-Brown "
@@ -198,12 +198,12 @@ def write_summary(path, rel, power, mde, alphas, pc, gap, max_obs, run):
               + ". The two gene halves of the raw score share a cell-level component, but the expression-matched "
               "background removes it, and what remains does not replicate across gene halves. In NTC cells, "
               "nearly all between-cell variance of the Fufa score as defined is therefore gene-sampling noise. "
-              "Population means still carry signal (Phase 2 mean contrasts); single-cell dispersion of this "
+              "Population means still carry signal (Aim 1 mean contrasts); single-cell dispersion of this "
               "score carries little."]
     bonf = alphas["bonferroni"]
     lines += ["", "## Power of the primary dispersion call (Fufa)",
               f"Pseudo-targets of n NTC cells vs the remaining NTC cells; {pc['reps']} replicates per scenario, "
-              f"B = {pc['bootstrap']} bootstrap draws (Phase 2: 5000). Test: log variance ratio bootstrap p "
+              f"B = {pc['bootstrap']} bootstrap draws (Aim 1: 5000). Test: log variance ratio bootstrap p "
               f"< alpha (\"lvr\"), and the full primary call that also requires the mean CI to include 0 "
               f"(\"call\"). alpha 0.05 is an optimistic bound for BH across 56 targets; 0.05/56 = {bonf:.1e} "
               "(Bonferroni) is the bound for a single true hit.", ""]
@@ -240,8 +240,8 @@ def write_summary(path, rel, power, mde, alphas, pc, gap, max_obs, run):
                  f"{fmt(g.loc[d, 'power_lvr_bonferroni'])}" for d in d_values]
         lines.append(f"| {c} | {pi:g} | " + " | ".join(cells) + " |")
     med_mde = mde[mde.n_quantile.eq(0.5) & mde.test.eq("lvr") & mde.alpha.eq("bonferroni")]
-    lines += ["", "## How to report the Phase 2 null",
-              f"Largest observed |Fufa log variance ratio| in Phase 2: "
+    lines += ["", "## How to report the Aim 1 null",
+              f"Largest observed |Fufa log variance ratio| in Aim 1: "
               + ", ".join(f"{c} {fmt(v)}" for c, v in max_obs.items()) + ".", "",
               "Suggested wording: \"No knockdown changed the between-cell dispersion of the Fufa score without a "
               "mean shift. At the median target size the design had 80% power, after multiplicity control, only "
@@ -251,15 +251,15 @@ def write_summary(path, rel, power, mde, alphas, pc, gap, max_obs, run):
               + " / ".join(f"{fmt(rho[c])} ({c})" for c in rho.index)
               + ". The null result therefore means that heterogeneity of the Fufa response is not measurable "
               "with this single-cell score; it is not evidence that the response is homogeneous.\"",
-              "", "Figure: `reports/figures/phase2b_power_curves.png`. Tables: `phase2b_reliability.csv`, "
-              "`phase2b_power.csv`."]
+              "", "Figure: `reports/figures/power_curves.png`. Tables: `score_reliability.csv`, "
+              "`power_simulation.csv`."]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 # ---------------------------------------------------------------- main
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--config", default=str(ROOT / "config" / "phase2b.json"))
+    parser.add_argument("--config", default=str(ROOT / "config" / "power_analysis.json"))
     parser.add_argument("--splits", type=int)
     parser.add_argument("--reps", type=int)
     parser.add_argument("--bootstrap", type=int)
@@ -274,7 +274,7 @@ def main(argv=None):
     splits = args.splits or cfg["reliability"]["splits"]
     pc["reps"] = args.reps or pc["reps"]
     pc["bootstrap"] = args.bootstrap or pc["bootstrap"]
-    run = args.run_name or ("smoke_phase2b" if smoke else "phase2b_power")
+    run = args.run_name or ("smoke_power" if smoke else "power_analysis")
     run_dir = ROOT / acfg["paths"]["outputs_dir"] / run
     run_dir.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s",
@@ -295,25 +295,25 @@ def main(argv=None):
     _, mapping = aim1.load_programs(ROOT / acfg["paths"]["programs"])
     programs = gs.programs_for_scoring(mapping)
     scores, _, _ = aim1.score_cells(X, var, meta, programs, library_symbols, acfg["seed"])
-    gap = regression_check(scores, ROOT / cfg["phase2_scores"], cfg["regression_tolerance"])
+    gap = regression_check(scores, ROOT / cfg["aim1_scores"], cfg["regression_tolerance"])
 
     rel = reliability(X, var, meta, programs, library_symbols, conditions, splits, seed, progress)
     aim1.assert_no_cell_ids(rel)
-    rel.to_csv(out_dir / "phase2b_reliability.csv", index=False)
+    rel.to_csv(out_dir / "score_reliability.csv", index=False)
 
-    sizes = target_sizes(ROOT / cfg["phase2_dispersion"], pc["readout"], pc["n_quantiles"], conditions)
+    sizes = target_sizes(ROOT / cfg["aim1_dispersion"], pc["readout"], pc["n_quantiles"], conditions)
     LOG.info("pseudo-target sizes: %s", sizes)
     power, alphas = power_tables(scores, meta, sizes, pc, seed, progress)
     aim1.assert_no_cell_ids(power)
-    power.to_csv(out_dir / "phase2b_power.csv", index=False)
+    power.to_csv(out_dir / "power_simulation.csv", index=False)
 
     fufa = rel[rel.readout.eq(pc["readout"]) & rel.variant.eq("background_adjusted")].set_index("condition")
     mde = mde_table(power, alphas, pc["target_power"], fufa)
     mde.to_csv(run_dir / "mde.csv", index=False)
-    disp = pd.read_csv(ROOT / cfg["phase2_dispersion"])
+    disp = pd.read_csv(ROOT / cfg["aim1_dispersion"])
     disp = disp[disp.statistic.eq("log_var_ratio") & disp.kind.eq("gene") & disp.readout.eq(pc["readout"])]
     max_obs = disp.assign(a=disp.estimate.abs()).groupby("condition").a.max().to_dict()
-    write_summary(out_dir / "phase2b_power_summary.md", rel, power, mde, alphas, pc, gap, max_obs, run)
+    write_summary(out_dir / "power_summary.md", rel, power, mde, alphas, pc, gap, max_obs, run)
     progress("done")
 
 

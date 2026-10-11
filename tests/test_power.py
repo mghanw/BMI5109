@@ -105,9 +105,9 @@ class Outputs(unittest.TestCase):
         import pandas as pd
 
         summary = Path(__file__).resolve().parents[1] / "results" / "summary"
-        paths = [summary / "phase2b_reliability.csv", summary / "phase2b_power.csv"]
+        paths = [summary / "score_reliability.csv", summary / "power_simulation.csv"]
         if not all(p.exists() for p in paths):
-            self.skipTest("Phase 2b tables not generated")
+            self.skipTest("Power analysis tables not generated")
         for path in paths:
             self.assertIsNone(re.search(r"[ACGT]{8,}", path.read_text(encoding="utf-8")), path.name)
         rel, power = (pd.read_csv(p) for p in paths)

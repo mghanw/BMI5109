@@ -6,7 +6,7 @@ Usage:
 Without --download only existing files are checksummed. --gtf-check reports, for every GTF in
 data/ref/gencode/, how many matrix gene IDs match (versioned and unversioned).
 
-Program gene sets (Phase 2): PMC serves supplementary files only behind a browser proof-of-work
+Program gene sets (Aim 1): PMC serves supplementary files only behind a browser proof-of-work
 check, so the same files are fetched from the publisher or Europe PMC. A source with a member
 chain is an archive; only the last member is kept.
 """

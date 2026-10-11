@@ -1,10 +1,10 @@
-# Phase 2 (Aim 1): mean and distribution contrasts of program scores
+# Aim 1: mean and distribution contrasts of program scores
 
-Run `outputs/phase2_aim1` (scripts/aim1.py, config/aim1.json): 53,213 primary-rule singlets,
+Run `outputs/aim1` (scripts/aim1.py, config/aim1.json): 53,213 primary-rule singlets,
 56 eligible targets, both conditions, 5,000 stratified cell-bootstrap draws, 2,000 permutations.
 All tables carry the target's `fold` from `config/target_split.json`.
 
-**Leakage rule:** these descriptive results may be reported for all targets. Later phases may use
+**Leakage rule:** these descriptive results may be reported for all targets. Later analyses may use
 them to choose panel genes, hyperparameters or models only through training folds.
 
 ## Held-out split (frozen before any score was computed)
@@ -35,7 +35,7 @@ them to choose panel genes, hyperparameters or models only through training fold
   background controls.
 - **Perturbed gene inside a program:** only one pair, PTEN in Fufa. Dropping PTEN from the
   program changes the PTEN contrasts by less than 0.1 SD (e.g. DMSO mean −0.19 → −0.10, CI
-  includes 0 in both cases); see `phase2_target_in_program_sensitivity.csv`.
+  includes 0 in both cases); see `aim1_target_in_program_sensitivity.csv`.
 
 ## Main results (Fufa, primary readout)
 - **Mean shifts are rare.**
@@ -69,7 +69,7 @@ them to choose panel genes, hyperparameters or models only through training fold
   - Tsoi undifferentiated: CDH13, CCDC117.
   - Kanai up: CST3.
   
-  These are exploratory leads only (`phase2_highlight_targets.csv`).
+  These are exploratory leads only (`aim1_highlight_targets.csv`).
 
 ## Technical sensitivity
 - **Depth.** The log total UMI explains little of each score in DMSO NTC: R² 0.002 for Fufa and
@@ -77,7 +77,7 @@ them to choose panel genes, hyperparameters or models only through training fold
   - After residualizing on depth (fit on DMSO NTC only), no Fufa log variance ratio, IQR or
     centered W1 result changes significance.
   - In the secondary readouts, 14 results cross q = 0.05 in either direction
-    (`phase2_dispersion_depth_sensitivity.csv`).
+    (`aim1_dispersion_depth_sensitivity.csv`).
 - **Well clustering** (Fufa; ligation-1 well bootstrap, 48 wells per condition, shared draws).
   - Cluster intervals have about the same width as cell-bootstrap intervals (median width ratio
     0.98–0.99). Whether the CI excludes 0 agrees for 278 of 280 contrasts; the exceptions are
@@ -88,12 +88,12 @@ them to choose panel genes, hyperparameters or models only through training fold
 
 ## Expression contrasts
 - **Genes tested:** 7,963 genes detected in ≥ 5% of NTC cells in either condition. The perturbed
-  gene is excluded. The full matrix is `outputs/phase2_aim1/expression_contrasts.csv.gz` (not
+  gene is excluded. The full matrix is `outputs/aim1/expression_contrasts.csv.gz` (not
   committed).
 - **Genes changed per target** (|Δ mean log1p CP10k| ≥ 0.1 and BH q < 0.05):
   - Median 33 (DMSO) and 10.5 (Vem). Four targets per condition have none.
   - The largest are NF2 DMSO (614), MED12 DMSO (578), MED12 Vem (555) and TP53 DMSO (493).
-- **Tables:** `phase2_expression_summary.csv` and `phase2_expression_top_genes.csv`.
+- **Tables:** `aim1_expression_summary.csv` and `aim1_expression_top_genes.csv`.
 
 ## Reproduction of the earlier report (7 targets)
 - **Cells:** the cell sets are identical in every contrast.
@@ -119,6 +119,6 @@ them to choose panel genes, hyperparameters or models only through training fold
   suggests little extra between-well variance, but it is not independent screen replication. The
   Tri-omics replicate is reserved for external validation.
 - **Interactions for W1 and KS:** none are defined. Drug-effect W1 is descriptive only.
-- **Figures:** `reports/figures/phase2_aim1_forest_fufa`, `phase2_aim1_mean_vs_dispersion`,
-  `phase2_aim1_ecdf_fufa`. The ECDF figure shows the three smallest-q targets per condition,
+- **Figures:** `reports/figures/aim1_forest_fufa`, `aim1_mean_vs_dispersion`,
+  `aim1_ecdf_fufa`. The ECDF figure shows the three smallest-q targets per condition,
   because there were no primary calls.

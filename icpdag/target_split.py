@@ -13,7 +13,7 @@ RESPONSE_PATTERN = re.compile(r"score|estimate|program|fufa|kanai|tsoi|response|
 
 
 def eligible_targets(qc):
-    """Targets eligible in every condition of the Phase 1 QC table."""
+    """Targets eligible in every condition of the data-preparation QC table."""
     rows = qc[qc.target.ne("NTC")].assign(eligible=lambda d: d.eligible.eq(True))
     flags = rows.pivot(index="target", columns="condition", values="eligible")
     flags = flags.fillna(False).astype(bool)
@@ -23,7 +23,7 @@ def eligible_targets(qc):
 def make_split(qc, n_folds, seed):
     """Seeded fold assignment, stratified by knockdown strength tertile.
 
-    qc: Phase 1 target QC with columns condition, target, eligible, knockdown_remaining_ratio.
+    qc: data-preparation target QC with columns condition, target, eligible, knockdown_remaining_ratio.
     Returns one row per eligible target: target, kd_strength, kd_tertile (0 = strongest), fold.
     """
     bad = [c for c in qc.columns if RESPONSE_PATTERN.search(c)]

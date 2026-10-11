@@ -1,11 +1,11 @@
-"""Build the external program gene sets for Phase 2 scoring.
+"""Build the external program gene sets for Aim 1 scoring.
 
 Usage:
     python -I scripts/build_programs.py [--out config/programs.json]
 
 Reads the supplementary tables recorded in data/ref/SOURCES.md, maps symbols to GENCODE v38
 (exact, then unique HGNC previous/alias symbols), and writes config/programs.json (public gene
-lists with provenance) and results/summary/phase2_program_mapping.csv. Stops if the Fufa program
+lists with provenance) and results/summary/aim1_program_mapping.csv. Stops if the Fufa program
 does not have 45 source genes or any program maps below 80% of its source genes.
 """
 import argparse
@@ -47,7 +47,7 @@ def sha256(path):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--out", default=str(ROOT / "config" / "programs.json"))
-    parser.add_argument("--summary", default=str(ROOT / "results" / "summary" / "phase2_program_mapping.csv"))
+    parser.add_argument("--summary", default=str(ROOT / "results" / "summary" / "aim1_program_mapping.csv"))
     parser.add_argument("--rna", default=str(ROOT / "data" / "processed" / "rna_singlets.h5ad"))
     args = parser.parse_args(argv)
     import anndata as ad

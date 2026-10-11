@@ -1,4 +1,4 @@
-"""Phase 2 Aim 1: program scores and descriptive mean / distribution contrasts.
+"""Aim 1: program scores and descriptive mean / distribution contrasts.
 
 Usage:
     python scripts/aim1.py [--config config/aim1.json] [--targets A,B,...] [--bootstrap B]
@@ -300,7 +300,7 @@ def main(argv=None):
     if args.permutations:
         cfg["permutations"] = args.permutations
     P = cfg["paths"]
-    run = args.run_name or ("smoke_aim1" if args.targets else "phase2_aim1")
+    run = args.run_name or ("smoke_aim1" if args.targets else "aim1")
     run_dir = ROOT / P["outputs_dir"] / run
     run_dir.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s",
@@ -339,13 +339,13 @@ def main(argv=None):
     genes_table = mapping.assign(detection_dmso_ntc=mapping.symbol.map(detect),
                                  is_library_target=mapping.symbol.isin(library_symbols),
                                  is_eligible_target=mapping.symbol.isin(set(target_symbol.values())))
-    write(genes_table, "phase2_program_genes.csv", per_target=False)
+    write(genes_table, "aim1_program_genes.csv", per_target=False)
     audit_rows = [dict(program=a["program"], readout_role=gs.ROLES[a["program"]], n_requested=a["n_requested"],
                        n_mapped=a["n_mapped"], missing_genes=";".join(a["missing_genes"]),
                        n_detectable_dmso_ntc=a["detectable_DMSO_NTC"], n_background_controls=len(a["controls"]),
                        center=a["center"], scale=a["scale"], raw_center=a["raw_center"], raw_scale=a["raw_scale"])
                   for a in audit]
-    write(pd.DataFrame(audit_rows), "phase2_program_audit.csv", per_target=False)
+    write(pd.DataFrame(audit_rows), "aim1_program_audit.csv", per_target=False)
     pd.concat([meta[["condition", "target", "lig1_well", "total_counts"]], scores], axis=1).to_csv(
         run_dir / "scores.csv.gz")  # cell level: outputs/ only, never committed
     overlap = gs.target_overlap(programs, {t: target_symbol[t] for t in targets})
@@ -360,31 +360,31 @@ def main(argv=None):
     flag = {(row.target, row.program) for row in overlap.itertuples()}
     mean_main = mean_fx[~mean_fx.kind.str.startswith("pair")].copy()
     mean_main["target_gene_in_program"] = [(t, o) in flag for t, o in zip(mean_main.target, mean_main.readout)]
-    write(mean_main, "phase2_mean_contrasts.csv")
-    write(group_summaries(S, M), "phase2_group_summaries.csv")
+    write(mean_main, "aim1_mean_contrasts.csv")
+    write(group_summaries(S, M), "aim1_group_summaries.csv")
 
     disp = ds.dispersion_contrasts(S, M, targets, cfg["bootstrap"], cfg["permutations"], cfg["seed"],
                                    tuple(cfg["conditions"]), progress)
     disp["readout_role"] = disp.readout.map(gs.ROLES)
     disp["target_gene_in_program"] = [(t, o) in flag for t, o in zip(disp.target, disp.readout)]
-    write(disp, "phase2_dispersion_contrasts.csv")
+    write(disp, "aim1_dispersion_contrasts.csv")
 
     depth, _ = depth_sensitivity(S, M, targets, disp, cfg, progress)
-    write(depth, "phase2_dispersion_depth_sensitivity.csv")
+    write(depth, "aim1_dispersion_depth_sensitivity.csv")
 
     cluster = cluster_table(S, M, targets, mean_fx, disp, cfg)
-    write(cluster, "phase2_cluster_bootstrap_fufa.csv")
+    write(cluster, "aim1_cluster_bootstrap_fufa.csv")
     progress("cluster bootstrap")
 
     highlights = highlight_table(mean_fx, disp, depth, cluster, targets, cfg)
-    write(highlights, "phase2_highlight_targets.csv")
+    write(highlights, "aim1_highlight_targets.csv")
 
     rep_targets = [t for t in r["targets"] if t in targets]
     spread = background_seed_spread(X, var, meta[["condition", "target"]], programs, library_symbols,
                                     rep_targets, pairs, cfg)
     progress("background-seed spread")
     rep = reproduction_table(mean_fx, cfg, spread)
-    write(rep[rep.estimate_new.notna()], "phase2_report_reproduction.csv")
+    write(rep[rep.estimate_new.notna()], "aim1_report_reproduction.csv")
 
     if len(overlap):
         tip = target_in_program(X, var, meta[["condition", "target"]], programs, overlap, library_symbols,
@@ -395,7 +395,7 @@ def main(argv=None):
         prim = prim.rename(columns={"readout": "program", "estimate": "estimate_primary"})
         tip = tip.merge(prim[["target", "program", "statistic", "kind", "condition", "estimate_primary"]],
                         on=["target", "program", "statistic", "kind", "condition"], how="left")
-        write(tip, "phase2_target_in_program_sensitivity.csv")
+        write(tip, "aim1_target_in_program_sensitivity.csv")
         progress("target-in-program sensitivity")
 
     e = cfg["expression"]
@@ -408,8 +408,8 @@ def main(argv=None):
     expr.to_csv(run_dir / "expression_contrasts.csv.gz", index=False)
     summary, tops = summarize_expression(expr, e["absdiff_cutoff"], e["q"], e["top_genes"])
     summary["n_genes_detected_any_condition"] = len(cols)
-    write(summary, "phase2_expression_summary.csv")
-    write(tops, "phase2_expression_top_genes.csv")
+    write(summary, "aim1_expression_summary.csv")
+    write(tops, "aim1_expression_top_genes.csv")
     progress("expression contrasts; done")
 
 

@@ -1,5 +1,5 @@
 {
-  "description": "Pre-registered Phase 5 evaluation endpoints. Frozen before any modelling code exists; do not change after model fitting starts. This file is authoritative.",
+  "description": "Pre-registered held-out evaluation endpoints. Frozen before any modelling code exists; do not change after model fitting starts. This file is authoritative.",
   "frozen": true,
   "date": "2026-10-11",
   "conditions": ["DMSO", "Vem"],
@@ -88,22 +88,22 @@
     "readout": "Fufa2019_AZD_up_SOX10_bound_pigmentation",
     "contrasts": ["KD - NTC per condition", "gene x drug interaction (Vem - DMSO)"],
     "metric": "absolute error |predicted - observed|",
-    "prediction": "apply the frozen Phase 2 scoring (same program genes, background controls, DMSO NTC center and scale) to the predicted expression changes; the score is linear in log expression, so the predicted mean effect is that linear combination of predicted gene changes. Genes a model does not predict get a predicted change of 0 for every model alike.",
+    "prediction": "apply the frozen Aim 1 scoring (same program genes, background controls, DMSO NTC center and scale) to the predicted expression changes; the score is linear in log expression, so the predicted mean effect is that linear combination of predicted gene changes. Genes a model does not predict get a predicted change of 0 for every model alike.",
     "summary": "median absolute error over held-out targets; paired Wilcoxon signed-rank vs shared CSCN-SEM with Hodges-Lehmann effect size"
   },
   "tertiary_endpoints": {
     "distribution_agreement": {
       "statistics": ["log_var_ratio", "iqr_diff", "centered_wasserstein"],
       "metric": "absolute error |predicted - observed|",
-      "observed": "evaluation cells, Phase 2 estimators (icpdag/dispersion.py)"
+      "observed": "evaluation cells, Aim 1 estimators (icpdag/dispersion.py)"
     },
     "heterogeneity_calibration": {
       "rule": "the predicted between-cell dispersion (log variance ratio) must not exceed the upper bound of the observed 95% interval",
       "metrics": ["over_dispersion_rate (share of target x condition rows above the upper bound; nominal <= 0.025)", "coverage of the observed 95% interval"],
-      "reference": "Phase 2 all-cell intervals (results/summary/phase2_dispersion_contrasts.csv) reported alongside"
+      "reference": "Aim 1 all-cell intervals (results/summary/aim1_dispersion_contrasts.csv) reported alongside"
     },
     "models_without_cell_level_output": "observed evaluation-fold control cells plus the model's predicted mean shift",
-    "power_note": "Phase 2 found 0 pre-specified primary dispersion calls (Fufa log variance ratio BH q < 0.05 with mean CI including 0) across 56 targets x 2 conditions; tertiary endpoints are expected to have low power (see results/summary/phase2b_power_summary.md)."
+    "power_note": "Aim 1 found 0 pre-specified primary dispersion calls (Fufa log variance ratio BH q < 0.05 with mean CI including 0) across 56 targets x 2 conditions; tertiary endpoints are expected to have low power (see results/summary/power_summary.md)."
   },
   "leakage": [
     "Targets are split into train / held-out before any response-based step (config/target_split.json).",
