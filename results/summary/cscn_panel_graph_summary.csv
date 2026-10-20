@@ -1,0 +1,3 @@
+condition,n_cells,n_ci_errors,edges_per_cell_median,edges_per_cell_q1,edges_per_cell_q3,edges_per_cell_mean,cells_without_edges,undirected_share_pooled,undirected_share_median,target_nodes_with_edge_mean,ci_tests_per_cell_median,unseeded_dag_completion_valid_rate,seconds_per_cell_mean,seconds_per_cell_median,cpu_hours
+DMSO,1989,0,64.0,49.0,77.0,62.26344896933132,0,0.2642156941909853,0.26785714285714285,0.26981433599080656,331623.0,0.939165409753645,45.094492085017784,44.007425100018736,24.914706876972325
+Vem,1864,0,61.0,36.0,81.0,58.543454935622314,0,0.26001374570446734,0.2727272727272727,0.2679816830165543,280132.0,0.9994635193133047,36.78579737221014,36.24542449996807,19.046868417166586

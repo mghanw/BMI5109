@@ -1,0 +1,50 @@
+{
+  "description": "Cell-specific CSCN graph inference on the network panel (config/cscn_panel.json), NTC cells only. The window is fixed a priori (0.35, from the earlier gene-CKM work); panel size, ci_alpha and max_conditioning were chosen from timing and graph diagnostics only, never from prediction performance (see selection).",
+  "paths": {
+    "panel": "config/cscn_panel.json",
+    "outputs_dir": "outputs",
+    "summary_dir": "results/summary"
+  },
+  "conditions": [
+    "DMSO",
+    "Vem"
+  ],
+  "window": 0.35,
+  "ci_alpha": 0.1,
+  "max_conditioning": 4,
+  "query_engine": "bitmap",
+  "pc_variant": "stable",
+  "chunk_size": 8,
+  "seed": 20261011,
+  "timing": {
+    "panel_sizes": [
+      150,
+      200,
+      250,
+      300
+    ],
+    "max_conditioning": [
+      2,
+      3,
+      4
+    ],
+    "focal_per_condition": 20,
+    "threshold_seconds": 60,
+    "hard_timeout_seconds": 600,
+    "end_to_end_cells": 200,
+    "end_to_end_condition": "DMSO",
+    "end_to_end_panel_size": 250
+  },
+  "selection": {
+    "date": "2026-10-20",
+    "basis": "graph diagnostics and runtime only (target connectivity, edges per cell, runtime); never prediction performance",
+    "panel_size": 250,
+    "max_conditioning": 4,
+    "window": 0.35,
+    "ci_alpha": 0.1,
+    "rationale": "Window kept at the a priori 0.35: window changes (0.5, 0.65) gave no consistent benefit, and 0.65 disconnected the most-detected targets. ci_alpha 0.10 roughly doubles edges per cell (median 42 -> 78) and raises target connectivity (mean share of target nodes with >= 1 edge 0.18 -> 0.29), while edges stay far below the number expected if the local CI test were calibrated, i.e. the test is conservative on zero-inflated counts. max_conditioning 2-4 changed runtime and edges by < 3% (sparse skeletons); 4 is used.",
+    "timing_grid": "results/summary/cscn_panel_timing.csv (P x max_conditioning at window 0.35, ci_alpha 0.05)",
+    "sensitivity_grid": "results/summary/cscn_panel_sensitivity.csv (window x ci_alpha at P 250, max_conditioning 2)",
+    "focal_cells": "the same 20 seeded NTC cells per condition in every configuration"
+  }
+}
