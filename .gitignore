@@ -60,3 +60,4 @@ results/summary/*
 !results/summary/score_reliability.csv
 !results/summary/power_simulation.csv
 !results/summary/power_summary.md
+!results/summary/cscn_panel_genes.csv
