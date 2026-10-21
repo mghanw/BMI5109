@@ -175,5 +175,28 @@ class Models(unittest.TestCase):
         self.assertNotIn("H", set(evidence.target))
 
 
+class SummaryTable(unittest.TestCase):
+    def test_exclusion_flag_and_ida_statistics(self):
+        import importlib.util
+        from pathlib import Path
+
+        import pandas as pd
+
+        path = Path(__file__).resolve().parents[1] / "scripts" / "summarize_sem_prediction.py"
+        spec = importlib.util.spec_from_file_location("summarize_sem_prediction", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        pred = pd.DataFrame(dict(model="m", condition="DMSO", fold=0, target=["A", "B"], included_cells=[90, 100],
+                                 reference_cells=100, genes_nonzero=[0, 4], constant_prediction=[True, False]))
+        stats = pd.DataFrame(dict(model="m", condition="DMSO", target=["A", "B"], units=[100, 100], excluded=[10, 2],
+                                  n_undirected=[0, 50], n_candidates=[100, 150], n_failed=[10, 2], n_fallback=[0, 37]))
+        row = module.model_summary(pred, stats).iloc[0]
+        self.assertEqual((row.n_constant_prediction, row.constant_targets), (1, "A"))
+        self.assertEqual((row.n_targets_exclusion_flag, row.exclusion_flag_targets), (1, "A"))
+        self.assertAlmostEqual(row.excluded_share, 12 / 200)
+        self.assertAlmostEqual(row.mean_undirected_per_unit, 50 / 200)
+        self.assertAlmostEqual(row.fallback_share_of_valid_choices, 37 / 238)
+
+
 if __name__ == "__main__":
     unittest.main()
