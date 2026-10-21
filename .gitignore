@@ -75,3 +75,9 @@ results/summary/*
 !results/summary/sem_prediction_model_summary.csv
 !results/summary/sem_prediction_summary.md
 !results/summary/project_summary.md
+!results/summary/evaluation_target_metrics.csv
+!results/summary/evaluation_primary.csv
+!results/summary/evaluation_secondary.csv
+!results/summary/evaluation_fufa.csv
+!results/summary/evaluation_distribution.csv
+!results/summary/evaluation_summary.md

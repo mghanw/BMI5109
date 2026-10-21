@@ -1,0 +1,135 @@
+{
+  "description": "Run rules for the held-out evaluation of the frozen CSCN-SEM predictions. Implements config/evaluation_endpoints.json (authoritative, including its 2026-10-21 amendment) and fixes only what that file leaves open. Frozen and committed before any observed response of a held-out target on evaluation cells is read.",
+  "frozen": true,
+  "date": "2026-10-21",
+  "inputs": {
+    "endpoints": "config/evaluation_endpoints.json",
+    "endpoints_sha256": "0b9a329ebb1b068724ba0c03d9852f3f0645fab77c031734e7cd37831021a52c",
+    "prediction_config": "config/sem_prediction.json",
+    "prediction_config_commit": "81a3bd1",
+    "prediction_config_sha256": "249f1d926d0cce757e3b542c5609a189d5c53077469da8e8293bcd11ac081022",
+    "sha256_rule": "SHA-256 of the file bytes with CRLF replaced by LF (as recorded by scripts/predict_sem_knockdown.py)",
+    "predictions": "outputs/sem_prediction/predictions/<condition>/fold<f>/predictions.npz",
+    "prediction_shards": "outputs/sem_prediction/predictions/<condition>/fold<f>/shard_*_of_*/config.json",
+    "structure_targets": "results/summary/sem_prediction_structure_targets.csv",
+    "expression": "data/processed/rna_singlets.h5ad",
+    "cells": "data/processed/cells.csv.gz",
+    "cell_graphs": "outputs/cscn_panel_networks/<condition>/cells.csv.gz",
+    "aim1_scores": "outputs/aim1/scores.csv.gz",
+    "aim1_config": "config/aim1.json",
+    "aim1_group_summaries": "results/summary/aim1_group_summaries.csv",
+    "aim1_dispersion": "results/summary/aim1_dispersion_contrasts.csv",
+    "fufa_weights": "outputs/sem_prediction/fufa_weights.json"
+  },
+  "software": {"scipy": "1.17.1", "numpy": "1.26.4", "pandas": "2.3.3"},
+  "seed": 20261011,
+  "bootstrap_draws": 5000,
+  "noise_ceiling_splits": 100,
+  "clip_abs_r": 0.999999999999,
+  "conditions": ["DMSO", "Vem"],
+  "directions": [0, 1],
+  "models": ["cell_specific_cscn_sem", "shared_cscn_sem", "cluster_level_sem", "local_association_network_sem",
+             "unweighted_propagation_ablation", "zero_downstream_baseline"],
+  "rules": {
+    "verification": {
+      "hash": "every shard config.json next to a predictions.npz records config_sha256 equal to prediction_config_sha256, which must also equal the hash of config/sem_prediction.json at commit 81a3bd1 and of the working copy; each npz's targets, lam and SHA-256 of reference_cells (int64 bytes) equal its shard config; stop on any mismatch",
+      "coverage": "models equal the list above; nodes equal the frozen panel order; scaled has shape (6, T, 2, 250); every (model, fold, held-out target, condition, direction) appears exactly once over 5 folds x 2 conditions, with the fold's held-out targets from config/target_split.json; stop on any mismatch",
+      "delta": "the stored delta equals the delta recomputed from the evaluation expression load (same normalisation; absolute tolerance 1e-6); stop otherwise",
+      "constant_predictions": "before any observed response is read: per model, condition and target, a prediction is constant if the range (ptp) of the per-unit prediction over the 249 evaluation genes is <= 1e-12; the per-(target, condition) flags of cell_specific_cscn_sem, shared_cscn_sem, cluster_level_sem and local_association_network_sem must equal constant_prediction_expected in results/summary/sem_prediction_structure_targets.csv (targets constant in at least one condition: 2, 40, 4, 0); stop on any mismatch",
+      "included_zero": "rows with included == 0 are not expected; if any (model, target, condition) row has included == 0, stop and report them (never treated as a zero prediction)",
+      "constant_shift": "shared_cscn_sem and zero_downstream_baseline: the stored per-cell Fufa shift (fufa_scaled) must be constant over the included reference cells (ptp <= 1e-10) for every target, condition and direction; stop otherwise",
+      "fufa_pseudobulk": "per model, target, condition and direction, the mean of fufa_scaled over included reference cells must equal w . scaled (frozen Fufa panel weights; absolute tolerance 1e-8)",
+      "aim1_scores": "outputs/aim1/config.json must equal config/aim1.json except the run fields (argv, run_name, targets_subset) and paths.target_qc, which was renamed from results/summary/phase1_target_qc.csv to results/summary/data_prep_target_qc.csv in commit 39ee64e; Fufa n and mean per (condition, group) from outputs/aim1/scores.csv.gz must reproduce results/summary/aim1_group_summaries.csv (n exact; mean rtol 1e-5, atol 1e-6)"
+    },
+    "evaluation_genes": "the 250 panel nodes minus the held-out target's own node (icpdag.sem_inputs.target_nodes): 249 genes",
+    "observed_change": "for direction c: mean log1p CP10k (icpdag.sem_inputs.load_panel_cells, whole-transcriptome totals, the same function that produced the deltas) over target cells of calib_fold 1 - c minus the same over NTC cells of calib_fold 1 - c, same condition",
+    "predicted_change": "scaled[model, target, c, :] from predictions.npz (delta from calib_fold c)",
+    "constant": {
+      "prediction": "ptp over the 249 genes <= 1e-12",
+      "observed": "ptp over the 249 genes <= 1e-12; Pearson r is NaN in every version (pre-registered and amended), so the target's pair is dropped and counted in every z test"
+    },
+    "pearson_z": "z = atanh(clip(r, -clip_abs_r, clip_abs_r)); r NaN if either vector is constant",
+    "rmse": "sqrt(mean((predicted - observed)^2)) over the 249 genes; always defined",
+    "combine": {
+      "directions": "per (model, target, condition): z = mean of the 2 direction z (NaN if either is NaN); RMSE = mean of the 2 direction RMSE",
+      "conditions": "per (model, target): z = mean of the DMSO and Vem z (NaN if either is NaN); RMSE = mean of the DMSO and Vem RMSE",
+      "back_transform": "r = tanh(z)"
+    },
+    "versions": {
+      "amended": "a constant prediction gets r = 0 (z = 0) before combining; used by the primary decision test and every paired test on z (per-condition, secondary comparisons)",
+      "complete_pairs": "pre-registered NaN rule: NaN propagates, paired tests drop incomplete pairs; supporting"
+    },
+    "wilcoxon": {
+      "differences": "model - reference (cell_specific_cscn_sem - comparator); a positive z difference or a negative RMSE difference favours cell_specific_cscn_sem",
+      "call": "scipy.stats.wilcoxon(d, zero_method='wilcox', alternative='two-sided', method=<rule>)",
+      "method_rule": "exact iff n_eff <= 50 and d has no zero differences and no ties among |d|; otherwise approx (scipy method 'asymptotic', no continuity correction); decided by our code and passed explicitly, so the recorded method is the one used",
+      "reported": "n pairs entering, NaN pairs dropped, zero-difference pairs dropped, n_eff, method, statistic, p",
+      "degenerate": "n_eff = 0: statistic and p are NaN"
+    },
+    "hodges_lehmann": {
+      "estimate": "median of the Walsh averages (d_i + d_j) / 2, i <= j, over all pairs entering the test (zero differences included)",
+      "ci": "percentile bootstrap over targets: a fresh numpy.random.default_rng(seed) per test, indices integers(0, n, (bootstrap_draws, n)), HL per draw, numpy.percentile [2.5, 97.5] (linear)",
+      "scale": "z tests reported on the z scale and back-transformed with tanh; RMSE and Fufa errors in native units"
+    },
+    "holm": {
+      "families": {
+        "secondary_z_amended": ["cluster_level_sem", "local_association_network_sem", "unweighted_propagation_ablation"],
+        "secondary_z_complete_pairs (supporting)": ["cluster_level_sem", "local_association_network_sem", "unweighted_propagation_ablation"],
+        "secondary_rmse": ["zero_downstream_baseline", "cluster_level_sem", "local_association_network_sem", "unweighted_propagation_ablation"]
+      },
+      "rule": "step-down Holm adjusted p over the finite p-values of a family; a NaN p stays NaN and does not count towards the family size"
+    },
+    "medians": {
+      "main": "median over targets with a defined z (NaN excluded; pre-registered rule), back-transformed tanh(median z); number of targets entering reported per model",
+      "second": "median with r = 0 for constant predictions (amended version), labelled; number of targets entering reported",
+      "rmse": "median over all targets",
+      "per_fold": "the same medians per fold of config/target_split.json",
+      "stratum": "the same medians per connected / weak stratum (config/sem_prediction.json weak_targets.connected_targets), descriptive",
+      "r_models": "Pearson r metrics are not computed for zero_downstream_baseline (pre-registered: RMSE only); the NaN flag covers the other 5 models"
+    },
+    "coverage": "per model and condition, the share of the 56 targets with a non-constant prediction; pooled over conditions, the share non-constant in both conditions (= targets entering the complete-pairs analysis); reported next to the complete-pairs result",
+    "nan_flag": "per model, the share of targets with NaN pooled z under the pre-registered rule; flagged if > 0.1",
+    "noise_ceiling": {
+      "rng": "per (condition, target, direction): numpy.random.default_rng([seed, zlib.crc32('noise_ceiling|<condition>|<target>|<direction>')])",
+      "split": "for each of the 100 splits, permute the target evaluation cells and the NTC evaluation cells separately (in that order); half A = the first floor(n / 2) of each permutation, half B = the rest",
+      "statistic": "Pearson r over the 249 evaluation genes between (mean target A - mean NTC A) and (mean target B - mean NTC B); Spearman-Brown 2r / (1 + r), clipped to [-clip_abs_r, clip_abs_r]",
+      "summary": "median over splits per (condition, target, direction); directions combined as tanh(mean of atanh) (Fisher z scale); context only, not part of any test"
+    },
+    "fufa_secondary": {
+      "observed": "per-cell Fufa scores of the frozen Aim 1 run (outputs/aim1/scores.csv.gz), calib_fold from data/processed/cells.csv.gz; for direction c: mean over target cells of calib_fold 1 - c minus mean over NTC cells of calib_fold 1 - c",
+      "predicted": "mean of fufa_scaled[model, :, target, c] over included reference cells (all NTC cells of the condition)",
+      "contrasts": "KD - NTC in DMSO, KD - NTC in Vem, interaction (Vem - DMSO) = per direction c the Vem contrast minus the DMSO contrast, for predicted and observed",
+      "error": "|predicted - observed| per direction, then the mean over the 2 directions",
+      "summary": "median absolute error over targets per model and contrast; paired Wilcoxon + Hodges-Lehmann on the error difference cell_specific_cscn_sem - shared_cscn_sem per contrast (negative favours cell-specific); no multiplicity correction (none pre-specified)"
+    },
+    "tertiary": {
+      "cell_level_models": ["cell_specific_cscn_sem", "cluster_level_sem", "local_association_network_sem", "unweighted_propagation_ablation"],
+      "mean_shift_models": ["shared_cscn_sem", "zero_downstream_baseline"],
+      "mean_shift_note": "for mean_shift_models the stored per-cell shift is constant (verified), so using it equals adding the model's predicted mean shift (as pre-registered)",
+      "predicted_distribution": "for direction c: the evaluation-fold NTC cells (calib_fold 1 - c) of the condition whose stored shift is defined (included); predicted sample = their observed Fufa scores + their own stored shift fufa_scaled[model, cell, target, c]",
+      "predicted_statistic": "statistic(predicted sample, the same included cells unshifted), so dropped cells cannot create a dispersion difference",
+      "observed_statistic": "statistic(target cells of calib_fold 1 - c, all NTC cells of calib_fold 1 - c)",
+      "statistics": "icpdag.dispersion log_var_ratio, iqr_diff, centered_wasserstein1",
+      "error": "|predicted - observed| per direction, then the mean over the 2 directions",
+      "summary": "median absolute error over targets per model, statistic and condition; descriptive, no test",
+      "dropped_cells": "number of evaluation-fold NTC cells without a defined shift, per model, target, condition and direction"
+    },
+    "heterogeneity_calibration": {
+      "observed_interval": "per (condition, target, direction): percentile bootstrap 95% interval of the observed log variance ratio; icpdag.dispersion.GroupDraws with bootstrap_draws, the seed and labels (condition, '<target>|eval<1 - c>') for target cells and (condition, 'NTC|eval<1 - c>') for NTC cells; draws log(var_target / var_NTC); numpy.percentile [2.5, 97.5]",
+      "flags": "per direction: over-dispersion if the predicted log variance ratio > the upper bound; covered if lower <= predicted <= upper",
+      "row_score": "per (model, target, condition): mean of the 2 direction flags (0, 0.5 or 1)",
+      "rates": "over_dispersion_rate and coverage = mean row score over the 112 target x condition rows per model (also per condition); nominal over-dispersion <= 0.025",
+      "aim1_reference": "Aim 1 all-cell estimate and 95% interval of the Fufa log variance ratio (results/summary/aim1_dispersion_contrasts.csv, kind gene) as columns only; no rate or coverage against them"
+    },
+    "run_guard": "the full run requires this file, icpdag/heldout_evaluation.py and scripts/evaluate_heldout.py to be tracked and unmodified in git, records HEAD in outputs/evaluation/run.json, and refuses to overwrite an existing outputs/evaluation/run.json unless --deviation '<dated reason>' is given (then documented in results/summary/evaluation_summary.md)",
+    "smoke": "--fold f --targets A,B: the same pipeline on a subset, writing only to outputs/evaluation_smoke/; prints shapes, row counts and runtime only"
+  },
+  "outputs": {
+    "uncommitted": ["outputs/evaluation/config.json", "outputs/evaluation/run.json", "outputs/evaluation/observed_changes.npz",
+                    "outputs/evaluation/noise_ceiling_splits.csv.gz", "outputs/evaluation/tables/"],
+    "committed": ["results/summary/evaluation_target_metrics.csv", "results/summary/evaluation_primary.csv",
+                  "results/summary/evaluation_secondary.csv", "results/summary/evaluation_fufa.csv",
+                  "results/summary/evaluation_distribution.csv", "results/summary/evaluation_summary.md",
+                  "reports/figures/evaluation_paired_z.png", "reports/figures/evaluation_r_vs_noise_ceiling.png"]
+  }
+}
