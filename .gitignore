@@ -67,3 +67,10 @@ results/summary/*
 !results/summary/cscn_panel_edge_frequency.csv
 !results/summary/cscn_panel_target_connectivity.csv
 !results/summary/cscn_panel_summary.md
+!results/summary/sem_prediction_shared_graphs.csv
+!results/summary/sem_prediction_structure.csv
+!results/summary/sem_prediction_structure_targets.csv
+!results/summary/sem_prediction_orientation.csv
+!results/summary/sem_prediction_lambda_cv.csv
+!results/summary/sem_prediction_model_summary.csv
+!results/summary/sem_prediction_summary.md

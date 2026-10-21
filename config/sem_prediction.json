@@ -1,0 +1,152 @@
+{
+  "description": "CSCN-SEM knockdown prediction: model definitions, frozen before any prediction run. Outputs are predicted pseudobulk expression changes per model, held-out target, condition and cross-fit direction; no held-out evaluation quantity is computed here (config/evaluation_endpoints.json).",
+  "frozen": true,
+  "seed": 20261011,
+  "conditions": [
+    "DMSO",
+    "Vem"
+  ],
+  "inputs": {
+    "panel": "config/cscn_panel.json",
+    "networks": "config/cscn_networks.json",
+    "cell_graphs": "outputs/cscn_panel_networks",
+    "target_split": "config/target_split.json",
+    "expression": "data/processed/rna_singlets.h5ad",
+    "program_scoring": "config/aim1.json",
+    "target_connectivity": "results/summary/cscn_panel_target_connectivity.csv"
+  },
+  "outputs_dir": "outputs/sem_prediction",
+  "allowed_response_data": [
+    "training-fold targets' responses (orientation seeds)",
+    "the held-out target's own perturbed-gene expression on its calibration fold (delta)"
+  ],
+  "orientation": {
+    "outer_folds": "config/target_split.json folds 0-4; training targets = targets not in fold f",
+    "evidence": "per (fold, condition): target - NTC mean difference of log1p CP10k for every panel gene (destination != source), Welch t-test, BH within (fold, condition); all cells of training targets and all NTC cells of the condition",
+    "knockdown_pass": "negative change of the training target's own panel node (all 56 targets are eligible)",
+    "eligible_seed": "knockdown pass and q < 0.05",
+    "pipeline": "starting PDAG -> icpdag.intervention_orientation.seed_interventions (extension_check = relaxed rule) -> official Meek rules (apply_r4 false) -> official DAG completion (_build_dag_representation) with the unified fallback completion rule",
+    "extension_rule": "for every graph-based model: the official completion is accepted if it is a valid extension (same skeleton, fixed edges kept, same unshielded colliders, acyclic); otherwise it is accepted under the relaxed rule (same skeleton, every fixed seeded or Meek-oriented edge kept, acyclic; colliders may change) and counted as a fallback completion per model, fold and condition. The seed compatibility check (seed_interventions extension_check) and the local IDA choices use the same rule.",
+    "history": "2026-10-21 (Checkpoint A, structure only): the collider-preserving rule alone left 6.1% of DMSO cell-specific fold DAGs without a completion (all 56 DMSO targets above the 5% exclusion flag); the fallback, first introduced for the local association model only, now applies to every model."
+  },
+  "local_ida": {
+    "applies_to": "the held-out target g in every graph-based model",
+    "rule": "U = undirected edges incident to g in the seeded + Meek PDAG; enumerate parent sets S of g among U's neighbours that create no new unshielded collider at g (S is a clique and every node of S is adjacent to every directed parent of g; Maathuis et al. 2009); for each S orient S -> g and g -> (U minus S), apply Meek, complete with the unified fallback completion rule; drop and count choices whose completion fails even under the relaxed rule",
+    "cell_prediction": "equal-weight mean of the per-choice predictions over the valid choices",
+    "max_undirected": 10,
+    "stop_rule": "if |U| > 10 in any cell of any model, stop and report",
+    "cell_exclusion": "no reference cell is excluded for a failed collider-preserving completion (the fallback applies); a cell is excluded from a target's pseudobulk mean only if no choice has a completion even under the relaxed rule, and (model, target, condition) rows with > 5% of reference cells excluded are flagged",
+    "history": "2026-10-21 (Checkpoint A): limit raised from 8 to 10 (one local association unit had |U| = 9)."
+  },
+  "graphs": {
+    "cell_specific": "stored post-collider PDAGs (outputs/cscn_panel_networks/<condition>/edges.npz)",
+    "shared": {
+      "rule": "target-coverage-matched population PC: the vendored PC-stable skeleton search and unshielded-collider orientation with the CI test replaced by a population Spearman partial correlation (Fisher z on all NTC cells of the condition), max conditioning as config/cscn_networks.json (4); z_crit = the largest threshold (sparsest graph) at which the number of the 56 targets with >= 1 incident edge is >= the number of targets with an edge in >= 10% of the same cells' CSCN graphs (DMSO 35, Vem 32)",
+      "search": "start at the level-0 bound (largest threshold at which enough targets have a marginal edge), lower by factors of 0.9 until the PC skeleton covers enough targets, then bisect (40 steps); the largest evaluated z_crit with enough coverage is used",
+      "threshold": "independence iff |atanh(r)| * sqrt(n - |Z| - 3) < z_crit; reported alpha = 2 * sf(z_crit)",
+      "runtime_guard": "abort if any single PC fit takes longer than 600 s",
+      "why_not_cscn_single_neighbourhood": "with a window covering all cells every gene's neighbourhood is all cells and the CSCN count statistic is 0, so the graph is empty; population PC at alpha 0.10 is too dense (level-1 degree 35-100, every target > 8 incident edges)",
+      "history": "2026-10-21 (Checkpoint A, structure only): edge-count matching (median cell-specific edge count) connected only 11/56 (DMSO) and 21/56 (Vem) targets, against 35/32 targets with an edge in >= 10% of cells, so most shared-model predictions would be constant; replaced by target-coverage matching before any prediction. The first runtime guard (level-0 edges <= 20 x median cell edges) stopped the DMSO search at a graph whose PC fit took about 5 s; it was replaced by the direct 600 s per-fit guard."
+    },
+    "cluster": {
+      "k": 6,
+      "rule": "k-means (n_init 20, seed) on the 20 PCs; per cluster the shared-graph rule on the cluster's NTC cells, with the coverage requirement = the number of targets with an edge in >= 10% of that cluster's cells' CSCN graphs"
+    },
+    "local_association": {
+      "rule": "per cell k: the gene pairs with the largest absolute Pearson correlation of log1p CP10k within N(k) (no conditioning), as many as cell k's CSCN skeleton edges (density-matched); ties by node order; genes without variance in N(k) excluded; all edges undirected (no separating sets, hence no collider step), then the same orientation pipeline",
+      "completion": "the unified fallback completion rule (orientation.extension_rule)",
+      "history": "2026-10-21 (Checkpoint A, structure only): with the collider-preserving rule only 48% of the association fold DAGs had a valid completion and every target exceeded the 5% exclusion flag."
+    },
+    "pcs": {
+      "n_components": 20,
+      "input": "panel log1p CP10k of the condition's NTC cells, centred, not scaled, full SVD"
+    }
+  },
+  "coefficients": {
+    "equation": "x_j = a_j + sum_{l in pa(j)} b_jl x_l + e_j on log1p CP10k",
+    "neighbourhood": "N(k) = the round(0.35 x n) nearest NTC cells of the same condition (Euclidean in the 20 PCs, k included, stable ties), uniform weights; 0.35 matches the CSCN window",
+    "local_estimator": "b = argmin sum_{i in N(k)} (x_ij - a - b'x_i,pa)^2 + lambda |N(k)| ||b - b_pooled||^2, intercept unpenalised",
+    "b_pooled": "OLS (minimum-norm least squares) with the same parent set on all NTC cells of the condition",
+    "lambda_grid": [
+      0.01,
+      0.1,
+      1,
+      10
+    ],
+    "lambda_selection": "one lambda per condition by NTC-only cross-validation: for c in {0, 1}, each NTC cell of calib_fold 1-c uses its fold-specific completed DAG, a neighbourhood of round(0.35 x n_c) nearest calib_fold-c NTC cells and b_pooled from calib_fold c, and predicts each node with >= 1 parent from its parents; mean squared error over nodes and cells, averaged over both directions and the 5 fold-specific DAG sets; argmin over the grid. lambda = infinity (pure b_pooled) is reported as a reference row and is not selectable; a selected lambda at a grid boundary is reported, the grid is not extended. No perturbation response enters this choice.",
+    "simulation": "Delta x(k, g) = (I - B_k)^-1 e(g) delta by forward substitution in topological order",
+    "pseudobulk": "mean of Delta x(k, g) over all NTC reference cells of the condition (excluded cells removed)"
+  },
+  "delta": {
+    "rule": "delta(g, d, c) = mean log1p CP10k of gene g in target-g cells of calib_fold c minus the same in NTC cells of calib_fold c; evaluated later on calib_fold 1 - c",
+    "storage": "per-unit-delta prediction and the delta-scaled prediction for each direction c"
+  },
+  "models": {
+    "cell_specific_cscn_sem": "primary model: per-cell stored PDAGs -> fold-specific orientation -> local IDA -> local ridge-to-pooled coefficients",
+    "shared_cscn_sem": "primary reference: one density-matched population PC graph per condition -> same orientation and local IDA -> b_pooled estimated with the shared graph's own parent sets on all NTC cells of the condition (no locality)",
+    "cluster_level_sem": "K = 6 clusters per condition; each cluster's density-matched graph -> same orientation and local IDA -> OLS pooled within the cluster with that cluster graph's own parent sets; each reference cell uses its cluster's model",
+    "local_association_network_sem": "per-cell density-matched association skeleton -> same orientation and local IDA -> local ridge-to-pooled coefficients (same lambda as the primary model)",
+    "unweighted_propagation_ablation": "the cell_specific_cscn_sem DAGs and IDA choices with b_jl = 1 / |pa(j)| (no fitting, no signs)",
+    "zero_downstream_baseline": "Delta x = 0 for every downstream gene: the per-unit change vector is the perturbed gene's unit vector (Delta x_g = delta, all other panel genes 0); the evaluation excludes the perturbed gene, so its predicted downstream change is exactly 0 (RMSE only, as pre-registered)"
+  },
+  "fufa_score_shift": "frozen Aim 1 scoring (config/aim1.json, icpdag.program_scores; same program genes, background controls, DMSO NTC centre and scale) applied linearly: shift = (mean of program-gene changes - mean of control changes) / scale; genes outside the panel change by 0 for every model",
+  "weak_targets": {
+    "rule": "all 56 targets enter every analysis; nothing is excluded for weak connectivity; the pre-registered NaN rule applies unchanged",
+    "stratum": "connected = an edge in >= 10% of NTC cells in both conditions (results/summary/cscn_panel_target_connectivity.csv); descriptive stratum only, not a test",
+    "connected_targets": [
+      "ANP32B",
+      "ARIH2",
+      "CAND1",
+      "CDH13",
+      "CLTA",
+      "CST3",
+      "DUSP6",
+      "FRYL",
+      "GFM1",
+      "KIRREL",
+      "LATS2",
+      "MAU2",
+      "MED13",
+      "MED15",
+      "NF1",
+      "NF2",
+      "PBRM1",
+      "PICALM",
+      "PLXND1",
+      "PPT1",
+      "PTEN",
+      "PTPN14",
+      "RALGAPB",
+      "RB1",
+      "SUPT20H",
+      "TAOK1",
+      "TP53",
+      "UBE2R2",
+      "ZC3H15"
+    ]
+  },
+  "limitations": [
+    "The shared and cluster graphs use a population Spearman partial-correlation test, whereas the cell-specific graphs use the local CSCN count test; the comparison therefore differs in test family as well as in locality. Target-coverage matching equalises the number of targets with an incident edge, not the number of edges.",
+    "The local association model has no separating sets, so no collider orientation; its edges are oriented by intervention seeds, Meek rules, local IDA and the official completion, which may add colliders (fallback completion).",
+    "Fallback completions (relaxed rule) may introduce v-structures not supported by the data; their share is reported per model, fold and condition."
+  ],
+  "evaluation_amendment": {
+    "date": "2026-10-21",
+    "file": "config/evaluation_endpoints.json (amendments)",
+    "summary": "constant predictions get Pearson r = 0 (z = 0) in the primary decision test, so all 56 targets enter; the complete-pairs analysis becomes supporting; Wilcoxon zero differences: zero_method 'wilcox' (pairs with zero difference dropped, count reported)",
+    "reason": "under the shared model 40 of 56 targets have a constant prediction in at least one condition; complete pairs would leave 16 targets selected by shared-graph connectivity"
+  },
+  "outputs": {
+    "predictions": "outputs/sem_prediction/predictions/<condition>/fold<f>/predictions.npz: per-unit and delta-scaled pseudobulk change vectors per model and held-out target (both cross-fit directions), deltas, included reference cells, per-cell Fufa score shifts (per unit and scaled)",
+    "committed": [
+      "results/summary/sem_prediction_shared_graphs.csv",
+      "results/summary/sem_prediction_structure.csv",
+      "results/summary/sem_prediction_structure_targets.csv",
+      "results/summary/sem_prediction_orientation.csv",
+      "results/summary/sem_prediction_lambda_cv.csv",
+      "results/summary/sem_prediction_model_summary.csv",
+      "results/summary/sem_prediction_summary.md"
+    ]
+  },
+  "frozen_date": "2026-10-21"
+}

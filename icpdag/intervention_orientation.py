@@ -27,11 +27,13 @@ def valid_extension(pdag,dag):
             and nx.is_directed_acyclic_graph(dag))
 
 
-def seed_interventions(collider_graph,evidence,complete):
+def seed_interventions(collider_graph,evidence,complete,extension_check=valid_extension):
     """Keep PC collider directions; reject conflicting seed sets symmetrically.
 
     Evidence contains named, experimentally targeted genes, never a gene-to-NMF
     assignment. Nonadjacent responses remain in the evidence table, not the graph.
+    extension_check decides whether a completion is consistent with the seeded
+    graph (default: valid_extension, which also requires collider preservation).
     """
     original=collider_graph.copy()
     records={}
@@ -77,7 +79,7 @@ def seed_interventions(collider_graph,evidence,complete):
     candidates-=incompatible
     seeded=apply(candidates)
     try:
-        compatible=valid_extension(seeded,complete(seeded))
+        compatible=extension_check(seeded,complete(seeded))
     except (ValueError,RuntimeError):
         compatible=False
     if not compatible and candidates:

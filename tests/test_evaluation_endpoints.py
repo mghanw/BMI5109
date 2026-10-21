@@ -63,6 +63,20 @@ class EvaluationEndpoints(unittest.TestCase):
         self.assertTrue(r["report_nan_counts"])
         self.assertEqual(r["flag_threshold"], 0.1)
 
+    def test_amendment_before_model_fitting(self):
+        amendments = self.spec["amendments"]
+        self.assertEqual(len(amendments), 1)
+        a = amendments[0]
+        self.assertEqual(a["date"], "2026-10-21")
+        self.assertTrue(a["before_model_fitting"])
+        changes = {c["field"]: c["rule"] for c in a["changes"]}
+        self.assertIn("r = 0", changes["primary.nan_rule"])
+        self.assertIn("all 56", changes["primary.nan_rule"])
+        self.assertIn("supporting analysis", changes["primary.nan_rule"])
+        self.assertIn("zero_method 'wilcox'", changes["primary.decision_test"])
+        self.assertIn("dropped pairs is reported", changes["primary.decision_test"])
+        self.assertIn("40 of 56", a["reason"])
+
     def test_secondary_comparators(self):
         s = self.spec["secondary_comparisons"]
         models = [c["model"] for c in s["comparators"]]

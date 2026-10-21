@@ -111,5 +111,24 @@
     "Target calibration (delta) uses the held-out target's own expression only, from the calibration fold.",
     "Only perturbation-induced changes are evaluated; the perturbed gene is excluded.",
     "All models share features, calibration information and splits."
+  ],
+  "amendments": [
+    {
+      "date": "2026-10-21",
+      "before_model_fitting": true,
+      "basis": "structure only (graphs, training-fold orientation seeds); no SEM coefficients, predictions or held-out responses had been computed",
+      "changes": [
+        {
+          "field": "primary.nan_rule",
+          "rule": "In the primary decision test and every paired test on Pearson r (Fisher z), a constant prediction gets Pearson r = 0 (z = 0) instead of NaN, so all 56 held-out targets enter. The pre-registered complete-pairs analysis (primary.nan_rule) becomes a supporting analysis. NaN counts per model are still reported and flagged above 10% of targets. RMSE is unaffected."
+        },
+        {
+          "field": "primary.decision_test",
+          "rule": "Zero differences in the Wilcoxon signed-rank test: zero_method 'wilcox' (the scipy default), i.e. pairs with a zero paired difference (for example both models constant in both conditions) are dropped; the number of dropped pairs is reported for every Wilcoxon test (primary, per-condition, RMSE, secondary comparisons, secondary endpoint)."
+        }
+      ],
+      "reason": "Under the shared CSCN-SEM model 40 of 56 targets have a constant prediction (no downstream node in any cell after orientation) in at least one condition, so complete pairs would leave 16 targets selected by shared-graph connectivity rather than the full held-out target set (results/summary/sem_prediction_structure_targets.csv).",
+      "unchanged": "every other field of this file"
+    }
   ]
 }
