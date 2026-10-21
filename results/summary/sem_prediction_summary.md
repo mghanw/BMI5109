@@ -65,6 +65,3 @@ was computed. The evaluation follows config/evaluation_endpoints.json including 
   condition (NaN under the supporting complete-pairs rule): cell_specific_cscn_sem 2, shared_cscn_sem 40, cluster_level_sem 4, local_association_network_sem 0, unweighted_propagation_ablation 2, zero_downstream_baseline 56.
 - zero_downstream_baseline is constant by definition (RMSE only).
 - Exclusion flag: (model, target, condition) rows with > 5% of reference cells excluded.
-
-## Runtime
-- CPU time over all folds and conditions (14 workers; about 1.6 h wall for the full run): cell_specific_cscn_sem 4.88 h, shared_cscn_sem 0.00 h, cluster_level_sem 0.02 h, local_association_network_sem 16.17 h, unweighted_propagation_ablation 0.00 h.

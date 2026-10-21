@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "intervention-cell-pdag"
 version = "0.3.0"
-description = "Intervention-informed CSCN, gene-space CKM, and average treatment contrasts"
+description = "CSCN-SEM: cell-specific causal network models for held-out perturbation response prediction"
 requires-python = ">=3.10,<3.13"
 dependencies = [
     "numpy>=1.24,<1.28", "pandas>=2.0,<3", "scipy>=1.11",

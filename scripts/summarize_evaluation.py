@@ -5,7 +5,10 @@ Usage:
     python scripts/summarize_evaluation.py --smoke    # outputs/evaluation_smoke/ only
 
 Writes results/summary/evaluation_summary.md, reports/figures/evaluation_paired_z.png and
-reports/figures/evaluation_r_vs_noise_ceiling.png. Nothing is printed except the written paths.
+reports/figures/evaluation_r_vs_noise_ceiling.png. The post hoc magnitude paragraph (not pre-registered,
+no test) is computed from the stored predictions and outputs/evaluation/observed_changes.npz; its
+medians are also written to outputs/evaluation/post_hoc_downstream_magnitude.csv. Nothing is printed
+except the written paths.
 """
 import argparse
 import json
@@ -20,6 +23,11 @@ import pandas as pd  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from icpdag import heldout_evaluation as ev  # noqa: E402
+from icpdag.sem_inputs import panel_nodes, target_nodes  # noqa: E402
+from icpdag.sem_prediction import MODELS  # noqa: E402
+from icpdag.target_split import load_split  # noqa: E402
+
 PRIMARY, REFERENCE = "cell_specific_cscn_sem", "shared_cscn_sem"
 LABEL = {"cell_specific_cscn_sem": "Cell-specific CSCN-SEM", "shared_cscn_sem": "Shared CSCN-SEM",
          "cluster_level_sem": "Cluster-level SEM", "local_association_network_sem": "Local association SEM",
@@ -37,10 +45,16 @@ def p_fmt(p):
     return f"{p:.2e}" if p < 1e-3 else f"{p:.3f}"
 
 
-def test_line(row, back=True):
+def e(x):
+    return "NA" if x is None or (isinstance(x, float) and not np.isfinite(x)) else f"{x:.2e}"
+
+
+def test_line(row, back=True, sci=False):
     if back:
         effect = (f"HL {f(row.hl)} on the z scale (tanh {f(row.hl_back)}; 95% bootstrap CI "
                   f"[{f(row.hl_ci_low_back)}, {f(row.hl_ci_high_back)}])")
+    elif sci:
+        effect = f"HL {e(row.hl)} (95% bootstrap CI [{e(row.hl_ci_low)}, {e(row.hl_ci_high)}])"
     else:
         effect = f"HL {f(row.hl, 4)} (95% bootstrap CI [{f(row.hl_ci_low, 4)}, {f(row.hl_ci_high, 4)}])"
     return (f"n = {int(row.n_targets)}, NaN pairs dropped {int(row.n_nan_dropped)}, zero differences dropped "
@@ -68,7 +82,75 @@ def medians_table(prim, section, extra_col=None):
     return lines
 
 
-def write_summary(tables, run, out_path, lam):
+def downstream_magnitude(predictions, observed, conditions, targets, nodes, target_node, models=MODELS):
+    """Post hoc, per (model, target, condition, direction): RMS of the predicted downstream change over the
+    evaluation genes, its ratio to |delta| and to the RMS of the observed downstream change.
+
+    observed: array (condition, target, direction, gene) in the order of conditions and targets.
+    """
+    rows = []
+    for ci, condition in enumerate(conditions):
+        p = predictions[condition]
+        for ti, target in enumerate(targets):
+            t = p["targets"].index(target)
+            mask = ev.evaluation_mask(nodes, target_node[target])
+            for c in range(2):
+                o = np.asarray(observed[ci, ti, c, mask], float)
+                rms_obs, delta = float(np.sqrt(np.mean(o ** 2))), float(abs(p["delta"][t, c]))
+                for i, model in enumerate(models):
+                    rms = float(np.sqrt(np.mean(np.asarray(p["scaled"][i, t, c, mask], float) ** 2)))
+                    rows.append(dict(model=model, target=target, condition=condition, direction=c, rms_predicted=rms,
+                                     abs_delta=delta, rms_observed=rms_obs, ratio_to_delta=rms / delta,
+                                     ratio_to_observed=rms / rms_obs))
+    return pd.DataFrame(rows)
+
+
+def magnitude_summary(units, fufa):
+    """Per model medians over targets, conditions and directions, with the median |Fufa KD - NTC| shifts."""
+    cols = ["rms_predicted", "ratio_to_delta", "ratio_to_observed", "abs_delta", "rms_observed"]
+    out = units.groupby("model", sort=False)[cols].median()
+    out["n_units"] = units.groupby("model", sort=False).size()
+    kd = fufa[fufa.section.eq("target") & fufa.contrast.astype(str).str.startswith("KD_minus_NTC")
+              & fufa.direction.astype(str).isin(["0", "1"])]
+    out["fufa_abs_predicted"] = kd.groupby("model")["predicted"].apply(lambda s: s.abs().median())
+    out["fufa_abs_observed"] = kd.groupby("model")["observed"].apply(lambda s: s.abs().median())
+    return out.reset_index()
+
+
+def post_hoc_lines(mag):
+    mag = mag.set_index("model")
+    fitted = mag.drop(index="zero_downstream_baseline", errors="ignore")
+    worst = float(fitted.ratio_to_observed.max())
+    first = mag.iloc[0]
+    L = ["## Post hoc description (not pre-registered)", "",
+         "Descriptive only; no test. Computed from the stored predictions and the observed change vectors over the "
+         "249 evaluation genes: for each model, target, condition and direction, the root mean square (RMS) of the "
+         "predicted downstream change, relative to the knockdown size |delta| and to the RMS of the observed "
+         f"downstream change; medians over the {int(first.n_units)} target x condition x direction units. For scale, "
+         f"the median |delta| is {f(float(first.abs_delta))} and the median observed RMS is "
+         f"{f(float(first.rms_observed))} (log1p CP10k); the median absolute observed Fufa KD - NTC shift is "
+         f"{f(float(first.fufa_abs_observed))} (DMSO NTC SD).", "",
+         "| Model | Median predicted RMS | Ratio to abs(delta) | Ratio to observed RMS | "
+         "Median abs. predicted Fufa KD - NTC shift |",
+         "|---|---|---|---|---|"]
+    for model, r in mag.iterrows():
+        L.append(f"| {LABEL[model]} | {e(r.rms_predicted)} | {e(r.ratio_to_delta)} | {e(r.ratio_to_observed)} | "
+                 f"{e(r.fufa_abs_predicted)} |")
+    L.append("")
+    if worst < 0.05:
+        L.append(f"- The predicted downstream changes of every model are much smaller than the observed downstream "
+                 f"changes (median ratio to the observed RMS at most {worst:.1%}), and the predicted Fufa shifts are "
+                 "much smaller than the observed ones. Each model's RMSE is therefore essentially the RMS of the "
+                 "observed change, which is the RMSE of the zero-downstream baseline, and each model's Fufa error is "
+                 "essentially the observed Fufa shift. This explains why every model is close to the zero baseline "
+                 "on RMSE and on the Fufa endpoint. Pearson r does not depend on the scale of the prediction, so the "
+                 "small magnitude does not by itself explain the near-zero correlations.")
+    else:
+        L.append(f"- The largest median ratio of predicted to observed downstream RMS is {worst:.1%}.")
+    return L
+
+
+def write_summary(tables, run, out_path, lam, magnitude=None):
     m, prim, sec, fufa, dist = (tables[k] for k in ("metrics", "primary", "secondary", "fufa", "distribution"))
     tests = prim[prim.section.eq("test")].set_index("analysis")
     pr = tests.loc["primary_decision"]
@@ -126,29 +208,32 @@ def write_summary(tables, run, out_path, lam):
     L += ["### Per-condition and RMSE tests", ""]
     for c in ("DMSO", "Vem"):
         L.append(f"- {c} (amended z): {test_line(tests.loc[f'per_condition_{c}'])}.")
-    L += [f"- RMSE (mean over conditions): {test_line(tests.loc['rmse'], back=False)}.", ""]
+    L += [f"- RMSE (mean over conditions): {test_line(tests.loc['rmse'], back=False, sci=True)}.", ""]
     L += ["### Medians over targets", ""] + medians_table(prim, "median") + [""]
     L += ["### Per-fold medians (pooled over conditions)", ""] + medians_table(prim, "fold_median", "fold") + [""]
     L += ["### By connectivity stratum (descriptive; connected = an edge in >= 10% of NTC cells in both conditions)", ""]
     L += medians_table(prim, "stratum_median", "stratum") + [""]
-    nc = m[m.model.eq(PRIMARY) & m.direction.eq("combined") & m.condition.isin(["DMSO", "Vem"])]
+    joint = m[m.direction.eq("combined") & m.condition.isin(["DMSO", "Vem"])]
     L += ["### Split-half noise ceiling (context only; not part of any test)", ""]
     for c in ("DMSO", "Vem"):
-        s = nc[nc.condition.eq(c)]
+        s = joint[joint.model.eq(PRIMARY) & joint.condition.eq(c)]
         q = s.noise_ceiling_r.quantile([0.25, 0.5, 0.75])
-        cell_r = s.set_index("target").r_amended
-        shared = m[m.model.eq(REFERENCE) & m.direction.eq("combined") & m.condition.eq(c)].set_index("target").r_amended
+        above = []
+        for model in (PRIMARY, REFERENCE):
+            t = joint[joint.model.eq(model) & joint.condition.eq(c)]
+            t = t[~t.constant_prediction.astype(bool)]
+            above.append(f"{LABEL[model]} {int((t.r > t.noise_ceiling_r).sum())} of {len(t)}")
         L.append(f"- {c}: median noise ceiling {f(q[0.5])} (IQR {f(q[0.25])} to {f(q[0.75])}); targets with a ceiling "
-                 f"< 0: {int((s.noise_ceiling_r < 0).sum())}/{len(s)}; targets with model r (r = 0 rule) above the "
-                 f"ceiling: cell-specific {int((cell_r > s.set_index('target').noise_ceiling_r).sum())}, "
-                 f"shared {int((shared > s.set_index('target').noise_ceiling_r).sum())}.")
+                 f"< 0: {int((s.noise_ceiling_r < 0).sum())} of {len(s)}.")
+        L.append(f"  - Descriptive, not part of any test: targets whose held-out r exceeds their noise ceiling, among "
+                 f"targets with a non-constant prediction: {'; '.join(above)}.")
     L += ["", "## Secondary comparisons (cell-specific vs each comparator; descriptive, Holm within each metric family)", "",
           "| Comparator | Metric | Version | n_eff (zeros dropped) | Method | p | Holm p | HL [95% CI] |",
           "|---|---|---|---|---|---|---|---|"]
     for row in sec.itertuples():
         back = row.metric == "z"
         hl = (f"{f(row.hl_back)} [{f(row.hl_ci_low_back)}, {f(row.hl_ci_high_back)}] (tanh)" if back
-              else f"{f(row.hl, 4)} [{f(row.hl_ci_low, 4)}, {f(row.hl_ci_high, 4)}]")
+              else f"{e(row.hl)} [{e(row.hl_ci_low)}, {e(row.hl_ci_high)}]")
         L.append(f"| {LABEL[row.reference]} | {row.metric} | {row.version} ({row.role}) | {int(row.n_effective)} "
                  f"({int(row.n_zero_dropped)}) | {row.method} | {p_fmt(row.p_value)} | {p_fmt(row.p_holm)} | {hl} |")
     L += ["", "## Secondary endpoint: Fufa score mean-effect error", "",
@@ -162,7 +247,7 @@ def write_summary(tables, run, out_path, lam):
         L.append(f"| {contrast} | " + " | ".join(f(s[k]) for k in LABEL) + " |")
     L += [""]
     for row in fufa[fufa.section.eq("test")].itertuples():
-        L.append(f"- {row.contrast}, cell-specific - shared absolute error: {test_line(row, back=False)} "
+        L.append(f"- {row.contrast}, cell-specific - shared absolute error: {test_line(row, back=False, sci=True)} "
                  "(no multiplicity correction pre-specified).")
     L += ["", "## Tertiary endpoints (expected low power)", "",
           "Aim 1 found 0 primary dispersion calls and the Fufa score has low single-cell reliability, so these "
@@ -184,9 +269,11 @@ def write_summary(tables, run, out_path, lam):
           "interval (evaluation cells), averaged over directions per target x condition row (112 rows); nominal "
           "<= 0.025. Aim 1 all-cell intervals are listed alongside in evaluation_distribution.csv (columns only).",
           "- Evaluation NTC cells without a defined shift (dropped, summed over targets): "
-          + "; ".join(f"{LABEL[r.model]} {r.condition} c={r.direction}: {int(r.n_dropped)}"
+          + "; ".join(f"{LABEL[r.model]} {r.condition} c={int(float(r.direction))}: {int(r.n_dropped)}"
                       for r in drop[drop.n_dropped > 0].itertuples()) if (drop.n_dropped > 0).any()
           else "- No evaluation NTC cell was dropped for an undefined shift."]
+    if magnitude is not None:
+        L += [""] + post_hoc_lines(magnitude)
     L += ["", "## Interpretation notes and limitations", "",
           f"- The cell-specific vs shared contrast is mainly structural: the NTC-only cross-validation selected "
           f"lambda {lam['DMSO']} (DMSO) and {lam['Vem']} (Vem), the largest grid value, and pure pooled coefficients "
@@ -203,6 +290,26 @@ def write_summary(tables, run, out_path, lam):
           "- Fallback completions (relaxed rule) may introduce v-structures not supported by the data; the local "
           "association model has no separating sets and no collider step.", ""]
     out_path.write_text("\n".join(L), encoding="utf-8")
+
+
+def post_hoc_magnitude(base, fufa):
+    """Load the verified stored predictions and the observed vectors, then summarise the magnitudes."""
+    run_cfg = json.loads((ROOT / "config" / "evaluation_run.json").read_text(encoding="utf-8"))
+    sem = json.loads((ROOT / "config" / "sem_prediction.json").read_text(encoding="utf-8"))
+    split = load_split(ROOT / sem["inputs"]["target_split"])
+    panel = json.loads((ROOT / sem["inputs"]["panel"]).read_text(encoding="utf-8"))
+    _, nodes = panel_nodes(panel)
+    preds = ev.verify_predictions(ROOT / "outputs" / "sem_prediction" / "predictions",
+                                  run_cfg["inputs"]["prediction_config_sha256"], split, nodes, MODELS,
+                                  run_cfg["conditions"])
+    with np.load(base / "observed_changes.npz") as z:
+        if [str(n) for n in z["nodes"]] != list(nodes):
+            raise ValueError("Observed change vectors use another gene order")
+        conditions = [str(c) for c in z["conditions"]]
+        targets = [str(t) for t in z["targets"]]
+        observed = z["observed"]
+    units = downstream_magnitude(preds, observed, conditions, targets, nodes, target_nodes(panel))
+    return magnitude_summary(units, fufa)
 
 
 def sem_lambda(condition):
@@ -283,7 +390,9 @@ def main(argv=None):
     tables = {k: pd.read_csv(tables_dir / v) for k, v in names.items()}
     for k in ("metrics",):
         tables[k]["direction"] = tables[k].direction.astype(str)
-    write_summary(tables, run, md, {c: sem_lambda(c) for c in ("DMSO", "Vem")})
+    magnitude = post_hoc_magnitude(base, tables["fufa"])
+    magnitude.to_csv(base / "post_hoc_downstream_magnitude.csv", index=False)
+    write_summary(tables, run, md, {c: sem_lambda(c) for c in ("DMSO", "Vem")}, magnitude)
     style()
     figures.mkdir(parents=True, exist_ok=True)
     paired_z_figure(tables["metrics"], figures / "evaluation_paired_z.png")

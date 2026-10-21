@@ -60,6 +60,13 @@ def graph_summary(condition, cells, edges, n_targets):
                 cpu_hours=cells.seconds.sum() / 3600)
 
 
+def rationale_text(rationale):
+    """Settings rationale from config/cscn_networks.json without the runtime clause (summary text only)."""
+    if "changed runtime and edges by < 3%" not in rationale:
+        raise ValueError("Unexpected settings rationale text in config/cscn_networks.json")
+    return rationale.replace("changed runtime and edges by < 3%", "changed edges by < 3%")
+
+
 def per_cell_target_presence(edges, cell_index, n_targets):
     """Fraction of target nodes (indices 0..n_targets-1) with >= 1 edge, per cell."""
     position = {c: i for i, c in enumerate(cell_index)}
@@ -200,23 +207,24 @@ def markdown(summary, connectivity, freq, panel, cfg, timing, sensitivity):
         f"- {sum(g['low_detection'] for g in panel['forced_genes'])} forced genes (all Fufa) have NTC detection < 5% "
         "in both conditions; they are kept and flagged (cscn_panel_genes.csv).",
         "",
-        "## Hyperparameters (graph diagnostics and runtime only, never prediction performance)",
+        "## Settings selection (graph diagnostics and computational feasibility only, never prediction performance)",
         f"- window {cfg['window']}, CI alpha {cfg['ci_alpha']}, max conditioning {cfg['max_conditioning']}, stable PC, "
         "bitmap queries (official CSCN, pinned).",
-        f"- {sel['rationale']}",
+        f"- {rationale_text(sel['rationale'])}",
         f"- Grids: cscn_panel_timing.csv ({len(timing)} configurations of panel size x max conditioning) and",
         f"  cscn_panel_sensitivity.csv ({len(sensitivity)} configurations of window x CI alpha at P 250).",
+        "- Panel size and maximum conditioning set were limited to settings for which inference on every NTC cell",
+        "  is computationally feasible (cscn_panel_timing.csv).",
         "",
         "## Graphs",
         "| condition | cells | CI errors | edges per cell, median [IQR] | undirected share | target nodes with an edge | "
-        "unseeded DAG completion valid | CPU hours |",
-        "|---|---|---|---|---|---|---|---|",
+        "unseeded DAG completion valid |",
+        "|---|---|---|---|---|---|---|",
     ]
     for c, r in s.iterrows():
         lines.append(f"| {c} | {int(r.n_cells):,} | {int(r.n_ci_errors)} | {r.edges_per_cell_median:.0f} "
                      f"[{r.edges_per_cell_q1:.0f}, {r.edges_per_cell_q3:.0f}] | {r.undirected_share_pooled:.2f} | "
-                     f"{r.target_nodes_with_edge_mean:.2f} | {r.unseeded_dag_completion_valid_rate:.3f} | "
-                     f"{r.cpu_hours:.1f} |")
+                     f"{r.target_nodes_with_edge_mean:.2f} | {r.unseeded_dag_completion_valid_rate:.3f} |")
     lines += [
         "",
         f"- Edge frequency: {len(freq):,} (condition, gene pair) rows present in >= 1% of cells "

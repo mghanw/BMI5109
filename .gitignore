@@ -19,7 +19,8 @@ data/ref/*
 !data/ref/SOURCES.md
 # Embeds per-cell score values
 reports/figures/aim1_ecdf_fufa.svg
-docs/
+docs/*
+!docs/reproduce.md
 local/
 outputs/
 results/*

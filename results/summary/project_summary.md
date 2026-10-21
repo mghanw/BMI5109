@@ -1,9 +1,8 @@
 # Project summary: cell-specific CSCN-SEM models of CRISPRi perturbation responses
 
 Status on 2026-10-21. Data preparation, Aim 1, the reliability and power analysis, the pre-registered
-evaluation design and both parts of Aim 2 (network panel with cell-specific CSCN graphs; SEM knockdown
-predictions) are complete. **The pre-registered held-out evaluation has not been run, and no held-out
-performance metric (correlation, error or noise ceiling) has been computed.** Everything below is built
+evaluation design, both parts of Aim 2 (network panel with cell-specific CSCN graphs; SEM knockdown
+predictions) and the pre-registered held-out evaluation (Aim 3) are complete. Everything below is built
 from the committed tables in `results/summary/` and the configuration files in `config/`.
 
 ## 1. Data and design
@@ -76,8 +75,8 @@ Details are in `cscn_panel_summary.md`, with configuration in `config/cscn_panel
     each condition, excluding MT- and ribosomal genes (`cscn_panel_genes.csv`).
   - The panel and graphs are fold-independent, which is stricter than the pre-registered "training
     targets plus NTC" rule.
-- **Hyperparameters.** These were chosen from graph diagnostics and runtime only, never from prediction
-  performance.
+- **Settings selection.** The settings were chosen from graph diagnostics and computational feasibility
+  only, never from prediction performance.
   - Panel size 250 and maximum conditioning set 4 (`cscn_panel_timing.csv`).
   - CSCN window 0.35, fixed a priori.
   - CI alpha 0.10. Against 0.05 it roughly doubles the edges per cell (42 → 78) and raises target
@@ -86,7 +85,6 @@ Details are in `cscn_panel_summary.md`, with configuration in `config/cscn_panel
   (`cscn_panel_graph_summary.csv`).
   - Median edges per cell: 64 [IQR 49, 77] in DMSO and 61 [36, 81] in Vem; about 26% of edges are
     undirected.
-  - Run time: 24.9 and 19.0 CPU hours.
 - **Target connectivity is weak and tracks NTC detection.** The Spearman correlation between the share
   of cells with an edge (`cscn_panel_target_connectivity.csv`) and NTC detection
   (`cscn_panel_genes.csv`) is 0.74 (DMSO) and 0.80 (Vem).
@@ -144,10 +142,42 @@ Details are in `sem_prediction_summary.md`; the definitions are frozen in `confi
   - Exclusions: 3.5% of DMSO cell-specific units, from 70 of 1,989 DMSO cells whose stored PDAG already
     contains a directed cycle among its fixed edges. This is below the 5% exclusion flag; no (model,
     target, condition) row is flagged.
-  - Runtime: about 1.6 h wall with 14 workers; 4.9 CPU hours for the cell-specific model and 16.2 for
-    the local association model.
 
-## 6. Limitations
+## 6. Held-out evaluation
+Details are in `evaluation_summary.md`; the run rules were frozen in `config/evaluation_run.json` and committed
+with the evaluation code in `11985fa`, before any held-out response was read. The evaluation was run once,
+with no deviation.
+- **Primary decision test** (amended rule, cell-specific − shared paired Fisher z, 56 targets): Wilcoxon
+  p = 0.106 (n_eff 56, no zero differences); Hodges-Lehmann −0.009, back-transformed −0.009, 95% bootstrap
+  CI [−0.019, 0.002]. The null hypothesis is not rejected at alpha 0.05 (`evaluation_primary.csv`).
+- **Complete pairs** (pre-registered NaN rule, supporting): 40 targets drop out because the shared prediction
+  is constant in at least one condition; on the remaining 16 the shared model is more accurate: p = 0.003,
+  Hodges-Lehmann −0.029 [−0.049, −0.012].
+- **Coverage versus accuracy.** Non-constant predictions in both conditions: cell-specific 54, shared 16,
+  cluster-level 52, local association 56, unweighted propagation 54 of 56 targets. The shared model's NaN
+  share (40 of 56, 0.71) exceeds the pre-registered 10% flag; the result is flagged.
+- **Supporting tests.** DMSO p = 0.192, Vem p = 0.346 (2 zero differences dropped); RMSE p = 0.058 with a
+  Hodges-Lehmann difference of −4.69e-06 against a median RMSE of 0.080.
+- **Accuracy is low for every model.** Median held-out r over targets (pooled over conditions, constant
+  predictions excluded) is −0.012 (cell-specific), −0.019 (shared), −0.007 (cluster-level), −0.011 (local
+  association) and −0.009 (unweighted propagation).
+- **Noise ceiling** (split-half, Spearman-Brown; context only): median 0.224 (IQR 0.076 to 0.491) in DMSO and
+  0.119 (IQR 0.002 to 0.222) in Vem.
+- **Secondary comparisons** (descriptive, Holm within each metric family; `evaluation_secondary.csv`): paired
+  z differences of the cell-specific model against the cluster-level, local association and unweighted
+  models lie between −0.009 and 0.006 (Holm p = 0.467 each); RMSE differences are of order 1e-6 to 1e-5, with
+  Holm p < 0.05 only against unweighted propagation (−1.98e-05, Holm p = 0.007).
+- **Secondary endpoint, Fufa score** (`evaluation_fufa.csv`): median absolute errors are almost identical
+  across models (KD − NTC: 0.098-0.100 in DMSO and 0.114-0.119 in Vem; interaction 0.156-0.157); the
+  cell-specific − shared error differences are of order 1e-5 (Hodges-Lehmann).
+- **Tertiary endpoints** (expected low power; `evaluation_distribution.csv`): over-dispersion rate 0.080 and
+  coverage 0.915 for every model.
+- **Post hoc description (not pre-registered).** The predicted downstream changes are far smaller than the
+  observed ones: the median ratio of predicted to observed root mean square is at most 0.7% for every model.
+  Each model's RMSE is therefore essentially that of the zero-downstream baseline, and its Fufa error is
+  essentially the observed Fufa shift.
+
+## 7. Limitations
 - **Different test family.** The shared and cluster graphs use a population partial-correlation test,
   whereas the cell-specific graphs use the local CSCN count test. The primary contrast therefore differs
   in test family as well as in locality. Coverage matching equalises the number of targets with an edge,
@@ -158,13 +188,16 @@ Details are in `sem_prediction_summary.md`; the definitions are frozen in `confi
   the distribution-level (tertiary) endpoints.
 - **Excluded cells.** 70 DMSO cells (3.5%) are excluded from the cell-specific and ablation pseudobulk
   means because their stored graphs contain a cycle among fixed edges.
-- **No evaluation result yet.** No held-out evaluation result exists.
+- **Selected complete pairs.** The complete-pairs analysis covers only the 16 targets for which the shared
+  model predicts a change, a set selected by shared-graph connectivity.
+- **Small predicted effects.** The predicted downstream changes are far smaller than the observed ones
+  (post hoc), so RMSE and the Fufa endpoint cannot separate the models from the zero-downstream baseline.
 
-## 7. Next step
-Run the pre-registered held-out evaluation in `config/evaluation_endpoints.json`, including its
-2026-10-21 amendment, on the frozen predictions in `outputs/sem_prediction/predictions/`:
-- observed target − NTC changes on the evaluation calibration fold;
-- Pearson r and RMSE per target, model, condition and direction;
-- the single primary Wilcoxon test (cell-specific vs shared), with the supporting and secondary analyses.
-
-No held-out performance metric has been computed so far.
+## 8. Next steps
+- Write the project report and presentation.
+- Graph stability analysis: resample NTC cells and measure how stable the cell-specific graphs and the
+  target connectivity are.
+- Labelled simulations with known cell-specific structure, including mean-preserving heterogeneity, to test
+  whether the pipeline can recover cell-specific effects when they exist.
+- Optional future work: external validation on the Tri-omics data, which were set aside for external
+  validation (`data_prep_replicate_evidence.md`).

@@ -122,8 +122,9 @@ class Tables(unittest.TestCase):
                 frame.to_csv(tmp / f"{k}.csv", index=False)
                 tables[k] = pd.read_csv(tmp / f"{k}.csv")
             tables["metrics"]["direction"] = tables["metrics"].direction.astype(str)
+            units = se.downstream_magnitude(*toy_magnitude_inputs(scale=1e-3))
             se.write_summary(tables, dict(date="2026-10-21", head="0" * 40), tmp / "summary.md",
-                             {"DMSO": 10.0, "Vem": 10.0})
+                             {"DMSO": 10.0, "Vem": 10.0}, se.magnitude_summary(units, tables["fufa"]))
             text = (tmp / "summary.md").read_text(encoding="utf-8")
             se.style()
             se.paired_z_figure(tables["metrics"], tmp / "a.png")
@@ -131,8 +132,37 @@ class Tables(unittest.TestCase):
             self.assertTrue((tmp / "a.png").stat().st_size > 0 and (tmp / "b.png").stat().st_size > 0)
         for phrase in ("Amendment (2026-10-21", "Sign convention", "mainly structural", "Spearman partial-correlation",
                        "only calib_fold c cells", "Coverage and accuracy", "NaN flag", "Per-condition", "RMSE",
-                       "Per-fold medians", "connectivity stratum", "Holm", "Tertiary"):
+                       "Per-fold medians", "connectivity stratum", "Holm", "Tertiary",
+                       "Post hoc description (not pre-registered)", "explains why every model is close to the zero",
+                       "Descriptive, not part of any test", "among targets with a non-constant prediction"):
             self.assertIn(phrase, text)
+        rmse_line = next(line for line in text.splitlines() if line.startswith("- RMSE (mean over conditions)"))
+        self.assertRegex(rmse_line, r"HL -?\d\.\d\de[-+]\d\d \(95% bootstrap CI \[")
+
+
+def toy_magnitude_inputs(scale):
+    """Two conditions, one target (node A), observed RMS 1 over the evaluation genes B and C."""
+    nodes, M = ["A", "B", "C"], len(MODELS)
+    preds, observed = {}, np.zeros((2, 1, 2, 3))
+    observed[:, :, :, 1:] = 1.0
+    for condition in ("DMSO", "Vem"):
+        scaled = np.zeros((M, 1, 2, 3))
+        scaled[:, 0, :, 0] = -0.5                       # the perturbed gene itself is not evaluated
+        scaled[MODELS.index("cell_specific_cscn_sem"), 0, :, 1:] = scale
+        preds[condition] = dict(targets=["T1"], scaled=scaled, delta=np.full((1, 2), -0.5))
+    return preds, observed, ["DMSO", "Vem"], ["T1"], nodes, {"T1": "A"}
+
+
+class PostHocMagnitude(unittest.TestCase):
+    def test_known_ratios(self):
+        units = se.downstream_magnitude(*toy_magnitude_inputs(scale=0.2))
+        cell = units[units.model.eq("cell_specific_cscn_sem")]
+        self.assertEqual(len(cell), 4)
+        np.testing.assert_allclose(cell.rms_predicted, 0.2)
+        np.testing.assert_allclose(cell.ratio_to_delta, 0.4)
+        np.testing.assert_allclose(cell.ratio_to_observed, 0.2)
+        zero = units[units.model.eq("zero_downstream_baseline")]
+        np.testing.assert_array_equal(zero.rms_predicted, 0.0)
 
 
 if __name__ == "__main__":

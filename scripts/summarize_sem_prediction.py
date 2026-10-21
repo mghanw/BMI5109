@@ -153,11 +153,7 @@ def markdown(cfg, summary, either, seconds, lam, shared, structure, orientation)
            "  condition (NaN under the supporting complete-pairs rule): "
            + ", ".join(f"{m} {int(n)}" for m, n in either.items()) + ".",
            "- zero_downstream_baseline is constant by definition (RMSE only).",
-           f"- Exclusion flag: (model, target, condition) rows with > {EXCLUSION_FLAG:.0%} of reference cells excluded.", "",
-           "## Runtime"]
-    total = seconds.drop(columns=["condition", "fold"]).sum()
-    md.append("- CPU time over all folds and conditions (14 workers; about 1.6 h wall for the full run): "
-              + ", ".join(f"{m} {total.get(m, 0) / 3600:.2f} h" for m in MODELS if m in total) + ".")
+           f"- Exclusion flag: (model, target, condition) rows with > {EXCLUSION_FLAG:.0%} of reference cells excluded."]
     return "\n".join(md) + "\n"
 
 

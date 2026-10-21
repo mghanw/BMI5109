@@ -11,17 +11,19 @@ orientation; intervention-based orientation is fold-specific and done when SEMs 
   mean bins (mean of the two within-condition ranks).
 - 17 forced genes (all Fufa) have NTC detection < 5% in both conditions; they are kept and flagged (cscn_panel_genes.csv).
 
-## Hyperparameters (graph diagnostics and runtime only, never prediction performance)
+## Settings selection (graph diagnostics and computational feasibility only, never prediction performance)
 - window 0.35, CI alpha 0.1, max conditioning 4, stable PC, bitmap queries (official CSCN, pinned).
-- Window kept at the a priori 0.35: window changes (0.5, 0.65) gave no consistent benefit, and 0.65 disconnected the most-detected targets. ci_alpha 0.10 roughly doubles edges per cell (median 42 -> 78) and raises target connectivity (mean share of target nodes with >= 1 edge 0.18 -> 0.29), while edges stay far below the number expected if the local CI test were calibrated, i.e. the test is conservative on zero-inflated counts. max_conditioning 2-4 changed runtime and edges by < 3% (sparse skeletons); 4 is used.
+- Window kept at the a priori 0.35: window changes (0.5, 0.65) gave no consistent benefit, and 0.65 disconnected the most-detected targets. ci_alpha 0.10 roughly doubles edges per cell (median 42 -> 78) and raises target connectivity (mean share of target nodes with >= 1 edge 0.18 -> 0.29), while edges stay far below the number expected if the local CI test were calibrated, i.e. the test is conservative on zero-inflated counts. max_conditioning 2-4 changed edges by < 3% (sparse skeletons); 4 is used.
 - Grids: cscn_panel_timing.csv (12 configurations of panel size x max conditioning) and
   cscn_panel_sensitivity.csv (6 configurations of window x CI alpha at P 250).
+- Panel size and maximum conditioning set were limited to settings for which inference on every NTC cell
+  is computationally feasible (cscn_panel_timing.csv).
 
 ## Graphs
-| condition | cells | CI errors | edges per cell, median [IQR] | undirected share | target nodes with an edge | unseeded DAG completion valid | CPU hours |
-|---|---|---|---|---|---|---|---|
-| DMSO | 1,989 | 0 | 64 [49, 77] | 0.26 | 0.27 | 0.939 | 24.9 |
-| Vem | 1,864 | 0 | 61 [36, 81] | 0.26 | 0.27 | 0.999 | 19.0 |
+| condition | cells | CI errors | edges per cell, median [IQR] | undirected share | target nodes with an edge | unseeded DAG completion valid |
+|---|---|---|---|---|---|---|
+| DMSO | 1,989 | 0 | 64 [49, 77] | 0.26 | 0.27 | 0.939 |
+| Vem | 1,864 | 0 | 61 [36, 81] | 0.26 | 0.27 | 0.999 |
 
 - Edge frequency: 1,582 (condition, gene pair) rows present in >= 1% of cells (cscn_panel_edge_frequency.csv), for the shared and cluster-level comparators.
 
