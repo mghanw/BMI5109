@@ -22,17 +22,22 @@ CSCN was developed by Wang Menghan and colleagues (Bioinformatics 2026;42(7):bta
 - Data preparation and Aim 1 (mean and dispersion contrasts of programme scores) are complete,
   together with a score reliability and power analysis.
 - The held-out evaluation endpoints are pre-registered in
-  [config/evaluation_endpoints.json](config/evaluation_endpoints.json) before any modelling code.
-- Aims 2-3 (CSCN-SEM fitting and held-out prediction) are in progress.
+  [config/evaluation_endpoints.json](config/evaluation_endpoints.json) before any modelling code,
+  with one dated amendment (2026-10-21) made before any model fitting.
+- Aim 2 is complete: a 250-gene network panel, cell-specific CSCN graphs for all control cells, and
+  knockdown predictions of six pre-specified SEM models for every held-out target, condition and
+  cross-fit direction.
+- Next: the pre-registered held-out evaluation. No held-out performance metric has been computed yet.
+- Overview of all completed analyses: [results/summary/project_summary.md](results/summary/project_summary.md).
 
 ## Repository layout
 
 | Path | Contents |
 |---|---|
-| `icpdag/` | Python package: vendored CSCN, intervention-assisted orientation, gene-space CKM, average effects, program scores, dispersion, expression contrasts, target split, power |
-| `scripts/` | Data download and conversion, data preparation, target split, program gene sets, Aim 1, reliability and power analysis, figures |
+| `icpdag/` | Python package: vendored CSCN, intervention-assisted orientation, gene-space CKM, average effects, program scores, dispersion, expression contrasts, target split, power; network panel (`cscn_panel`), cell-specific CSCN graphs (`cscn_networks`), SEM inputs, comparator graphs, fold-specific orientation with local IDA, and SEM coefficients and knockdown simulation (`sem_inputs`, `sem_graphs`, `sem_orientation`, `sem_prediction`) |
+| `scripts/` | Data download and conversion, data preparation, target split, program gene sets, Aim 1, reliability and power analysis, figures; network panel, CSCN timing and graph inference, SEM structure, lambda cross-validation, knockdown prediction and their summaries |
 | `tests/` | `pytest` test suite |
-| `config/` | Run configurations, frozen held-out target split, program gene sets, pre-registered held-out evaluation endpoints |
+| `config/` | Run configurations, frozen held-out target split, program gene sets, pre-registered held-out evaluation endpoints (with amendment), frozen network panel (`cscn_panel.json`), CSCN settings (`cscn_networks.json`), frozen SEM model definitions (`sem_prediction.json`) |
 | `results/summary/` | Aggregate result tables and summaries (no cell-level data) |
 | `reports/` | Figures and the earlier mechanism report |
 | `data/` | Input data; see [data/README.md](data/README.md) |
@@ -134,7 +139,75 @@ Run from the repository root (Windows paths shown).
    python scripts\power_figures.py
    ```
 
-10. Tests:
+10. Network panel from NTC cells (about 1 minute; frozen in `config/cscn_panel.json`, so a rerun only
+    verifies it), and the CSCN timing and sensitivity grids used to choose the settings (about 20 and
+    15 minutes):
+
+    ```bash
+    python scripts\build_cscn_panel.py
+    ```
+
+    ```bash
+    python scripts\cscn_panel_timing.py
+    ```
+
+    ```bash
+    python scripts\cscn_panel_timing.py --sizes 250 --orders 2 --windows 0.35,0.5,0.65 --alphas 0.05,0.1
+    ```
+
+11. Cell-specific CSCN graphs for all NTC cells (about 1.8 h for DMSO and 1.4 h for vemurafenib with 14
+    workers on a 16-thread machine; resumable, and shardable with `--shard i/n`), the merge per
+    condition, then the summaries and figure:
+
+    ```bash
+    python scripts\infer_cscn_networks.py --condition DMSO
+    ```
+
+    ```bash
+    python scripts\infer_cscn_networks.py --condition DMSO --merge
+    ```
+
+    Repeat both commands with `--condition Vem`, then:
+
+    ```bash
+    python scripts\summarize_cscn_networks.py
+    ```
+
+12. SEM structure (NTC only): shared and cluster graphs, PCs and neighbourhoods (about 11 minutes),
+    then the fold-specific orientation diagnostics (about 1.7 h; cached per graph type):
+
+    ```bash
+    python scripts\build_sem_graphs.py
+    ```
+
+    ```bash
+    python scripts\sem_structure_report.py
+    ```
+
+13. Shrinkage lambda by NTC-only cross-validation (about 8 minutes):
+
+    ```bash
+    python scripts\sem_lambda_cv.py
+    ```
+
+14. Knockdown predictions for each condition and outer fold (about 1.6 h for all 10 runs with 14
+    workers; resumable and shardable), each followed by its merge, then the summaries:
+
+    ```bash
+    python scripts\predict_sem_knockdown.py --condition DMSO --fold 0
+    ```
+
+    ```bash
+    python scripts\predict_sem_knockdown.py --condition DMSO --fold 0 --merge
+    ```
+
+    Repeat for folds 0-4 and both conditions, then:
+
+    ```bash
+    python scripts\summarize_sem_prediction.py
+    ```
+
+15. Tests:
 
     ```bash
     pytest
@@ -159,6 +232,12 @@ From [results/summary](results/summary):
   is 0.01 (DMSO) / 0.12 (vemurafenib), and at the median target size 80% power after Bonferroni
   correction requires a log variance ratio of about 0.48 / 0.57.
 - The earlier mechanism report is reproduced: all 105 of its contrasts fall inside its 95% CIs.
+- Aim 2: cell-specific CSCN graphs have a median of 64 (DMSO) and 61 (vemurafenib) edges per cell
+  on the 250-gene panel. Target connectivity is weak and tracks the target's detection in control
+  cells. Knockdown predictions of all six pre-specified models are complete. The control-only
+  cross-validation found no gain from local coefficients, so the cell-specific versus shared contrast
+  is mainly structural. See [project_summary.md](results/summary/project_summary.md); held-out
+  performance has not been evaluated yet.
 
 ## Data source and citation
 

@@ -74,3 +74,4 @@ results/summary/*
 !results/summary/sem_prediction_lambda_cv.csv
 !results/summary/sem_prediction_model_summary.csv
 !results/summary/sem_prediction_summary.md
+!results/summary/project_summary.md
