@@ -7,14 +7,32 @@ go to `results/summary/` and figures to `reports/figures/`. Every script describ
 
 ## Environment
 
-- Python 3.11 in a conda environment, then:
+- Python: create the conda environment from `environment.yml`, which also installs this package in
+  editable mode:
+
+  ```bash
+  conda env create -f environment.yml
+  ```
+
+  ```bash
+  conda activate bmi5109
+  ```
+
+  `environment.yml` pins Python and every direct dependency (including the `plots` and `io` extras and
+  pytest) exactly; transitive dependencies are resolved by conda and pip at install time. The reported
+  results were produced with these exact versions. The frozen evaluation rules
+  (`config/evaluation_run.json`) depend on scipy's Wilcoxon signed-rank implementation, so use the pinned
+  scipy version to reproduce the reported p-values.
+
+  Alternative (pip only, version ranges from `pyproject.toml`): in a Python 3.11 environment,
 
   ```bash
   pip install -e ".[plots,io]" pytest
   ```
 
   The `plots` extra installs matplotlib; the `io` extra installs anndata and openpyxl.
-- R >= 4.4 with the `Matrix` package, for converting the GEO RDS files.
+- R: a standalone R 4.6.1 installation with the `Matrix` package 1.7.5, needed only for converting the
+  GEO RDS files to MatrixMarket (`scripts/rds_to_mtx.R`). R is not part of `environment.yml`.
 - A machine with 32 GB RAM; count matrices are kept sparse.
 
 ## 1. Input data

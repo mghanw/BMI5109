@@ -1,0 +1,23 @@
+# Python environment used for the reported results. Direct dependencies are pinned exactly;
+# transitive dependencies are resolved at install time. R (RDS conversion only) is installed
+# separately; see docs/reproduce.md.
+name: bmi5109
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11.17
+  - pip
+  - pip:
+      - numpy==1.26.4
+      - pandas==2.3.3
+      - scipy==1.17.1
+      - scikit-learn==1.9.1
+      - networkx==3.6.1
+      - bitarray==3.12.0
+      - threadpoolctl==3.7.0
+      - psutil==7.2.2
+      - matplotlib==3.11.2
+      - anndata==0.12.19
+      - openpyxl==3.1.5
+      - pytest==9.1.1
+      - -e .

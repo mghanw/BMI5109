@@ -1,0 +1,95 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using the metadata below, and also cite the PerturbFate
+  and CSCN papers listed under references.
+type: software
+title: >-
+  From Cell-Specific Networks to Perturbation Responses: A CSCN–SEM Extension for Melanoma
+  Cell-State Heterogeneity
+version: 0.4.0
+date-released: 2026-10-21
+repository-code: https://github.com/mghanw/BMI5109
+authors:
+  - family-names: Yao
+    given-names: Lihong
+    affiliation: National University of Singapore
+  - family-names: Wang
+    given-names: Menghan
+    affiliation: National University of Singapore
+  - family-names: Lai
+    given-names: Yingtong
+    affiliation: National University of Singapore
+  - family-names: Chapala
+    given-names: Dharani
+    affiliation: National University of Singapore
+references:
+  - type: article
+    title: Mapping convergent regulators of melanoma drug resistance by PerturbFate
+    authors:
+      - family-names: Xu
+        given-names: Zihan
+      - family-names: Lu
+        given-names: Ziyu
+      - family-names: Ugurbil
+        given-names: Aileen
+      - family-names: Abdulraouf
+        given-names: Abdulraouf
+      - family-names: Liao
+        given-names: Andrew
+      - family-names: Zhang
+        given-names: Jianxiang
+      - family-names: Zhou
+        given-names: Wei
+      - family-names: Cao
+        given-names: Junyue
+    journal: Nature
+    year: 2026
+    volume: 654
+    issue: "8117"
+    start: "261"
+    end: "271"
+    doi: 10.1038/s41586-026-10367-0
+  - type: article
+    title: "CSCN: inference of cell-specific causal networks using single-cell RNA-seq data"
+    authors:
+      - family-names: Wang
+        given-names: Menghan
+      - family-names: Yang
+        given-names: Junya
+      - family-names: Lyu
+        given-names: Luyao
+      - family-names: Chen
+        given-names: Jiaxing
+    journal: Bioinformatics
+    year: 2026
+    volume: 42
+    issue: "7"
+    start: btag480
+    doi: 10.1093/bioinformatics/btag480
+  - type: data
+    title: Mapping convergent regulators of melanoma drug resistance by PerturbFate
+    authors:
+      - family-names: Xu
+        given-names: Zihan
+      - family-names: Lu
+        given-names: Ziyu
+      - family-names: Ugurbil
+        given-names: Aileen
+      - family-names: Abdulraouf
+        given-names: Abdulraouf
+      - family-names: Liao
+        given-names: Andrew
+      - family-names: Zhang
+        given-names: Jianxiang
+      - family-names: Zhou
+        given-names: Wei
+      - family-names: Cao
+        given-names: Junyue
+    database: Gene Expression Omnibus (GEO)
+    identifiers:
+      - type: other
+        value: GSE291147
+        description: GEO series accession
+    url: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE291147
+    date-published: 2026-02-06
+    year: 2026

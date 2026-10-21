@@ -3,13 +3,13 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "intervention-cell-pdag"
-version = "0.3.0"
+name = "cscn-sem"
+version = "0.4.0"
 description = "CSCN-SEM: cell-specific causal network models for held-out perturbation response prediction"
 requires-python = ">=3.10,<3.13"
 dependencies = [
     "numpy>=1.24,<1.28", "pandas>=2.0,<3", "scipy>=1.11",
-    "scikit-learn>=1.2", "networkx>=3", "bitarray>=2", "threadpoolctl>=3.1",
+    "scikit-learn>=1.2", "networkx>=3", "bitarray>=2", "threadpoolctl>=3.1", "psutil>=5.9",
 ]
 
 [project.optional-dependencies]

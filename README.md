@@ -158,6 +158,18 @@ An overview of all analyses is in [project_summary.md](results/summary/project_s
 The environment and the full ordered sequence of commands, from the GEO files to the held-out
 evaluation, are in [docs/reproduce.md](docs/reproduce.md).
 
+## How to cite
+
+Citation metadata for this repository are in [CITATION.cff](CITATION.cff) (GitHub's "Cite this
+repository" uses it). If you use this work, please also cite the PerturbFate paper (data source) and the
+CSCN paper (method):
+
+- Xu Z, Lu Z, Ugurbil A, et al. Mapping convergent regulators of melanoma drug resistance by PerturbFate.
+  *Nature* 2026;654(8117):261-71. [doi:10.1038/s41586-026-10367-0](https://doi.org/10.1038/s41586-026-10367-0).
+- Wang M, Yang J, Lyu L, Chen J. CSCN: inference of cell-specific causal networks using single-cell
+  RNA-seq data. *Bioinformatics* 2026;42(7):btag480.
+  [doi:10.1093/bioinformatics/btag480](https://doi.org/10.1093/bioinformatics/btag480).
+
 ## Data source and citation
 
 Xu Z, Lu Z, Ugurbil A, et al. Mapping convergent regulators of melanoma drug resistance by
@@ -170,7 +182,8 @@ Third-party code: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Earlier analysis
 
-The [mechanism report](reports/mechanism-report.zh.md) (in Chinese) describes an earlier analysis of the
+The [mechanism report](reports/mechanism-report.md) (English translation of the
+[Chinese original](reports/mechanism-report.zh.md)) describes an earlier analysis of the
 same A375 RNA data that combined perturbation information, cell-specific networks and average treatment
 effects. It found that NF2, MED12 and MED13 knockdowns share enhanced YAP-associated outputs without drug,
 whereas MED12 shows a weaker drug-induced differentiation response. Its summary tables (average effects,
